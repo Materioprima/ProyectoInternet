@@ -7,6 +7,8 @@
     <class>Clases.Proyectos</class>
     <class>Clases.Beneficiarios</class>
     <class>Clases.Personal</class>
+    <class>Clases.Gastos</class>
+    <class>Clases.Academico</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/sample"/>
       <property name="javax.persistence.jdbc.user" value="app"/>
