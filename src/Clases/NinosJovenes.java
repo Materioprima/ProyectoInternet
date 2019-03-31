@@ -26,7 +26,7 @@ public class NinosJovenes implements Serializable
     private String estado,sexo,grado;
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento,fechaEntrada,fechaAltaProyecto,fechaSalidaProyecto,fechaAlta,fechaSalidaAcoes;
-    private double foto;
+    private byte[] foto;
     @Column(length = 500)
     private String observaciones;
 
