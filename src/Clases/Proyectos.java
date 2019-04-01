@@ -6,11 +6,13 @@
 package Clases;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -29,4 +31,10 @@ public class Proyectos implements Serializable
     private Integer combustible,mantenimiento,contenedor;
     @Column(length = 500)
     private String descripcion;
+    @OneToMany(mappedBy = "proyecto")
+    private List<NinosJovenes> participan;
+    @OneToMany(mappedBy = "ingresos")
+    private List<Ingreso> ingresos;
+    @OneToMany(mappedBy = "gastos")
+    private List<Gastos> gastos;
 }

@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 /**
  *
@@ -30,6 +31,8 @@ public class Gastos implements Serializable {
     double Voluntarios;
     @Column(length=12)
     int Mes;
+    @ManyToOne
+    private Proyectos gastos;
     
     public Long getId() {
         return id;

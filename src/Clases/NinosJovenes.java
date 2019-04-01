@@ -6,11 +6,16 @@ package Clases;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -29,6 +34,20 @@ public class NinosJovenes implements Serializable
     private byte[] foto;
     @Column(length = 500)
     private String observaciones;
+    @ManyToOne
+    private Socios idSocio;
+    @ManyToOne
+    private Proyectos proyecto;
+    @OneToOne
+    private Academico notas;
+    @ManyToOne
+    private Agente agente;
+    @ManyToMany
+    private List<Personal> personal;
+    @ManyToOne
+    private Colonias colonia;
+    @OneToMany (mappedBy = "nino")
+    private List<Becas> becas;
 
     public Long getCodigo() 
     {

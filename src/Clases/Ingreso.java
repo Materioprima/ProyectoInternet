@@ -12,6 +12,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -33,6 +35,12 @@ public class Ingreso implements Serializable {
     private Integer Ingreso_Euros,Ingreso_Lempiras,Ingreso_Dolares,Egreso_Euros,Egreso_Lempiras,Egreso_Dolares,Valor_Divisas_Euros,Valor_Divisas_Dolares,Total_Lempira;
     @Column(length = 500)
     private String descripcion;
+    @ManyToOne
+    private Proyectos ingresos;
+    @ManyToOne
+    private Beneficiarios beneficiario;
+    @OneToOne
+    private OrdenPago ordenpago;
 
     public Long getId() {
         return codigo_transaccion;

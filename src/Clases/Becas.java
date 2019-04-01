@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 /**
@@ -34,7 +35,8 @@ public class Becas implements Serializable {
     private String concepto;
     @Column(length = 30)
     private double importe;
-
+    @ManyToOne
+    private NinosJovenes nino;
 
     public boolean getTr(){
         return tr;

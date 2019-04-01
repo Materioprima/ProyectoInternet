@@ -6,10 +6,12 @@
 package Clases;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -22,6 +24,9 @@ public class Colonias implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id_colonia;
+    private String nombre;
+    @OneToMany
+    private List<NinosJovenes> pertenecen;
 
     public Long getId() {
         return id_colonia;
