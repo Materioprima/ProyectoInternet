@@ -7,11 +7,13 @@ package Clases;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -26,6 +28,8 @@ public class SaldoGlobal implements Serializable
     private Date fecha;
     @Column(length = 500)
     private String observaciones;
+    @OneToMany(mappedBy ="saldo")
+    private List<Proyectos>proyectos;
 
     public Long getId() 
     {
