@@ -38,6 +38,22 @@ public class Academico implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+    
+    public Date getFechaPeriodo() {
+	return fechaPeriodo;
+    }
+    
+    public void setFechaPeriodo(Date fechaPeriodo) {
+	this.fechaPeriodo = fechaPeriodo;
+    } 
+    
+    public double getNota() {
+	return nota;
+    }
+    
+    public void setNota(double nota) {
+	this.nota = nota;
+    }
 
     @Override
     public int hashCode() {

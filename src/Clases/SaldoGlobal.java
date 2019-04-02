@@ -21,49 +21,62 @@ public class SaldoGlobal implements Serializable
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
     @Temporal(TemporalType.DATE)
     private Date fecha;
     @Column(length = 500)
     private String observaciones;
 
-    public int getId() 
+    public Long getId() 
     {
         return id;
     }
 
-    public void setNum_Orden(int id) 
+    public void setNum_Orden(Long id) 
     {
         this.id = id;
     }
-
+    
+    public Date getFecha() {
+	return fecha;
+    }
+    public void setFecha(Date fecha) {
+	this.fecha = fecha;
+    }
+    public String getObservaciones() {
+	return observaciones;
+    }
+    public void setObservaciones(String observaciones) {
+	this.observaciones = observaciones;
+    }
+        
     @Override
-    public int hashCode() {
-        return id;
+    public int hashCode() 
+    {
+        int hash = 0;
+        hash += (id != null ? id.hashCode() : 0);
+        return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public boolean equals(Object object) 
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof SaldoGlobal)) 
+        {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final SaldoGlobal other = (SaldoGlobal) obj;
-        if (this.id != other.id) {
+        SaldoGlobal other = (SaldoGlobal) object;
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) 
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() 
-    {
-        return "practica3.SaldoGlobal[ ID = " + id + "Fecha = " + fecha +"]";
+    public String toString() {
+        return "Clases.SaldoGlobal[ id de cuenta=" + id + " ]";
     }
     
 }

@@ -58,6 +58,127 @@ public class NinosJovenes implements Serializable
     {
         this.codigo = id;
     }
+    
+    public String getNombre() {
+	return nombre;
+    }
+    public void setNombre(String nombre) {
+	this.nombre = nombre;
+    }
+    public String getApellidos() {
+	return apellidos;
+    }
+    public void setApellidos(String apellidos) {
+	this.apellidos = apellidos;
+    }
+    public String getEstado() {
+	return estado;
+    }
+    public void setEstado(String estado) {
+	this.estado = estado;
+    }
+    public String getSexo() {
+	return sexo;
+    }
+    public void setSexo(String sexo) {
+	this.sexo = sexo;
+    }
+    public String getGrado() {
+	return grado;
+    }
+    public void setGrado(String grado) {
+	this.grado = grado;
+    }
+    public Date getFechaNacimiento() {
+	return fechaNacimiento;
+    }
+    public void setFechaNacimiento(Date fechaNacimiento) {
+	this.fechaNacimiento = fechaNacimiento;
+    }
+    public Date getFechaEntrada() {
+	return fechaEntrada;
+    }
+    public void setFechaEntrada(Date fechaEntrada) {
+    	this.fechaEntrada = fechaEntrada;
+    }
+    public Date getFechaAltaProyecto() {
+    	return fechaAltaProyecto;
+    }
+    public void setFechaAltaProyecto(Date fechaAltaProyecto) {
+	this.fechaAltaProyecto = fechaAltaProyecto;
+    }
+    public Date getFechaSalidaProyecto() {
+    	return fechaSalidaProyecto;
+    }
+    public void setFechaSalidaProyecto(Date fechaSalidaProyecto) {
+    	this.fechaSalidaProyecto = fechaSalidaProyecto;
+    }
+    public Date getFechaAlta() {
+    	return fechaAlta;
+    }
+    public void setFechaAlta(Date fechaAlta) {
+    	this.fechaAlta = fechaAlta;
+    }
+    public Date getFechaSalidaAcoes() {
+    	return fechaSalidaAcoes;
+    }
+    public void setFechaSalidaAcoes(Date fechaSalidaAcoes) {
+    	this.fechaSalidaAcoes = fechaSalidaAcoes;
+    }
+    public byte[] getFoto() {
+    	return foto;
+    }
+    public void setFoto(byte[] foto) {
+    	this.foto = foto;
+    }
+    public String getObservaciones() {
+	return observaciones;
+    }
+    public void setObservaciones(String observaciones) {
+	this.observaciones = observaciones;
+    }
+    public Socios getIdSocio() {
+    	return idSocio;
+    }
+    public void setIdSocio(Socios idSocio) {
+    	this.idSocio = idSocio;
+    }
+    public Proyectos getProyecto() {
+	return proyecto;
+    }
+    public void setProyecto(Proyectos proyecto) {
+	this.proyecto = proyecto;
+    }
+    public Academico getNotas() {
+    	return notas;
+    }
+    public void setNotas(Academico notas) {
+    	this.notas = notas;
+    }
+    public Agente getAgente() {
+    	return agente;
+    }
+    public void setAgente(Agente agente) {
+    	this.agente = agente;
+    }
+    public List<Personal> getPersonal() {
+    	return personal;
+    }
+    public void setPersonal(List<Personal> personal) {
+	this.personal = personal;
+    }
+    public Colonias getColonia() {
+	return colonia;
+    }
+    public void setColonia(Colonias colonia) {
+        this.colonia = colonia;
+    }
+    public List<Becas> getBecas() { 
+        return becas;
+    }
+    public void setBecas(List<Becas> becas) {
+	this.becas = becas;
+    }
 
     @Override
     public int hashCode() 
@@ -84,9 +205,8 @@ public class NinosJovenes implements Serializable
     }
 
     @Override
-    public String toString() 
-    {
-        return "practica3.Autor[ id=" + codigo + " ]";
+    public String toString() {
+        return "Clases.NinosJovenes[ codigo=" + codigo + " ]";
     }
     
 }

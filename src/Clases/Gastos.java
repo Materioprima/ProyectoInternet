@@ -25,12 +25,9 @@ public class Gastos implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(length = 500)
-    double Carburante;
-    double Mantenimiento;
-    double Contenedor;
-    double Voluntarios;
+    private double Carburante, Mantenimiento, Contenedor, Voluntarios;
     @Column(length=12)
-    int Mes;
+    private int Mes;
     @ManyToOne
     private Proyectos gastos;
     
@@ -42,6 +39,43 @@ public class Gastos implements Serializable {
         this.id = id;
     }
 
+    public double getCarburante() {
+	return Carburante;
+    }
+    public void setCarburante(double carburante) {
+	Carburante = carburante;
+    }
+    public double getMantenimiento() {
+	return Mantenimiento;
+    }
+    public void setMantenimiento(double mantenimiento) {
+	Mantenimiento = mantenimiento;
+    }
+    public double getContenedor() {
+	return Contenedor;
+    }
+    public void setContenedor(double contenedor) {
+	Contenedor = contenedor;
+    }
+    public double getVoluntarios() {
+	return Voluntarios;
+    }
+    public void setVoluntarios(double voluntarios) {
+	Voluntarios = voluntarios;
+    }
+    public int getMes() {
+	return Mes;
+    }
+    public void setMes(int mes) {
+    	Mes = mes;
+    }
+    public Proyectos getGastos() {
+    	return gastos;
+    }
+    public void setGastos(Proyectos gastos) {
+    	this.gastos = gastos;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

@@ -21,49 +21,60 @@ public class OrdenPago implements Serializable
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int num_orden;
+    private Long num_orden;
     @Column(length=30,nullable = false)
     private String emitida_por;
     @Temporal(TemporalType.DATE)
     private Date fecha_emi;
 
-    public int getNum_Orden() 
+    public Long getNum_Orden() 
     {
         return num_orden;
     }
 
-    public void setNum_Orden(int id) 
+    public void setNum_Orden(Long id) 
     {
         this.num_orden = id;
     }
 
+    public String getEmitida_por() {
+	return emitida_por;
+    }
+    public void setEmitida_por(String emitida_por) {
+	this.emitida_por = emitida_por;
+    }
+    public Date getFecha_emi() {
+	return fecha_emi;
+    }
+    public void setFecha_emi(Date fecha_emi) {
+            this.fecha_emi = fecha_emi;
+    }
     @Override
-    public int hashCode() {
-        return num_orden;
+    public int hashCode() 
+    {
+        int hash = 0;
+        hash += (num_orden != null ? num_orden.hashCode() : 0);
+        return hash;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
+    public boolean equals(Object object) 
+    {
+        // TODO: Warning - this method won't work in the case the id fields are not set
+        if (!(object instanceof OrdenPago)) 
+        {
             return false;
         }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final OrdenPago other = (OrdenPago) obj;
-        if (this.num_orden != other.num_orden) {
+        OrdenPago other = (OrdenPago) object;
+        if ((this.num_orden == null && other.num_orden != null) || (this.num_orden != null && !this.num_orden.equals(other.num_orden))) 
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() 
-    {
-        return "practica3.OrdenPago[ Número de orden =" + num_orden + " ]";
+    public String toString() {
+        return "Clases.OrdenPago[ Número de orden=" + num_orden + " ]";
     }
-    
 }

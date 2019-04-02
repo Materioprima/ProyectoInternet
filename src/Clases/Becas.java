@@ -38,38 +38,43 @@ public class Becas implements Serializable {
     @ManyToOne
     private NinosJovenes nino;
 
-    public boolean getTr(){
-        return tr;
+    public Long getNumero_orden() {
+	return numero_orden;
     }
-    public Date getFecha(){
-        return fecha;
+    public void setNumero_orden(Long numero_orden) {
+	this.numero_orden = numero_orden;
     }
-    public Long getOrden(){
-        return numero_orden;
+    public double getImporte() {
+	return importe;
     }
-    public String getConcepto(){
-        return concepto;
+    public void setImporte(double importe) {
+	this.importe = importe;
     }
-    public double getImporte(){
-        return importe;
+    public String getConcepto() {
+	return concepto;
     }
-
-
-    public void setTr(boolean t){
-        tr = t;
+    public void setConcepto(String concepto) {
+	this.concepto = concepto;
     }
-    public void setFecha(Date f){
-        fecha = f;
+    public NinosJovenes getNino() {
+	return nino;
     }
-    public void setOrden(Long o){
-        numero_orden = o;
+    public void setNino(NinosJovenes nino) {
+	this.nino = nino;
     }
-    public void setConcepto(String c){
-        concepto = c;
+    public boolean isTr() {
+	return tr;
     }
-    public void setImporte(int i){
-        importe = i;
+    public void setTr(boolean tr) {
+	this.tr = tr;
     }
+    public Date getFecha() {
+	return fecha;
+    }
+    public void setFecha(Date fecha) {
+        this.fecha = fecha;
+    }
+        
     @Override
     public int hashCode() {
         int hash = 0;
@@ -92,6 +97,6 @@ public class Becas implements Serializable {
 
     @Override
     public String toString() {
-        return "Clases.Becas[ numero_orden=" + numero_orden + " ]";
+        return "Clases.Becas[ numero de orden=" + numero_orden + " ]";
     }
 }

@@ -38,6 +38,30 @@ public class Agente implements Serializable{
     public void setId(Long codigo) {
         this.codigo = codigo;
     }
+    public List<NinosJovenes> getEncargado() {
+	return encargado;
+    }
+	
+    public void setEncargado(List<NinosJovenes> encargado) {
+	this.encargado = encargado;
+    }
+	
+    public String getDescripcion() {
+        return descripcion;
+    }
+	
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+	
+    public String getNombre() {
+        return nombre;
+    }
+	
+    public void setNombre(String nombre) {
+	this.nombre = nombre;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 0;

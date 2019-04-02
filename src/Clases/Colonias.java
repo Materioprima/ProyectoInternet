@@ -35,6 +35,18 @@ public class Colonias implements Serializable {
     public void setId(Long id_colonia) {
         this.id_colonia = id_colonia;
     }
+    public String getNombre() {
+	return nombre;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+    public List<NinosJovenes> getPertenecen() {
+	return pertenecen;
+    }
+    public void setPertenecen(List<NinosJovenes> pertenecen) {
+	this.pertenecen = pertenecen;
+    }
 
     @Override
     public int hashCode() {
@@ -58,7 +70,7 @@ public class Colonias implements Serializable {
 
     @Override
     public String toString() {
-        return "Clases.Colonias[ id_colonia=" + id_colonia + " ]";
+        return "Clases.Colonias[ id de la colonia=" + id_colonia + " ]";
     }
     
 }
