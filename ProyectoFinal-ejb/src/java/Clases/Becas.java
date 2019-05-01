@@ -74,6 +74,14 @@ public class Becas implements Serializable {
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
+    
+    public String tr(Boolean a) {
+        if(a){
+            return "Si";
+        }else{
+            return "No";
+        }
+    }
         
     @Override
     public int hashCode() {

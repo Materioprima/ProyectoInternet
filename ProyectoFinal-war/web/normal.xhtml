@@ -7,17 +7,19 @@
     <ui:define name="content">
         <c:choose>
             <c:when test="#{controlAutorizacion.usuario.rol == 'NORMAL'}">
-                <h1>Usuario normal</h1>
-                <p>¡¡Bienvenido <h:outputText value="#{controlAutorizacion.usuario.usuario}"/>!!</p>
+                <div id="user">
+                    <h1>Usuario registrado: <h:outputText value="#{controlAutorizacion.usuario.usuario}"/></h1>
+                </div>
                 <div id="tablas">
-                    <ui:insert name="tablasUsuarios">Tablas</ui:insert>
+                    <ui:insert name="tablasUsuarios"></ui:insert>
                 </div>
             </c:when>
             <c:when test="#{controlAutorizacion.usuario.rol == 'ADMINISTRADOR'}">
-                <h1>Usuario administrador</h1>
-                <p>¡¡Bienvenido <h:outputText value="#{controlAutorizacion.usuario.usuario}"/>!!</p>
+                <div id="user">
+                    <h1>Usuario registrado: <h:outputText value="#{controlAutorizacion.usuario.usuario}"/></h1>
+                </div>
                 <div id="tablas">
-                    <ui:insert name="tablasUsuarios">Tablas</ui:insert>
+                    <ui:insert name="tablasUsuarios"></ui:insert>
                 </div>   
             </c:when>
             <c:otherwise>
