@@ -60,13 +60,6 @@ public class Proyectos implements Serializable
     public void setEnUso(Boolean enUso) {
     	this.enUso = enUso;
     }
-    public String getStringUso(){
-        if (enUso){
-            return "Si";
-        } else {
-            return "No";
-        }
-    }
     public Integer getCombustible() {
     	return combustible;
     }

@@ -19,135 +19,134 @@ and open the template in the editor.
     </h:head>
     <h:body>
 
-        <img src ="https://acoes.org/wp-content/uploads/2017/06/LOGom.png" alt="acoes.org" style="width:207px;height:135px;"></img>
+        <h2>MENU SUPERIOR</h2>
 
-            <div class="tabla-datos">
-                <c:if test="#{!empty controlAutorizacion.usuario}">
-                    <h:form id="menu">
-                        <ul>
-                            <li><h:commandLink action="#{controlAutorizacion.home()}" value="Home"/></li>
-                            
-                                <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'ADMINISTRADOR'}">
-                                    <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.saldoGlobal()}" value="Saldo Global"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ordenPago()}" value="Orden de pago"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.colonias()}" value="Colonias"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.academico()}" value="Académico"/></li>
-                                </c:if>
-
-                                <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'COORDINADOR_HONDURAS'}">
-                                    <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.saldoGlobal()}" value="Saldo Global"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ordenPago()}" value="Orden de pago"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.colonias()}" value="Colonias"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.academico()}" value="Académico"/></li>
-                                </c:if>
-
-                                <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'COORDINADOR_ESPAÑA'}">
-                                    <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.saldoGlobal()}" value="Saldo Global"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ordenPago()}" value="Orden de pago"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.colonias()}" value="Colonias"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.academico()}" value="Académico"/></li>
-                                </c:if>
-
-                                <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'NORMAL'}">
-                                    <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
-                                </c:if>
-
-                                <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'GESTOR_FINANCIERO_GLOBAL'}">
-                                    <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ordenPago()}" value="Orden de pago"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
-                                </c:if>
-
-                                <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'COORDINADOR_PROYECTO'}">
-                                    <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.colonias()}" value="Colonias"/></li>
-                                </c:if>
-
-                                <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'COORDINADOR_SEDE_LOCAL_ESPAÑA'}">
-                                    <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.saldoGlobal()}" value="Saldo Global"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
-                                </c:if>
-
-                                <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'AGENTE'}">
-                                    <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.colonias()}" value="Colonias"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.academico()}" value="Académico"/></li>
-                                </c:if>
-
-                                <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'COORDINADOR_LOCAL_HONDURAS'}">
-                                    <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.saldoGlobal()}" value="Saldo Global"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
-                                </c:if>
-
-                                <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'GESTOR_FINANCIERO_LOCAL'}">
-                                    <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ordenPago()}" value="Orden de pago"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
-                                    <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
-                                </c:if>
-
-                                <li><h:commandLink action="#{controlAutorizacion.logout()}" value="Salir"/></li>
-                           
-                        </ul>
-                    </h:form>
-                </c:if>
+            <div>
+                <h:form id="menu">
+                    <ul>
+                        <li><h:commandLink action="#{controlAutorizacion.home()}" value="Home"/></li>
+                        <c:if test="#{!empty controlAutorizacion.usuario}">
+                            <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'ADMINISTRADOR'}">
+                                <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.saldoGlobal()}" value="Saldo Global"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ordenPago()}" value="Orden de pago"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.colonias()}" value="Colonias"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.academico()}" value="Académico"/></li>
+                            </c:if>
+                        
+                            <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'COORDINADOR_HONDURAS'}">
+                                <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.saldoGlobal()}" value="Saldo Global"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ordenPago()}" value="Orden de pago"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.colonias()}" value="Colonias"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.academico()}" value="Académico"/></li>
+                            </c:if>
+                        
+                            <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'COORDINADOR_ESPAÑA'}">
+                                <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.saldoGlobal()}" value="Saldo Global"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ordenPago()}" value="Orden de pago"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.colonias()}" value="Colonias"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.academico()}" value="Académico"/></li>
+                            </c:if>
+                        
+                            <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'NORMAL'}">
+                                <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                            </c:if>
+                        
+                            <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'GESTOR_FINANCIERO_GLOBAL'}">
+                                <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ordenPago()}" value="Orden de pago"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
+                            </c:if>
+                        
+                            <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'COORDINADOR_PROYECTO'}">
+                                <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.colonias()}" value="Colonias"/></li>
+                            </c:if>
+                        
+                            <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'COORDINADOR_SEDE_LOCAL_ESPAÑA'}">
+                                <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.saldoGlobal()}" value="Saldo Global"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
+                            </c:if>
+                        
+                            <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'AGENTE'}">
+                                <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.colonias()}" value="Colonias"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.academico()}" value="Académico"/></li>
+                            </c:if>
+                        
+                            <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'COORDINADOR_LOCAL_HONDURAS'}">
+                                <li><h:commandLink action="#{controlAutorizacion.socios()}" value="Socios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.saldoGlobal()}" value="Saldo Global"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.personal()}" value="Personal"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.agente()}" value="Agente"/></li>
+                            </c:if>
+                        
+                            <c:if test="#{controlAutorizacion.getUsuario().getRol() == 'GESTOR_FINANCIERO_LOCAL'}">
+                                <li><h:commandLink action="#{controlAutorizacion.proyectos()}" value="Proyectos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ordenPago()}" value="Orden de pago"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.ingresos()}" value="Ingresos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.gastos()}" value="Gastos"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.beneficiarios()}" value="Beneficiarios"/></li>
+                                <li><h:commandLink action="#{controlAutorizacion.becas()}" value="Becas"/></li>
+                            </c:if>
+                        
+                            <li><h:commandLink action="#{controlAutorizacion.logout()}" value="Salir"/></li>
+                        </c:if>
+                    </ul>
+                </h:form>
+                
                 <div id="content" class="center_content">
                     <ui:insert name="content">Content</ui:insert>
                 </div>

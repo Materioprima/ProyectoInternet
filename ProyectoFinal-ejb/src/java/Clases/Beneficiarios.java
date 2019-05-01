@@ -70,14 +70,6 @@ public class Beneficiarios implements Serializable
         this.ingresos = ingresos;
     }
     
-    public String Habilitado(Boolean a) {
-        if(a){
-            return "Si";
-        }else{
-            return "No";
-        }
-    }
-    
     public int hashCode() {
         int hash = 0;
         hash += (Codigo != null ? Codigo.hashCode() : 0);
