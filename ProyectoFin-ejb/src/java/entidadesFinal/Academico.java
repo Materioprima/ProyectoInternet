@@ -36,6 +36,8 @@ public class Academico implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique=true)
+    private Long idNuestro;
     @Temporal(TemporalType.DATE)
     private Date fechaPeriodo;
     @Column(length=30,nullable = false)
@@ -47,6 +49,14 @@ public class Academico implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+    
+    public Long getIdNuestro() {
+        return idNuestro;
+    }
+
+    public void setIdNuestro(Long idNuestro) {
+        this.idNuestro = idNuestro;
     }
     
     public Date getFechaPeriodo() {
@@ -87,7 +97,7 @@ public class Academico implements Serializable {
 
     @Override
     public String toString() {
-        return "Clases.Academico[ id=" + id + " periodo="+fechaPeriodo+" nota="+nota+" ]";
+        return "Clases.Academico[ id=" + id +" idNuestro="+idNuestro+ " periodo="+fechaPeriodo+" nota="+nota+" ]";
     }
     
 }

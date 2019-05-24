@@ -23,6 +23,7 @@
                         <h:message for="apellidos"/>
                         <h:outputText value="Rol:"/>
                         <h:selectOneMenu id="rol" value = "#{registro.usuario.rol}">
+                            <f:selectItem itemValue = "ADMINISTRADOR" itemLabel = "ADMINISTRADOR" />
                             <f:selectItem itemValue = "ACADEMICO" itemLabel = "ACADEMICO" />
                             <f:selectItem itemValue = "NORMAL" itemLabel = "NORMAL" />
                             <f:selectItem itemValue = "COORDINADOR_HONDURAS" itemLabel = "COORDINADOR_HONDURAS" />

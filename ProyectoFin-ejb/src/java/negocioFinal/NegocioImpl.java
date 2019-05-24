@@ -168,6 +168,7 @@ public class NegocioImpl implements Negocio {
         // TODO
         //compruebaLogin(c.getUsuario());
         Academico acade = em.find(Academico.class, a.getId());
+        acade.setIdNuestro(a.getIdNuestro());
         acade.setFechaPeriodo(a.getFechaPeriodo());
         acade.setNota(a.getNota());
         em.merge(acade);
@@ -180,6 +181,7 @@ public class NegocioImpl implements Negocio {
         //compruebaLogin(c.getUsuario());
         Academico acad=new Academico();
         acad.setId(a.getId());
+        acad.setIdNuestro(a.getIdNuestro());
         acad.setFechaPeriodo(a.getFechaPeriodo());
         acad.setNota(a.getNota());
         System.out.println("La nota de lo que se inserta es "+a.getNota());
@@ -213,8 +215,9 @@ public class NegocioImpl implements Negocio {
             while(rs.next()){
                 Academico e=new Academico();
                 e.setId(rs.getLong(1));
+                e.setIdNuestro(rs.getLong(3));
                 e.setFechaPeriodo(rs.getDate(2));
-                e.setNota(rs.getDouble(3));
+                e.setNota(rs.getDouble(4));
                 resultado.add(e);
             }
             return resultado;
