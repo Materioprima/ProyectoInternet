@@ -13,6 +13,7 @@ package negocioFinal;
 
 /*import es.uma.informatica.sii.agendaee.entidades.Contacto;*/
 import entidadesFinal.Academico;
+import entidadesFinal.OrdenPago;
 import entidadesFinal.Usuario;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -163,6 +164,8 @@ public class NegocioImpl implements Negocio {
      * 
      */
     
+    //INICIO ACADEMICO
+    
     @Override
     public void modificarAcademico(Academico a)  throws FinalException{
         // TODO
@@ -230,4 +233,80 @@ public class NegocioImpl implements Negocio {
         return q.getResultList();*/ 
         return null;
     }
+    
+    
+    //FIN ACADEMICO
+    
+    //INICIO ORDENPAGO
+    
+    
+    @Override
+    public void modificarOrdenPago(OrdenPago a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        OrdenPago ordenp = em.find(OrdenPago.class, a.getNum_Orden());
+        ordenp.setNum_OrdenNuestro(a.getNum_OrdenNuestro());
+        ordenp.setEmitida_por(a.getEmitida_por());
+        ordenp.setFecha_emi(a.getFecha_emi());
+        em.merge(ordenp);
+        
+    }
+    
+    @Override
+    public void insertarOrdenPago(OrdenPago a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        OrdenPago orden=new OrdenPago();
+        orden.setNum_Orden(a.getNum_Orden());
+        orden.setNum_OrdenNuestro(a.getNum_OrdenNuestro());
+        orden.setEmitida_por(a.getEmitida_por());
+        orden.setFecha_emi(a.getFecha_emi());
+        System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
+        em.persist(orden);
+    }
+    
+    
+    @Override
+    public void eliminarOrdenPago(OrdenPago a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        OrdenPago ord = em.find(OrdenPago.class, a.getNum_Orden());
+        if(ord!=null){
+            em.remove(ord);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<OrdenPago> mostrarOrdenPago(){
+        
+        try {
+            // TODO
+            List<OrdenPago> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM OrdenPago";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                OrdenPago e=new OrdenPago();
+                e.setNum_Orden(rs.getLong(1));
+                e.setNum_OrdenNuestro(rs.getLong(4));
+                e.setEmitida_por(rs.getString(2));
+                e.setFecha_emi(rs.getDate(3));
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+//FIN ORDENPAGO
+    
 }

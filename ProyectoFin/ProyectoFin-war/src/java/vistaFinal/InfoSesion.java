@@ -18,6 +18,7 @@ package vistaFinal;
 /*import es.uma.informatica.sii.agendaee.entidades.Contacto;*/
 import entidadesFinal.Academico;
 import entidadesFinal.Usuario;
+import entidadesFinal.OrdenPago;
 import negocioFinal.FinalException;
 import negocioFinal.Negocio;
 import java.io.Serializable;
@@ -58,6 +59,15 @@ public class InfoSesion implements Serializable {
         if (usuario != null)
         {
             return negocio.mostrarAcademico();
+        }
+        return null;
+    }
+    
+    public synchronized List<OrdenPago> getOrdenPagos()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarOrdenPago();
         }
         return null;
     }

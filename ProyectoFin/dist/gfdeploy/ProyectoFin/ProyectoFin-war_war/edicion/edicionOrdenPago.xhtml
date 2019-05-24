@@ -1,0 +1,38 @@
+<ui:composition template="/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="tablasUsuarios">
+        <c:choose> 
+            <c:when test="#{ordenpagos.autorizadoParaEdicion}">
+                <h1 class="azul">#{ordenpagos.accion} OrdenPago</h1>
+                <h:form id="customers">
+                    <h:panelGrid columns="3">
+                        <h:outputText value="Número de Orden"/>
+                        <h:inputText id ="numOrden" value="#{ordenpagos.ordenPago.num_OrdenNuestro}"/>
+                        <h:message for="numOrden"/>
+                        
+                        <h:outputText value="Emitida Por"/>
+                        <h:inputText id ="emision" value="#{ordenpagos.ordenPago.emitida_por}"/>
+                        <h:message for="emision"/>
+                        
+                        <h:outputText value="Fecha Emision"/>
+                        <h:inputText id ="fecha_emi" value="#{ordenpagos.ordenPago.fecha_emi}"><f:convertDateTime/></h:inputText>
+                        <h:message for="fecha_emi"/>
+
+                        <h:commandButton value="#{ordenpagos.accion}" action="#{ordenpagos.ejecutarAccion()}"/>
+                        <h:commandButton value="Cancelar" action="/tablas/academico.xhtml"/>
+
+                        <h:inputHidden value="#{ordenpagos.modo}"/>
+                        <h:inputHidden value="#{ordenpagos.ordenPago.num_Orden}"/>
+                    </h:panelGrid>
+                </h:form>
+            </c:when>
+            <c:otherwise>
+                <p>No está autorizado para ver esta página.</p>
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
+</ui:composition>

@@ -7,6 +7,7 @@ package negocioFinal;
 
 /* import es.uma.informatica.sii.agendaee.entidades.Contacto; */
 import entidadesFinal.Academico;
+import entidadesFinal.OrdenPago;
 import entidadesFinal.Usuario;
 import java.util.List;
 import javax.ejb.Local;
@@ -25,6 +26,10 @@ public interface Negocio {
     public void eliminarAcademico(Academico a)throws FinalException;
     public void insertarAcademico(Academico a)throws FinalException;
     public void modificarAcademico(Academico a)throws FinalException;
+    public List<OrdenPago> mostrarOrdenPago();
+    public void eliminarOrdenPago(OrdenPago a)throws FinalException;
+    public void insertarOrdenPago(OrdenPago a)throws FinalException;
+    public void modificarOrdenPago(OrdenPago a)throws FinalException;
     /*public void modificar(Contacto c) throws AgendaException;
     public void insertar(Contacto c)throws AgendaException;
     public void eliminarContacto(Contacto c)throws AgendaException;*/
