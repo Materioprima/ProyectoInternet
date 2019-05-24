@@ -1,0 +1,38 @@
+<ui:composition template="/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="tablasUsuarios">
+        <c:choose> 
+            <c:when test="#{academicos.autorizadoParaEdicion}">
+                <h1 class="azul">#{academicos.accion} academico</h1>
+                <h:form id="customers">
+                    <h:panelGrid columns="3">
+                        <h:outputText value="ID"/>
+                        <h:inputText id ="idNuestro" value="#{academicos.academico.idNuestro}"/>
+                        <h:message for="idNuestro"/>
+                        
+                        <h:outputText value="Periodo"/>
+                        <h:inputText id ="periodo" value="#{academicos.academico.fechaPeriodo}"><f:convertDateTime/></h:inputText>
+                        <h:message for="periodo"/>
+
+                        <h:outputText value="Nota"/>
+                        <h:inputText id ="nota" value="#{academicos.academico.nota}"/>
+                        <h:message for="nota"/>
+
+                        <h:commandButton value="#{academicos.accion}" action="#{academicos.ejecutarAccion()}"/>
+                        <h:commandButton value="Cancelar" action="/tablas/academico.xhtml"/>
+
+                        <h:inputHidden value="#{academicos.modo}"/>
+                        <h:inputHidden value="#{academicos.academico.id}"/>
+                    </h:panelGrid>
+                </h:form>
+            </c:when>
+            <c:otherwise>
+                <p>No está autorizado para ver esta página.</p>
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
+</ui:composition>
