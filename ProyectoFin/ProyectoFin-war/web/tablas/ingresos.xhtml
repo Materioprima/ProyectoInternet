@@ -5,7 +5,7 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="tablasUsuarios">
-        <h:dataTable id="customers" value="#{infoSesion.ingresos}" var="a">
+        <h:dataTable id="customers" value="#{infoSesion.ingreso}" var="a">
             <h:column>
                 <f:facet name="header">Codigo de transaccion</f:facet>
                 <h:outputText value="#{a.codigo_transaccionNuestro}"/>
