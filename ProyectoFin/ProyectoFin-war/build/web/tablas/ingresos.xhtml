@@ -1,95 +1,90 @@
-<ui:composition template="/index.xhtml" 
+<ui:composition template="/index.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="tablasUsuarios">
-        <table id="customers">
-            <tr>
-                <th>Id</th>
-                <th>Fecha</th>
-                <th>Procedencia</th>
-                <th>Ingreso Euros</th>
-                <th>Ingreso Dólares</th>
-                <th>Ingreso Lempiras</th>
-                <th>Egreso Euros</th>
-                <th>Egreso Dólares</th>
-                <th>Valor Divisas Euros</th>
-                <th>Valor Divisas Dólares</th>
-                <th>Valor Divisas Lempiras</th>
-                <th>Descripcion</th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </table>      
-        
+        <h:dataTable id="customers" value="#{infoSesion.ingresos}" var="a">
+            <h:column>
+                <f:facet name="header">Codigo de transaccion</f:facet>
+                <h:outputText value="#{a.codigo_transaccionNuestro}"/>
+              </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{a.fecha}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Procedencia</f:facet>
+                <h:outputText value="#{a.procedencia}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Ingresos Euros</f:facet>
+                <h:outputText value="#{a.Ingreso_Euros}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Ingresos Lempiras</f:facet>
+                <h:outputText value="#{a.Ingreso_Lempiras}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Ingresos Dolares</f:facet>
+                <h:outputText value="#{a.Ingreso_Dolares}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Egresos Euros</f:facet>
+                <h:outputText value="#{a.Egreso_Euros}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Egresos Lempiras</f:facet>
+                <h:outputText value="#{a.Egreso_Lempiras}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Egresos Dolares</f:facet>
+                <h:outputText value="#{a.Egreso_Dolares}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Valor Divisas</f:facet>
+                <h:outputText value="#{a.Valor_Divisas_Euros}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Descripcion</f:facet>
+                <h:outputText value="#{a.descripcion}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Ingresos</f:facet>
+                <h:outputText value="#{a.ingresos}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Beneficiario</f:facet>
+                <h:outputText value="#{a.beneficiario}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Orden Pago</f:facet>
+                <h:outputText value="#{a.ordenpago}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Opciones</f:facet>
+                <h:form>
+                    <h:commandButton value="Modificar" action="#{ingresos.modificar(a)}"/>
+                    <h:commandButton value="Eliminar" action="#{ingresos.eliminar(a)}"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:form>
+            <h:commandButton value="Insertar" action="#{ingresos.insertarIngresos()}"/>
+        </h:form>
     </ui:define>
 </ui:composition>

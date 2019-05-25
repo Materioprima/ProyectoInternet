@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -28,9 +29,11 @@ public class Personal implements Serializable
     @Column(unique=true)
     private String dni;
     private String nombre,apellido,cargo;
+    private Long salario;
     @ManyToMany (mappedBy = "personal")
     private List<NinosJovenes> encargados;
-    
+    @OneToMany(mappedBy ="personal")
+    private List<Informes>informes;
     public String getDni() {
 	return dni;
     }
@@ -41,7 +44,7 @@ public class Personal implements Serializable
         return id;
     }
 
-    public void setIdNuestro(Long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     public String getNombre() {
@@ -61,6 +64,19 @@ public class Personal implements Serializable
     }
     public void setCargo(String cargo) {
 	this.cargo = cargo;
+    }
+    
+    public Long getSalario() {
+    	return salario;
+    }
+    public void setSalario(Long saldo) {
+	this.salario = saldo;
+    }
+    public List<Informes> getInformes() {
+	return informes;
+    }
+    public void setInformes(List<Informes> Informes) {
+	this.informes = Informes;
     }
     public List<NinosJovenes> getEncargados() {
 	return encargados;

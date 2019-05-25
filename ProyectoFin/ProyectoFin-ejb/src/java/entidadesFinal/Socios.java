@@ -39,6 +39,8 @@ public class Socios implements Serializable
     private String observaciones;
     @OneToMany (mappedBy = "idSocio")
     private List<NinosJovenes> apadrinados;
+    @OneToMany (mappedBy = "socio")
+    private List<Ingreso> ingreso;
     
     public Long getNSocio() {
 	return NSocio;
@@ -171,6 +173,12 @@ public class Socios implements Serializable
     }
     public void setApadrinados(List<NinosJovenes> apadrinados) {
     	this.apadrinados = apadrinados;
+    }
+    public List<Ingreso> getIngreso() {
+    	return ingreso;
+    }
+    public void setIngreso(List<Ingreso> ingreso) {
+    	this.ingreso = ingreso;
     }
     @Override
     public int hashCode() 

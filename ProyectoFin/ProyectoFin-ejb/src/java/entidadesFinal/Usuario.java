@@ -10,6 +10,7 @@ package entidadesFinal;
  * and open the template in the editor.
  */
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import javax.persistence.Entity;
@@ -19,6 +20,8 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -28,7 +31,8 @@ import javax.persistence.OrderBy;
 public class Usuario implements Serializable {
 
     
-    public enum Rol {
+    public enum Rol 
+    {
       ADMINISTRADOR,            // Acceso global.
       NORMAL,                   //Acceso información básica. 
                                 //Usuario estándar.

@@ -41,6 +41,8 @@ public class Ingreso implements Serializable {
     private Proyectos ingresos;
     @ManyToOne
     private Beneficiarios beneficiario;
+    @ManyToOne
+    private Socios socio;
     @OneToOne
     private OrdenPago ordenpago;
 
@@ -63,6 +65,12 @@ public class Ingreso implements Serializable {
     }
     public void setFecha(Date fecha) {
     	this.fecha = fecha;
+    }
+    public Socios getSocio() {
+	return socio;
+    }
+    public void setSocios(Socios socio) {
+    	this.socio = socio;
     }
     public String getProcedencia() {
 	return procedencia;

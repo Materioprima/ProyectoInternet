@@ -17,8 +17,19 @@ package vistaFinal;
 
 /*import es.uma.informatica.sii.agendaee.entidades.Contacto;*/
 import entidadesFinal.Academico;
+import entidadesFinal.Agente;
+import entidadesFinal.Becas;
+import entidadesFinal.Beneficiarios;
+import entidadesFinal.Colonias;
+import entidadesFinal.Gastos;
+import entidadesFinal.Ingreso;
+import entidadesFinal.NinosJovenes;
 import entidadesFinal.Usuario;
 import entidadesFinal.OrdenPago;
+import entidadesFinal.Personal;
+import entidadesFinal.Proyectos;
+import entidadesFinal.SaldoGlobal;
+import entidadesFinal.Socios;
 import negocioFinal.FinalException;
 import negocioFinal.Negocio;
 import java.io.Serializable;
@@ -68,6 +79,105 @@ public class InfoSesion implements Serializable {
         if (usuario != null)
         {
             return negocio.mostrarOrdenPago();
+        }
+        return null;
+    }
+    
+    public synchronized List<Agente> getAgente()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarAgente();
+        }
+        return null;
+    }
+    
+    public synchronized List<Becas> getBecas()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarBecas();
+        }
+        return null;
+    }
+    
+    public synchronized List<Beneficiarios> getBeneficiarios()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarBeneficiarios();
+        }
+        return null;
+    }
+    
+    public synchronized List<Colonias> getColonias()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarColonias();
+        }
+        return null;
+    }
+    
+    public synchronized List<Gastos> getGastos()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarGastos();
+        }
+        return null;
+    }
+    
+    public synchronized List<Proyectos> getProyectos()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarProyectos();
+        }
+        return null;
+    }
+    
+    public synchronized List<SaldoGlobal> getSaldoGlobal()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarSaldoGlobal();
+        }
+        return null;
+    }
+    
+    public synchronized List<Socios> getSocios()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarSocios();
+        }
+        return null;
+    }
+    
+    public synchronized List<Ingreso> getIngreso()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarIngreso();
+        }
+        return null;
+    }
+    
+    public synchronized List<NinosJovenes> getNinosJovenes()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarNinosJovenes();
+        }
+        return null;
+    }
+    
+    public synchronized List<Personal> getPersonal()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarPersonal();
         }
         return null;
     }

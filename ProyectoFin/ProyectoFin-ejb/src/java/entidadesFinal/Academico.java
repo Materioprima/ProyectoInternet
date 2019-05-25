@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -42,6 +43,8 @@ public class Academico implements Serializable {
     private Date fechaPeriodo;
     @Column(length=30,nullable = false)
     private double nota;
+    @ManyToOne
+    private NinosJovenes ninoN;
 
     public Long getId() {
         return id;
@@ -65,6 +68,14 @@ public class Academico implements Serializable {
     
     public void setFechaPeriodo(Date fechaPeriodo) {
 	this.fechaPeriodo = fechaPeriodo;
+    } 
+    
+    public NinosJovenes getNino() {
+	return ninoN;
+    }
+    
+    public void setNinosJovenes(NinosJovenes NinosJovenes) {
+	this.ninoN = NinosJovenes;
     } 
     
     public double getNota() {

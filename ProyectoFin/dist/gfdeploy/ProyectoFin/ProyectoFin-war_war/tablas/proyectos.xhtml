@@ -1,47 +1,55 @@
-<ui:composition template="/index.xhtml" 
+<ui:composition template="/index.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="tablasUsuarios">
-        <table id="customers">
-            <tr>
-                <th>Codigo</th>
-                <th>Nombre</th>
-                <th>En Uso</th>
-                <th>Combustible</th>
-                <th>Mantenimiento</th>
-                <th>Contenedor</th>
-                <th>Descripcion</th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>               
-        </table>     
-        
+        <h:dataTable id="customers" value="#{infoSesion.proyectos}" var="a">
+            <h:column>
+                <f:facet name="header">Codigo de proyectos</f:facet>
+                <h:outputText value="#{a.Codigo}"/>
+              </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{a.Nombre}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">En uso</f:facet>
+                <h:outputText value="#{a.EnUso}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Combustible</f:facet>
+                <h:outputText value="#{a.Combustible}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Mantenimiento</f:facet>
+                <h:outputText value="#{a.Mantenimiento}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Contenedor</f:facet>
+                <h:outputText value="#{a.Contenedor}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Descripcion</f:facet>
+                <h:outputText value="#{a.Descripcion}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Opciones</f:facet>
+                <h:form>
+                    <h:commandButton value="Modificar" action="#{proyectos.modificar(a)}"/>
+                    <h:commandButton value="Eliminar" action="#{proyectos.eliminar(a)}"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:form>
+            <h:commandButton value="Insertar" action="#{proyectos.insertarProyectos()}"/>
+        </h:form>
     </ui:define>
 </ui:composition>

@@ -40,8 +40,8 @@ public class NinosJovenes implements Serializable
     private Socios idSocio;
     @ManyToOne
     private Proyectos proyecto;
-    @OneToOne
-    private Academico notas;
+    @OneToMany (mappedBy = "ninoN")
+    private List<Academico> notas;
     @ManyToOne
     private Agente agente;
     @ManyToMany
@@ -157,10 +157,10 @@ public class NinosJovenes implements Serializable
     public void setProyecto(Proyectos proyecto) {
 	this.proyecto = proyecto;
     }
-    public Academico getNotas() {
+    public List<Academico> getNotas() {
     	return notas;
     }
-    public void setNotas(Academico notas) {
+    public void setNotas(List<Academico> notas) {
     	this.notas = notas;
     }
     public Agente getAgente() {

@@ -28,6 +28,7 @@ public class SaldoGlobal implements Serializable
     private Long idNuestro;
     @Temporal(TemporalType.DATE)
     private Date fecha;
+    private String sede;
     @Column(length = 500)
     private String observaciones;
     @OneToMany(mappedBy ="saldo")
@@ -55,11 +56,23 @@ public class SaldoGlobal implements Serializable
     public void setFecha(Date fecha) {
 	this.fecha = fecha;
     }
+    public String getSede() {
+	return sede;
+    }
+    public void setSede(String Sede) {
+	this.sede = Sede;
+    }
     public String getObservaciones() {
 	return observaciones;
     }
     public void setObservaciones(String observaciones) {
 	this.observaciones = observaciones;
+    }
+    public List<Proyectos> getProyecto() {
+	return proyectos;
+    }
+    public void setSede(List<Proyectos> proyecto) {
+	this.proyectos = proyecto;
     }
         
     @Override

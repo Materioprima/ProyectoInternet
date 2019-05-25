@@ -6,12 +6,15 @@
 package entidadesFinal;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -28,8 +31,8 @@ public class Gastos implements Serializable {
     private Long idNuestro;
     @Column(length = 500)
     private double Carburante, Mantenimiento, Contenedor, Voluntarios;
-    @Column(length=12)
-    private int Mes;
+    @Temporal(TemporalType.DATE)
+    private Date fecha;
     @ManyToOne
     private Proyectos gastos;
     
@@ -71,11 +74,11 @@ public class Gastos implements Serializable {
     public void setVoluntarios(double voluntarios) {
 	Voluntarios = voluntarios;
     }
-    public int getMes() {
-	return Mes;
+    public Date getFecha() {
+	return fecha;
     }
-    public void setMes(int mes) {
-    	Mes = mes;
+    public void setFecha(Date Fecha) {
+    	fecha = Fecha;
     }
     public Proyectos getGastos() {
     	return gastos;

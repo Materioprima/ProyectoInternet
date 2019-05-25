@@ -1,43 +1,55 @@
-<ui:composition template="/index.xhtml" 
+<ui:composition template="/index.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="tablasUsuarios">
-        <table id="customers">
-            <tr>
-                <th>Id</th>
-                <th>Mes</th>
-                <th>Carburante</th>
-                <th>Mantenimiento</th>
-                <th>Contenedor</th>
-                <th>Voluntarios</th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>              
-        </table>    
-        
+        <h:dataTable id="customers" value="#{infoSesion.gastos}" var="a">
+            <h:column>
+                <f:facet name="header">ID</f:facet>
+                <h:outputText value="#{a.idNuestro}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Carburante</f:facet>
+                <h:outputText value="#{a.carburante}"/>
+              </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Mantenimiento</f:facet>
+                <h:outputText value="#{a.mantenimiento}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Contenedor</f:facet>
+                <h:outputText value="#{a.contenedor}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Voluntarios</f:facet>
+                <h:outputText value="#{a.voluntarios}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{a.fecha}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Gastos</f:facet>
+                <h:outputText value="#{a.gastos}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Opciones</f:facet>
+                <h:form>
+                    <h:commandButton value="Modificar" action="#{gastos.modificar(a)}"/>
+                    <h:commandButton value="Eliminar" action="#{gastos.eliminar(a)}"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:form>
+            <h:commandButton value="Insertar" action="#{gastos.insertarGastos()}"/>
+        </h:form>
     </ui:define>
 </ui:composition>

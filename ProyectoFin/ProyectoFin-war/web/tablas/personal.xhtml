@@ -1,35 +1,46 @@
-<ui:composition template="/index.xhtml" 
+<ui:composition template="/index.xhtml"
                 xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="tablasUsuarios">
-        <table id="customers">
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Dni</th>
-                <th>Cargo</th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-            <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>               
-        </table>     
-        
+        <h:dataTable id="customers" value="#{infoSesion.personal}" var="a">
+            <h:column>
+                <f:facet name="header">DNI</f:facet>
+                <h:outputText value="#{a.dni}"/>
+              </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                <h:outputText value="#{a.nombre}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Apellidos</f:facet>
+                <h:outputText value="#{a.apellido}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Cargo</f:facet>
+                <h:outputText value="#{a.cargo}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Encargados</f:facet>
+                <h:outputText value="#{a.encargados}"/>
+                </h:column>
+            <h:column>
+            <h:column>
+                <f:facet name="header">Opciones</f:facet>
+                <h:form>
+                    <h:commandButton value="Modificar" action="#{personal.modificar(a)}"/>
+                    <h:commandButton value="Eliminar" action="#{personal.eliminar(a)}"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:form>
+            <h:commandButton value="Insertar" action="#{personal.insertarPersonal()}"/>
+        </h:form>
     </ui:define>
 </ui:composition>
