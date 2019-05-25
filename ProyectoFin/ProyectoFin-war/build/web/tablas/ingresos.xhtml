@@ -5,72 +5,59 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="tablasUsuarios">
-        <h:dataTable id="customers" value="#{infoSesion.ingresos}" var="a">
+        <h:dataTable id="customers" value="#{infoSesion.ingreso}" var="a">
             <h:column>
                 <f:facet name="header">Codigo de transaccion</f:facet>
                 <h:outputText value="#{a.codigo_transaccionNuestro}"/>
               </h:column>
             <h:column>
-            <h:column>
                 <f:facet name="header">Fecha</f:facet>
                 <h:outputText value="#{a.fecha}"/>
                 </h:column>
-            <h:column>
             <h:column>
                 <f:facet name="header">Procedencia</f:facet>
                 <h:outputText value="#{a.procedencia}"/>
                 </h:column>
             <h:column>
-            <h:column>
                 <f:facet name="header">Ingresos Euros</f:facet>
                 <h:outputText value="#{a.Ingreso_Euros}"/>
                 </h:column>
-            <h:column>
             <h:column>
                 <f:facet name="header">Ingresos Lempiras</f:facet>
                 <h:outputText value="#{a.Ingreso_Lempiras}"/>
                 </h:column>
             <h:column>
-            <h:column>
                 <f:facet name="header">Ingresos Dolares</f:facet>
                 <h:outputText value="#{a.Ingreso_Dolares}"/>
                 </h:column>
-            <h:column>
             <h:column>
                 <f:facet name="header">Egresos Euros</f:facet>
                 <h:outputText value="#{a.Egreso_Euros}"/>
                 </h:column>
             <h:column>
-            <h:column>
                 <f:facet name="header">Egresos Lempiras</f:facet>
                 <h:outputText value="#{a.Egreso_Lempiras}"/>
                 </h:column>
-            <h:column>
             <h:column>
                 <f:facet name="header">Egresos Dolares</f:facet>
                 <h:outputText value="#{a.Egreso_Dolares}"/>
                 </h:column>
             <h:column>
-            <h:column>
                 <f:facet name="header">Valor Divisas</f:facet>
                 <h:outputText value="#{a.Valor_Divisas_Euros}"/>
                 </h:column>
-            <h:column>
             <h:column>
                 <f:facet name="header">Descripcion</f:facet>
                 <h:outputText value="#{a.descripcion}"/>
                 </h:column>
             <h:column>
-            <h:column>
                 <f:facet name="header">Ingresos</f:facet>
                 <h:outputText value="#{a.ingresos}"/>
                 </h:column>
             <h:column>
-            <h:column>
                 <f:facet name="header">Beneficiario</f:facet>
                 <h:outputText value="#{a.beneficiario}"/>
                 </h:column>
-            <h:column>
             <h:column>
                 <f:facet name="header">Orden Pago</f:facet>
                 <h:outputText value="#{a.ordenpago}"/>
