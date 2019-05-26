@@ -61,7 +61,7 @@ public class vistaPersonal {
     public String modificar(Personal a) {
         pers = a;
         setModo(Modo.MODIFICAR);
-        return "/edicion/edicionAcademico.xhtml";
+        return "/edicion/edicionPersonal.xhtml";
     }
     
     public String eliminar(Personal a) throws FinalException {
@@ -85,9 +85,9 @@ public class vistaPersonal {
         return null;
     }
 
-    public String insertarAcademico() {
+    public String insertarPersonal() {
         setModo(Modo.INSERTAR);
-        return "/edicion/edicionAcademico.xhtml";
+        return "/edicion/edicionPersonal.xhtml";
     }
     
     public String ejecutarAccion() {
@@ -105,7 +105,7 @@ public class vistaPersonal {
             }
             sesion.refrescarUsuario();
             System.out.println("Se hizo la accion "+this.getModo());
-            return "/tablas/academico.xhtml";
+            return "/tablas/personal.xhtml";
         } catch (FinalException e) {
             return "/index.xhtml";
         }

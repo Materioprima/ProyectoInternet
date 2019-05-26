@@ -1269,10 +1269,12 @@ public class NegocioImpl implements Negocio {
         // TODO
         //compruebaLogin(c.getUsuario());
         Personal person = em.find(Personal.class, a.getId());
+        person.setDni(a.getDni());
         person.setApellido(a.getApellido());
         person.setCargo(a.getCargo());
         person.setEncargados(a.getEncargados());
         person.setNombre(a.getNombre());
+        person.setSalario(a.getSalario());
         em.merge(person);
         
     }
@@ -1283,10 +1285,12 @@ public class NegocioImpl implements Negocio {
         //compruebaLogin(c.getUsuario());
         Personal person=new Personal();
         person.setId(a.getId());
+        person.setDni(a.getDni());
         person.setApellido(a.getApellido());
         person.setCargo(a.getCargo());
-        person.setEncargados(a.getEncargados());
+        //person.setEncargados(a.getEncargados());
         person.setNombre(a.getNombre());
+        person.setSalario(a.getSalario());
         System.out.println("Objeto creado: "+person+" objeto insertado: "+a);
         em.persist(person);
     }
@@ -1312,10 +1316,42 @@ public class NegocioImpl implements Negocio {
             List<Personal> resultado=new ArrayList<>();
             Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
             Statement st=conn.createStatement();
-            String consulta="SELECT * FROM OrdenPago";
+            String consulta="SELECT * FROM PERSONAL";
             ResultSet rs=st.executeQuery(consulta);
             while(rs.next()){
                 Personal e = new Personal();
+                e.setId(rs.getLong(1));
+                e.setApellido(rs.getString(2));
+                e.setCargo(rs.getString(3));
+                e.setDni(rs.getString(4));
+                e.setNombre(rs.getString(5));
+                e.setSalario(rs.getLong(6));
+                String query="SELECT ENCARGADOS_CODIGO FROM NINOSJOVENES_PERSONAL WHERE PERSONAL_ID="+e.getId();
+                List<String>Consulta=ConsultarID(query);
+                List<NinosJovenes> ninos=new ArrayList();
+                if(Consulta.isEmpty()){
+                    ninos.add(new NinosJovenes());
+                }else{
+                    for(String b:Consulta){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                        ninos.add(s);
+                    }
+                }
+                String query2="SELECT ID FROM INFORMES WHERE PERSONAL_ID="+e.getId();
+                List<String>Consulta2=ConsultarID(query2);
+                List<Informes> informes=new ArrayList();
+                if(Consulta2.isEmpty()){
+                    informes.add(new Informes());
+                }else{
+                    for(String b:Consulta2){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        Informes s=em.find(Informes.class, Long.parseLong(b));
+                        informes.add(s);
+                    }
+                }
+                e.setEncargados(ninos);
+                e.setInformes(informes);
                 resultado.add(e);
             }
             return resultado;

@@ -65,4 +65,9 @@ public class Informes implements Serializable
     public void setPersonal(Personal personal) {
         this.personal = personal;
     }
+    
+    @Override
+    public String toString() {
+        return "Informe "+id;
+    }
 }
