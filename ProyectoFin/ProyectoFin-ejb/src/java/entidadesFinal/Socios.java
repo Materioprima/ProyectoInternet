@@ -6,6 +6,7 @@
 package entidadesFinal;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
@@ -169,13 +170,21 @@ public class Socios implements Serializable
     	this.observaciones = observaciones;
     }
     public List<NinosJovenes> getApadrinados() {
-    	return apadrinados;
+        if(apadrinados==null){
+            List<NinosJovenes> n=new ArrayList();
+            apadrinados=n;
+        }
+        return apadrinados;
     }
     public void setApadrinados(List<NinosJovenes> apadrinados) {
     	this.apadrinados = apadrinados;
     }
     public List<Ingreso> getIngreso() {
-    	return ingreso;
+        if(ingreso==null){
+            List<Ingreso> n=new ArrayList();
+            ingreso=n;
+        }    	
+        return ingreso;
     }
     public void setIngreso(List<Ingreso> ingreso) {
     	this.ingreso = ingreso;

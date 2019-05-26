@@ -5,7 +5,7 @@
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="tablasUsuarios">
-        <h:dataTable id="customers" value="#{infoSesion.NinosJovenes}" var="a">
+        <h:dataTable id="customers" value="#{infoSesion.ninosJovenes}" var="a">
             <h:column>
                 <f:facet name="header">ID</f:facet>
                 <h:outputText value="#{a.codigoNuestro}"/>
@@ -93,13 +93,13 @@
             <h:column>
                 <f:facet name="header">Opciones</f:facet>
                 <h:form>
-                    <h:commandButton value="Modificar" action="#{NinosJovenes.modificar(a)}"/>
-                    <h:commandButton value="Eliminar" action="#{NinosJovenes.eliminar(a)}"/>
+                    <h:commandButton value="Modificar" action="#{ninosjovenes.modificar(a)}"/>
+                    <h:commandButton value="Eliminar" action="#{ninosjovenes.eliminar(a)}"/>
                 </h:form>
             </h:column>
         </h:dataTable>
         <h:form>
-            <h:commandButton value="Insertar" action="#{NinosJovenes.insertarNinosJovenes()}"/>
+            <h:commandButton value="Insertar" action="#{ninosjovenes.insertarNinosJovenes()}"/>
         </h:form>
     </ui:define>
 </ui:composition>

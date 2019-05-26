@@ -61,7 +61,7 @@ public class vistaNinosJovenes {
     public String modificar(NinosJovenes a) {
         nj = a;
         setModo(Modo.MODIFICAR);
-        return "/edicion/edicionAcademico.xhtml";
+        return "/edicion/edicionNinosJovenes.xhtml";
     }
     
     public String eliminar(NinosJovenes a) throws FinalException {
@@ -85,9 +85,9 @@ public class vistaNinosJovenes {
         return null;
     }
 
-    public String insertarAcademico() {
+    public String insertarNinosJovenes() {
         setModo(Modo.INSERTAR);
-        return "/edicion/edicionAcademico.xhtml";
+        return "/edicion/edicionNinosJovenes.xhtml";
     }
     
     public String ejecutarAccion() {

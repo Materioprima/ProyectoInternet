@@ -40,7 +40,7 @@ public class VistaSocios {
         modo = Modo.NOACCION;
     }
     
-    public Socios getProyectos(){
+    public Socios getSocios(){
         return socios;
     }
     

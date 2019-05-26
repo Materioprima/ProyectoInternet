@@ -33,7 +33,6 @@ public class NinosJovenes implements Serializable
     private String estado,sexo,grado;
     @Temporal(TemporalType.DATE)
     private Date fechaNacimiento,fechaEntrada,fechaAltaProyecto,fechaSalidaProyecto,fechaAlta,fechaSalidaAcoes;
-    private byte[] foto;
     @Column(length = 500)
     private String observaciones;
     @ManyToOne
@@ -133,12 +132,6 @@ public class NinosJovenes implements Serializable
     public void setFechaSalidaAcoes(Date fechaSalidaAcoes) {
     	this.fechaSalidaAcoes = fechaSalidaAcoes;
     }
-    public byte[] getFoto() {
-    	return foto;
-    }
-    public void setFoto(byte[] foto) {
-    	this.foto = foto;
-    }
     public String getObservaciones() {
 	return observaciones;
     }
@@ -146,13 +139,21 @@ public class NinosJovenes implements Serializable
 	this.observaciones = observaciones;
     }
     public Socios getIdSocio() {
+        if(idSocio==null){
+            Socios n=new Socios();
+            idSocio=n;
+        }
     	return idSocio;
     }
     public void setIdSocio(Socios idSocio) {
     	this.idSocio = idSocio;
     }
     public Proyectos getProyecto() {
-	return proyecto;
+        if(proyecto==null){
+            Proyectos n=new Proyectos();
+            proyecto=n;
+        }
+        return proyecto;
     }
     public void setProyecto(Proyectos proyecto) {
 	this.proyecto = proyecto;
@@ -164,7 +165,11 @@ public class NinosJovenes implements Serializable
     	this.notas = notas;
     }
     public Agente getAgente() {
-    	return agente;
+        if(agente==null){
+            Agente n=new Agente();
+            agente=n;
+        }
+        return agente;
     }
     public void setAgente(Agente agente) {
     	this.agente = agente;
@@ -176,7 +181,11 @@ public class NinosJovenes implements Serializable
 	this.personal = personal;
     }
     public Colonias getColonia() {
-	return colonia;
+        if(colonia==null){
+            Colonias n=new Colonias();
+            colonia=n;
+        }        
+        return colonia;
     }
     public void setColonia(Colonias colonia) {
         this.colonia = colonia;
@@ -214,7 +223,7 @@ public class NinosJovenes implements Serializable
 
     @Override
     public String toString() {
-        return "Clases.NinosJovenes[ codigo=" + codigo + " ]";
+        return "Niño " + codigo+" ";
     }
     
 }

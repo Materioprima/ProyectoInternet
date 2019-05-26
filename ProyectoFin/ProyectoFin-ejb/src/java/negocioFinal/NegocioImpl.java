@@ -564,10 +564,11 @@ public class NegocioImpl implements Negocio {
     public void modificarColonias(Colonias a)  throws FinalException{
         // TODO
         //compruebaLogin(c.getUsuario());
+        System.out.println("nombreBanderasaz "+a.getNombre()+" idn "+a.getId());
         Colonias ordenp = em.find(Colonias.class, a.getId());
         ordenp.setIdNuestro(a.getIdNuestro());
         ordenp.setNombre(a.getNombre());
-        ordenp.setPertenecen(a.getPertenecen());
+        //ordenp.setPertenecen(a.getPertenecen());
         em.merge(ordenp);
         
     }
@@ -580,7 +581,6 @@ public class NegocioImpl implements Negocio {
         orden.setId(a.getId());
         orden.setIdNuestro(a.getIdNuestro());
         orden.setNombre(a.getNombre());
-        orden.setPertenecen(a.getPertenecen());
         System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
         em.persist(orden);
     }
@@ -590,6 +590,7 @@ public class NegocioImpl implements Negocio {
     public void eliminarColonias(Colonias a) throws FinalException{
         // TODO
         //compruebaLogin(a.getUsuario());
+        System.out.println(a);
         Colonias ord = em.find(Colonias.class, a.getId());
         if(ord!=null){
             em.remove(ord);
@@ -606,10 +607,27 @@ public class NegocioImpl implements Negocio {
             List<Colonias> resultado=new ArrayList<>();
             Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
             Statement st=conn.createStatement();
-            String consulta="SELECT * FROM Colonias";
+            String consulta="SELECT * FROM COLONIAS";
             ResultSet rs=st.executeQuery(consulta);
-            while(rs.next()){
+            while(rs.next())
+            {
                 Colonias e=new Colonias();
+                e.setId(rs.getLong(1));
+                e.setIdNuestro(rs.getLong(2));
+                e.setNombre(rs.getString(3));
+                String query="SELECT codigo FROM NINOSJOVENES where colonia_id_colonia="+e.getId();
+                List<String>Consultadi=ConsultarID(query);
+                List<NinosJovenes> ninos=new ArrayList();
+                if(Consultadi.isEmpty()){
+                    ninos.add(new NinosJovenes());
+                    e.setPertenecen(e.getPertenecen());
+                }else{
+                    for(String b:Consultadi){
+                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                        ninos.add(s);
+                    }
+                }
+                e.setPertenecen(ninos);
                 resultado.add(e);
             }
             return resultado;
@@ -622,7 +640,7 @@ public class NegocioImpl implements Negocio {
         return q.getResultList();*/ 
         return null;
     }
-  
+    
 //FIN Colonias
     
 //INICIO GASTOS
@@ -1044,6 +1062,7 @@ public class NegocioImpl implements Negocio {
         s.setFechaBaja(a.getFechaBaja());
         s.setObservaciones(a.getObservaciones());
         s.setApadrinados(a.getApadrinados());
+        s.setIngreso(a.getIngreso());
         em.merge(s);
         
     }
@@ -1075,7 +1094,7 @@ public class NegocioImpl implements Negocio {
         s.setFechaBaja(a.getFechaBaja());
         s.setObservaciones(a.getObservaciones());
         s.setApadrinados(a.getApadrinados());
-        
+        s.setIngreso(a.getIngreso());
         System.out.println("Objeto creado: "+s+" objeto insertado: "+a);
         em.persist(s);
     }
@@ -1101,10 +1120,31 @@ public class NegocioImpl implements Negocio {
             List<Socios> resultado=new ArrayList<>();
             Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
             Statement st=conn.createStatement();
-            String consulta="SELECT * FROM SALDOGLOBAL";
+            String consulta="SELECT * FROM SOCIOS";
             ResultSet rs=st.executeQuery(consulta);
             while(rs.next()){
                 Socios e=new Socios();
+                e.setNSocio(rs.getLong(1));
+                e.setNSocioNuestro(rs.getLong(2));
+                e.setApellidos(rs.getString(3));
+                e.setCertificado(rs.getString(4));
+                e.setCodigoPostal(rs.getString(5));
+                e.setDireccion(rs.getString(6));
+                e.setDni(rs.getString(7));
+                e.setEmail(rs.getString(8));
+                e.setEstado(rs.getString(9));
+                e.setFechaAlta(rs.getDate(10));
+                e.setFechaBaja(rs.getDate(11));
+                e.setGrado(rs.getString(12));
+                e.setNombre(rs.getString(13));
+                e.setObservaciones(rs.getString(14));
+                e.setPoblacion(rs.getString(15));
+                e.setProvincia(rs.getString(16));
+                e.setRelacion(rs.getString(17));
+                e.setSector(rs.getString(18));
+                e.setSexo(rs.getString(19));
+                e.setTelefonoFijo(rs.getString(20));
+                e.setTelefonoMovil(rs.getString(21));
                 resultado.add(e);
             }
             return resultado;
@@ -1141,7 +1181,6 @@ public class NegocioImpl implements Negocio {
         ninosj.setFechaNacimiento(a.getFechaNacimiento());
         ninosj.setFechaSalidaAcoes(a.getFechaSalidaAcoes());
         ninosj.setFechaSalidaProyecto(a.getFechaSalidaProyecto());
-        ninosj.setFoto(a.getFoto());
         ninosj.setGrado(a.getGrado());
         ninosj.setIdSocio(a.getIdSocio());
         ninosj.setNombre(a.getNombre());
@@ -1162,7 +1201,6 @@ public class NegocioImpl implements Negocio {
         ninosj.setCodigo(a.getCodigo());
         ninosj.setAgente(a.getAgente());
         ninosj.setApellidos(a.getApellidos());
-        ninosj.setBecas(a.getBecas());
         ninosj.setCodigoNuestro(a.getCodigoNuestro());
         ninosj.setColonia(a.getColonia());
         ninosj.setEstado(a.getEstado());
@@ -1172,16 +1210,13 @@ public class NegocioImpl implements Negocio {
         ninosj.setFechaNacimiento(a.getFechaNacimiento());
         ninosj.setFechaSalidaAcoes(a.getFechaSalidaAcoes());
         ninosj.setFechaSalidaProyecto(a.getFechaSalidaProyecto());
-        ninosj.setFoto(a.getFoto());
         ninosj.setGrado(a.getGrado());
+        System.out.println("Banderasas "+a.getIdSocio());
         ninosj.setIdSocio(a.getIdSocio());
         ninosj.setNombre(a.getNombre());
-        ninosj.setNotas(a.getNotas());
         ninosj.setObservaciones(a.getObservaciones());
-        ninosj.setPersonal(a.getPersonal());
         ninosj.setProyecto(a.getProyecto());
         ninosj.setSexo(a.getSexo());
-        em.merge(ninosj);  
         System.out.println("Objeto creado: "+ninosj+" objeto insertado: "+a);
         em.persist(ninosj);
     }

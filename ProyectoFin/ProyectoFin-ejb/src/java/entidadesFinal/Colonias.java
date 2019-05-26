@@ -80,7 +80,7 @@ public class Colonias implements Serializable {
 
     @Override
     public String toString() {
-        return "Clases.Colonias[ id de la colonia=" + id_colonia + " ]";
+        return "Clases.Colonias[ id de la colonia=" + id_colonia +" idNuestro="+id_coloniaNuestro+" nombre="+nombre+ " ]";
     }
     
 }
