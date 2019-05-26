@@ -376,6 +376,24 @@ public class NegocioImpl implements Negocio {
             ResultSet rs=st.executeQuery(consulta);
             while(rs.next()){
                 Agente e=new Agente();
+                e.setId(rs.getLong(1));
+                e.setIdNuestro(rs.getLong(2));
+                e.setDescripcion(rs.getString(3));
+                e.setNombre(rs.getString(4));
+                String query="SELECT CODIGO FROM NINOSJOVENES WHERE AGENTE_CODIGO="+e.getId();
+                List<String>Consulta=ConsultarID(query);
+                List<NinosJovenes> ninos=new ArrayList();
+                if(Consulta.isEmpty()){
+                    ninos.add(new NinosJovenes());
+                    e.setEncargado(e.getEncargado());
+                }else{
+                    for(String b:Consulta){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                        ninos.add(s);
+                    }
+                }
+                e.setEncargado(ninos);
                 resultado.add(e);
             }
             return resultado;
@@ -1277,4 +1295,28 @@ public class NegocioImpl implements Negocio {
     }
   
 //FIN PERSONAL
+    
+        @Override
+        public List<String> ConsultarID(String consulta){
+        
+        try {
+            // TODO
+            List<String> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                String e=rs.getString(1);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
 }

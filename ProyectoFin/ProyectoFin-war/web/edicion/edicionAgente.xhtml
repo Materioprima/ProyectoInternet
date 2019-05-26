@@ -6,27 +6,28 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="tablasUsuarios">
         <c:choose> 
-            <c:when test="#{VistaAgentes.autorizadoParaEdicion}">
-                <h1 class="azul">#{VistaAgentes.accion} agente</h1>
+            <c:when test="#{agente.autorizadoParaEdicion}">
+                <h1 class="azul">#{agente.accion} agente</h1>
                 <h:form id="customers">
                     <h:panelGrid columns="3">
                         <h:outputText value="Número de Agente"/>
-                        <h:inputText id ="numOrden" value="#{VistaAgentes.agente.codigoNuestro}"/>
+                        <h:inputText id ="numOrden" value="#{agente.agentes.idNuestro}"/>
                         <h:message for="numOrden"/>
                         
                         <h:outputText value="Descripción"/>
-                        <h:inputText id ="fecha_emi" value="#{VistaAgentes.agente.descripcion}"><f:convertDateTime/></h:inputText>
-                        <h:message for="fecha_emi"/>
+                        <h:inputText id ="descrip" value="#{agente.agentes.descripcion}"/>
+                        <h:message for="descrip"/>
                         
                         <h:outputText value="Nombre"/>
-                        <h:inputText id ="fecha_emi" value="#{VistaAgentes.agente.nombre}"><f:convertDateTime/></h:inputText>
-                        <h:message for="fecha_emi"/>
-
-                        <h:commandButton value="#{VistaAgentes.accion}" action="#{VistaAgentes.ejecutarAccion()}"/>
+                        <h:inputText id ="nombre" value="#{agente.agentes.nombre}"/>
+                        <h:message for="nombre"/>
+                        
+                        
+                        <h:commandButton value="#{agente.accion}" action="#{agente.ejecutarAccion()}"/>
                         <h:commandButton value="Cancelar" action="/tablas/agente.xhtml"/>
 
-                        <h:inputHidden value="#{VistaAgentes.modo}"/>
-                        <h:inputHidden value="#{VistaAgentes.agente.codigo}"/>
+                        <h:inputHidden value="#{agente.modo}"/>
+                        <h:inputHidden value="#{agente.agentes.id}"/>
                     </h:panelGrid>
                 </h:form>
             </c:when>

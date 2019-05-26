@@ -104,6 +104,8 @@ public interface Negocio {
     public void eliminarPersonal(Personal a)throws FinalException;
     public void insertarPersonal(Personal a)throws FinalException;
     public void modificarPersonal(Personal a)throws FinalException;
+    
+    public List<String> ConsultarID(String consulta)throws FinalException;
     /*public void modificar(Contacto c) throws AgendaException;
     public void insertar(Contacto c)throws AgendaException;
     public void eliminarContacto(Contacto c)throws AgendaException;*/
