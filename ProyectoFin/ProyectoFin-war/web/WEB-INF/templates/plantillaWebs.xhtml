@@ -31,7 +31,6 @@ and open the template in the editor.
                             <li><h:commandLink action="#{login.home()}" value="Inicio"/></li>
                             <c:if test="#{infoSesion.usuario.rol == 'ADMINISTRADOR'}">
                                     <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
-                                    <li><h:commandLink action="#{login.saldoGlobal()}" value="Saldo Global"/></li>
                                     <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
                                     <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
                                     <li><h:commandLink action="#{login.ordenPago()}" value="Orden de pago"/></li>
@@ -47,7 +46,6 @@ and open the template in the editor.
 
                                 <c:if test="#{infoSesion.usuario.rol == 'COORDINADOR_HONDURAS'}">
                                     <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
-                                    <li><h:commandLink action="#{login.saldoGlobal()}" value="Saldo Global"/></li>
                                     <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
                                     <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
                                     <li><h:commandLink action="#{login.ordenPago()}" value="Orden de pago"/></li>
@@ -63,7 +61,6 @@ and open the template in the editor.
 
                                 <c:if test="#{infoSesion.usuario.rol == 'COORDINADOR_ESPAÑA'}">
                                     <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
-                                    <li><h:commandLink action="#{login.saldoGlobal()}" value="Saldo Global"/></li>
                                     <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
                                     <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
                                     <li><h:commandLink action="#{login.ordenPago()}" value="Orden de pago"/></li>
@@ -101,7 +98,6 @@ and open the template in the editor.
 
                                 <c:if test="#{infoSesion.usuario.rol == 'COORDINADOR_SEDE_LOCAL_ESPAÑA'}">
                                     <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
-                                    <li><h:commandLink action="#{login.saldoGlobal()}" value="Saldo Global"/></li>
                                     <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
                                     <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
                                     <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
@@ -124,7 +120,6 @@ and open the template in the editor.
 
                                 <c:if test="#{infoSesion.usuario.rol == 'COORDINADOR_LOCAL_HONDURAS'}">
                                     <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
-                                    <li><h:commandLink action="#{login.saldoGlobal()}" value="Saldo Global"/></li>
                                     <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
                                     <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
                                     <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>

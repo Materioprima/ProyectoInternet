@@ -40,8 +40,6 @@ public class Proyectos implements Serializable
     private List<Ingreso> ingresos;
     @OneToMany(mappedBy = "gastos")
     private List<Gastos> gastos;
-    @ManyToOne
-    private SaldoGlobal saldo;
     
     
     public Long getCodigo() {

@@ -1,0 +1,54 @@
+<ui:composition template="/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="tablasUsuarios">
+        <c:choose> 
+            <c:when test="#{proyectos.autorizadoParaEdicion}">
+                <h1 class="azul">#{proyectos.accion} personal</h1>
+                <h:form id="customers">
+                    <h:panelGrid columns="3">
+                        <h:outputText value="Codigo Nuestro"/>
+                        <h:inputText id ="codigoNuestro" value="#{proyectos.proyectos.codigoNuestro}"/>
+                        <h:message for="codigoNuestro"/>
+                        
+                        <h:outputText value="Nombre"/>
+                        <h:inputText id ="name" value="#{proyectos.proyectos.nombre}"/>
+                        <h:message for="name"/>
+                        
+                        <h:outputText value="EnUso"/>
+                        <h:inputText id ="uso" value="#{proyectos.proyectos.enUso}"/>
+                        <h:message for="uso"/>
+                        
+                        <h:outputText value="Combustible"/>
+                        <h:inputText id ="combustible" value="#{proyectos.proyectos.combustible}"/>
+                        <h:message for="combustible"/>
+                        
+                        <h:outputText value="Contenedor"/>
+                        <h:inputText id ="contenedor" value="#{proyectos.proyectos.contenedor}"/>
+                        <h:message for="contenedor"/>
+                        
+                        <h:outputText value="Mantenimiento"/>
+                        <h:inputText id ="mantenimiento" value="#{proyectos.proyectos.mantenimiento}"/>
+                        <h:message for="smantenimientoal"/>
+                        
+                        <h:outputText value="Descripcion"/>
+                        <h:inputText id ="descripcion" value="#{proyectos.proyectos.descripcion}"/>
+                        <h:message for="descripcion"/>
+                       
+                        <h:commandButton value="#{proyectos.accion}" action="#{proyectos.ejecutarAccion()}"/>
+                        <h:commandButton value="Cancelar" action="/tablas/proyectos.xhtml"/>
+
+                        <h:inputHidden value="#{proyectos.modo}"/>
+                        <h:inputHidden value="#{proyectos.proyectos.codigo}"/>
+                    </h:panelGrid>
+                </h:form>
+            </c:when>
+            <c:otherwise>
+                <p>No está autorizado para ver esta página.</p>
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
+</ui:composition>

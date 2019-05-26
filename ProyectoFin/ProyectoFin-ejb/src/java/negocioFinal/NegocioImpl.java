@@ -25,7 +25,6 @@ import entidadesFinal.Personal;
 import entidadesFinal.Proyectos;
 import entidadesFinal.Socios;
 import entidadesFinal.Usuario;
-import entidadesFinal.SaldoGlobal;
 import entidadesFinal.NinosJovenes;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -918,9 +917,6 @@ public class NegocioImpl implements Negocio {
         p.setMantenimiento(a.getMantenimiento());
         p.setContenedor(a.getContenedor());
         p.setDescripcion(a.getDescripcion());
-        p.setParticipan(a.getParticipan());
-        p.setIngresos(a.getIngresos());
-        p.setGastos(a.getGastos());
         System.out.println("Objeto creado: "+p+" objeto insertado: "+a);
         em.persist(p);
     }
@@ -950,6 +946,53 @@ public class NegocioImpl implements Negocio {
             ResultSet rs=st.executeQuery(consulta);
             while(rs.next()){
                 Proyectos e=new Proyectos();
+                e.setCodigo(rs.getLong(1));
+                e.setCodigoNuestro(rs.getLong(2));
+                e.setCombustible(rs.getInt(3));
+                e.setContenedor(rs.getInt(4));
+                e.setDescripcion(rs.getString(5));
+                e.setEnUso(rs.getBoolean(6));
+                e.setMantenimiento(rs.getInt(7));
+                e.setNombre(rs.getString(8));
+                String query="SELECT CODIGO FROM NINOSJOVENES WHERE PROYECTO_CODIGO="+e.getCodigo();
+                List<String>Consulta=ConsultarID(query);
+                List<NinosJovenes> ninos=new ArrayList();
+                if(Consulta.isEmpty()){
+                    ninos.add(new NinosJovenes());
+                }else{
+                    for(String b:Consulta){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                        ninos.add(s);
+                    }
+                }
+                String query2="SELECT CODIGO_TRANSACCION FROM INGRESO WHERE INGRESOS_CODIGO="+e.getCodigo();
+                List<String>Consulta2=ConsultarID(query2);
+                List<Ingreso> ingresos=new ArrayList();
+                if(Consulta2.isEmpty()){
+                    ingresos.add(new Ingreso());
+                }else{
+                    for(String b:Consulta2){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        Ingreso s=em.find(Ingreso.class, Long.parseLong(b));
+                        ingresos.add(s);
+                    }
+                }
+                String query3="SELECT ID FROM GASTOS WHERE GASTOS_CODIGO="+e.getCodigo();
+                List<String>Consulta3=ConsultarID(query3);
+                List<Gastos> gastos=new ArrayList();
+                if(Consulta3.isEmpty()){
+                    gastos.add(new Gastos());
+                }else{
+                    for(String b:Consulta3){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        Gastos s=em.find(Gastos.class, Long.parseLong(b));
+                        gastos.add(s);
+                    }
+                }
+                e.setGastos(gastos);
+                e.setIngresos(ingresos);
+                e.setParticipan(ninos);
                 resultado.add(e);
             }
             return resultado;
@@ -964,74 +1007,6 @@ public class NegocioImpl implements Negocio {
     }
   
     //FIN PROYECTOS
-    
-//INICIO SALDOGLOBAL
-    
-    @Override
-    public void modificarSaldoGlobal(SaldoGlobal a)  throws FinalException{
-        // TODO
-        //compruebaLogin(c.getUsuario());
-        SaldoGlobal s = em.find(SaldoGlobal.class, a.getId());
-        s.setIdNuestro(a.getIdNuestro());
-        s.setFecha(a.getFecha());
-        s.setObservaciones(a.getObservaciones());
-        em.merge(s);
-        
-    }
-    
-    @Override
-    public void insertarSaldoGlobal(SaldoGlobal a) throws FinalException{
-        // TODO
-        //compruebaLogin(c.getUsuario());
-        SaldoGlobal s=new SaldoGlobal();
-        s.setNum_Orden(a.getId());
-        s.setIdNuestro(a.getIdNuestro());
-        s.setFecha(a.getFecha());
-        s.setObservaciones(a.getObservaciones());
-        System.out.println("Objeto creado: "+s+" objeto insertado: "+a);
-        em.persist(s);
-    }
-    
-    
-    @Override
-    public void eliminarSaldoGlobal(SaldoGlobal a) throws FinalException{
-        // TODO
-        //compruebaLogin(a.getUsuario());
-        SaldoGlobal s = em.find(SaldoGlobal.class, a.getId());
-        if(s!=null){
-            em.remove(s);
-        }
-    
-    }
-    
-    
-    @Override
-    public List<SaldoGlobal> mostrarSaldoGlobal(){
-        
-        try {
-            // TODO
-            List<SaldoGlobal> resultado=new ArrayList<>();
-            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
-            Statement st=conn.createStatement();
-            String consulta="SELECT * FROM SALDOGLOBAL";
-            ResultSet rs=st.executeQuery(consulta);
-            while(rs.next()){
-                SaldoGlobal e=new SaldoGlobal();
-                resultado.add(e);
-            }
-            return resultado;
-        } catch (SQLException ex) {
-            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        /*
-        Query q=em.createNamedQuery("academico.findAll");
-        return q.getResultList();*/ 
-        return null;
-    }
-    
-    
-    //FIN SALDOGLOBAL
     
     //INICIO SOCIOS
     

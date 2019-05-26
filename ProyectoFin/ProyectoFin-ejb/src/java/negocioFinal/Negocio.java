@@ -16,7 +16,6 @@ import entidadesFinal.Informes;
 import entidadesFinal.Ingreso;
 import entidadesFinal.OrdenPago;
 import entidadesFinal.Proyectos;
-import entidadesFinal.SaldoGlobal;
 import entidadesFinal.Socios;
 import entidadesFinal.Usuario;
 import entidadesFinal.NinosJovenes;
@@ -80,11 +79,6 @@ public interface Negocio {
     public void insertarIngreso(Ingreso a)throws FinalException;
     public void modificarIngreso(Ingreso a)throws FinalException;
     
-    public List<SaldoGlobal> mostrarSaldoGlobal();
-    public void eliminarSaldoGlobal(SaldoGlobal a)throws FinalException;
-    public void insertarSaldoGlobal(SaldoGlobal a)throws FinalException;
-    public void modificarSaldoGlobal(SaldoGlobal a)throws FinalException;
-
     public List<Socios> mostrarSocios();
     public void eliminarSocios(Socios a)throws FinalException;
     public void insertarSocios(Socios a)throws FinalException;

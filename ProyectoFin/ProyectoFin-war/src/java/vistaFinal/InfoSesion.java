@@ -28,7 +28,6 @@ import entidadesFinal.Usuario;
 import entidadesFinal.OrdenPago;
 import entidadesFinal.Personal;
 import entidadesFinal.Proyectos;
-import entidadesFinal.SaldoGlobal;
 import entidadesFinal.Socios;
 import negocioFinal.FinalException;
 import negocioFinal.Negocio;
@@ -133,15 +132,6 @@ public class InfoSesion implements Serializable {
         if (usuario != null)
         {
             return negocio.mostrarProyectos();
-        }
-        return null;
-    }
-    
-    public synchronized List<SaldoGlobal> getSaldoGlobal()
-    {
-        if (usuario != null)
-        {
-            return negocio.mostrarSaldoGlobal();
         }
         return null;
     }
