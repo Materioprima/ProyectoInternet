@@ -106,6 +106,6 @@ public class Beneficiarios implements Serializable
     }
     @Override
     public String toString() {
-        return "Clases.Beneficiarios[ Codigo Beneficiario=" + Codigo + " ]";
+        return "Beneficiario: "+CodigoNuestro;
     }
 }

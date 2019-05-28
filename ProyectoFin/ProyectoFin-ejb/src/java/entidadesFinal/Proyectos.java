@@ -143,6 +143,6 @@ public class Proyectos implements Serializable
 
     @Override
     public String toString() {
-        return "Clases.Proyectos[ Codigo del proyecto=" + Codigo + " ]";
+        return "Proyecto: "+CodigoNuestro;
     }
 }

@@ -67,6 +67,9 @@ public class Ingreso implements Serializable {
     	this.fecha = fecha;
     }
     public Socios getSocio() {
+        if(socio==null){
+            socio=new Socios();
+        }
 	return socio;
     }
     public void setSocios(Socios socio) {
@@ -133,18 +136,27 @@ public class Ingreso implements Serializable {
 	this.descripcion = descripcion;
     }
     public Proyectos getIngresos() {
+        if(ingresos==null){
+            ingresos=new Proyectos();
+        }
 	return ingresos;
     }
     public void setIngresos(Proyectos ingresos) {
 	this.ingresos = ingresos;
     }
     public Beneficiarios getBeneficiario() {
+        if(beneficiario==null){
+            beneficiario=new Beneficiarios();
+        }
             return beneficiario;
     }
     public void setBeneficiario(Beneficiarios beneficiario) {
 	this.beneficiario = beneficiario;
     }
     public OrdenPago getOrdenpago() {
+        if(ordenpago==null){
+            ordenpago=new OrdenPago();
+        }
 	return ordenpago;
     }
     public void setOrdenpago(OrdenPago ordenpago) {
@@ -173,7 +185,7 @@ public class Ingreso implements Serializable {
 
     @Override
     public String toString() {
-        return "Clases.Ingreso[ codigo de la transaccion=" + codigo_transaccion + " ]";
+        return "Codigo: "+codigo_transaccionNuestro;
     }
     
 }

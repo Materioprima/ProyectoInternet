@@ -100,6 +100,7 @@ public interface Negocio {
     public void modificarPersonal(Personal a)throws FinalException;
     
     public List<String> ConsultarID(String consulta)throws FinalException;
+    public List<String> ConsultarMas(String consulta,int nValores)throws FinalException;
     /*public void modificar(Contacto c) throws AgendaException;
     public void insertar(Contacto c)throws AgendaException;
     public void eliminarContacto(Contacto c)throws AgendaException;*/

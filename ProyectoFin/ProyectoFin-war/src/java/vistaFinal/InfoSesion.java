@@ -22,6 +22,7 @@ import entidadesFinal.Becas;
 import entidadesFinal.Beneficiarios;
 import entidadesFinal.Colonias;
 import entidadesFinal.Gastos;
+import entidadesFinal.Informes;
 import entidadesFinal.Ingreso;
 import entidadesFinal.NinosJovenes;
 import entidadesFinal.Usuario;
@@ -168,6 +169,15 @@ public class InfoSesion implements Serializable {
         if (usuario != null)
         {
             return negocio.mostrarPersonal();
+        }
+        return null;
+    }
+    
+    public synchronized List<Informes> getInformes()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarInformes();
         }
         return null;
     }

@@ -61,7 +61,7 @@ public class vistaIngreso {
     public String modificar(Ingreso a) {
         ingr = a;
         setModo(Modo.MODIFICAR);
-        return "/edicion/edicionAcademico.xhtml";
+        return "/edicion/edicionIngresos.xhtml";
     }
     
     public String eliminar(Ingreso a) throws FinalException {
@@ -75,7 +75,7 @@ public class vistaIngreso {
         return null;
     }
     
-    public void setNinosJovenes(Ingreso ingres) {
+    public void setIngreso(Ingreso ingres) {
         this.ingr = ingres;
     }
     
@@ -85,9 +85,9 @@ public class vistaIngreso {
         return null;
     }
 
-    public String insertarAcademico() {
+    public String insertarIngreso() {
         setModo(Modo.INSERTAR);
-        return "/edicion/edicionAcademico.xhtml";
+        return "/edicion/edicionIngresos.xhtml";
     }
     
     public String ejecutarAccion() {
@@ -105,7 +105,7 @@ public class vistaIngreso {
             }
             sesion.refrescarUsuario();
             System.out.println("Se hizo la accion "+this.getModo());
-            return "/tablas/academico.xhtml";
+            return "/tablas/ingresos.xhtml";
         } catch (FinalException e) {
             return "/index.xhtml";
         }

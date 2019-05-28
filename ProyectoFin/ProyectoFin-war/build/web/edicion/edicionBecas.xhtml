@@ -1,0 +1,42 @@
+<ui:composition template="/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="tablasBecas">
+        <c:choose> 
+            <c:when test="#{vistabecas.autorizadoParaEdicion}">
+                <h1 class="azul">#{vistabecas.accion} Becas</h1>
+                <h:form id="customers">
+                    <h:panelGrid columns="3">
+                        <h:outputText value="Numero_orden"/>
+                        <h:inputText id ="numero_orden" value="#{vistabecas.becas.numero_ordenNuestro}"/>
+                        <h:message for="numero_orden"/>
+                        
+                        <h:outputText value="Concepto"/>
+                        <h:inputText id ="concepto" value="#{vistabecas.becas.concepto}"/>
+                        <h:message for="concepto"/>
+                        
+                        <h:outputText value="Fecha"/>
+                        <h:inputText id ="Fecha" value="#{vistabecas.becas.fecha}"><f:convertDateTime/></h:inputText>
+                        <h:message for="Fecha"/>
+
+                        <h:outputText value="Importe"/>
+                        <h:inputText id ="importe" value="#{vistabecas.becas.importe}"/>
+                        <h:message for="importe"/>
+
+                        <h:commandButton value="#{vistabecas.accion}" action="#{vistabecas.ejecutarAccion()}"/>
+                        <h:commandButton value="Cancelar" action="/tablas/becas.xhtml"/>
+
+                        <h:inputHidden value="#{vistabecas.modo}"/>
+                        <h:inputHidden value="#{vistabecas.becas.numero_orden}"/>
+                    </h:panelGrid>
+                </h:form>
+            </c:when>
+            <c:otherwise>
+                <p>No está autorizado para ver esta página.</p>
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
+</ui:composition>

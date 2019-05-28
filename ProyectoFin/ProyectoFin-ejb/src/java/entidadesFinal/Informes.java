@@ -59,7 +59,12 @@ public class Informes implements Serializable
     public void setInforme(String informe) {
         this.informe = informe;
     }
-    public Personal getPersonal() {
+    public Personal getPersonal() 
+    {
+        if(personal==null)
+        {
+            personal=new Personal();
+        }
         return personal;
     }
     public void setPersonal(Personal personal) {

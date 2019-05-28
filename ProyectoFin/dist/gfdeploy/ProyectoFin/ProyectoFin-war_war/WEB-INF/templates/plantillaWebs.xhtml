@@ -36,6 +36,7 @@ and open the template in the editor.
                                     <li><h:commandLink action="#{login.ordenPago()}" value="Orden de pago"/></li>
                                     <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
                                     <li><h:commandLink action="#{login.ingresos()}" value="Ingresos"/></li>
+                                    <li><h:commandLink action="#{login.informes()}" value="Informes"/></li>
                                     <li><h:commandLink action="#{login.gastos()}" value="Gastos"/></li>
                                     <li><h:commandLink action="#{login.colonias()}" value="Colonias"/></li>
                                     <li><h:commandLink action="#{login.beneficiarios()}" value="Beneficiarios"/></li>
@@ -76,6 +77,7 @@ and open the template in the editor.
 
                                 <c:if test="#{infoSesion.usuario.rol == 'NORMAL'}">
                                     <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                    <li><h:commandLink action="#{login.informes()}" value="Informes"/></li>
                                 </c:if>
 
                                 <c:if test="#{infoSesion.usuario.rol == 'GESTOR_FINANCIERO_GLOBAL'}">
@@ -113,6 +115,7 @@ and open the template in the editor.
                                     <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
                                     <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
                                     <li><h:commandLink action="#{login.colonias()}" value="Colonias"/></li>
+                                    <li><h:commandLink action="#{login.informes()}" value="Informes"/></li>
                                     <li><h:commandLink action="#{login.becas()}" value="Becas"/></li>
                                     <li><h:commandLink action="#{login.agente()}" value="Agente"/></li>
                                     <li><h:commandLink action="#{login.academico()}" value="Académico"/></li>

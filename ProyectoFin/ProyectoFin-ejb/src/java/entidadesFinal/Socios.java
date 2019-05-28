@@ -215,6 +215,6 @@ public class Socios implements Serializable
 
     @Override
     public String toString() {
-        return "Clases.Socios[ Numero de socio =" + NSocio + " ]";
+        return "Socio: "+NSocioNuestro;
     }
 }

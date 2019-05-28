@@ -102,19 +102,20 @@ public class Login {
         return pag;
     }
     
-    public String saldoGlobal() {
+    public String proyectos() {
         String pag = "/login/login.xhtml";
-        if (sesion.getUsuario().getRol() == ADMINISTRADOR || sesion.getUsuario().getRol() == COORDINADOR_HONDURAS || sesion.getUsuario().getRol() == COORDINADOR_ESPAÑA || sesion.getUsuario().getRol() == GESTOR_FINANCIERO_GLOBAL || sesion.getUsuario().getRol() == COORDINADOR_SEDE_LOCAL_ESPAÑA || sesion.getUsuario().getRol() == COORDINADOR_LOCAL_HONDURAS){
-            pag = "/tablas/saldoGlobal.xhtml";
+        if (sesion.getUsuario().getRol() == ADMINISTRADOR || sesion.getUsuario().getRol() == COORDINADOR_HONDURAS || sesion.getUsuario().getRol() == COORDINADOR_ESPAÑA || sesion.getUsuario().getRol() == GESTOR_FINANCIERO_GLOBAL || sesion.getUsuario().getRol() == COORDINADOR_PROYECTO || sesion.getUsuario().getRol() == COORDINADOR_SEDE_LOCAL_ESPAÑA || sesion.getUsuario().getRol() == AGENTE || sesion.getUsuario().getRol() == COORDINADOR_LOCAL_HONDURAS || sesion.getUsuario().getRol() == GESTOR_FINANCIERO_LOCAL){
+            pag = "/tablas/proyectos.xhtml";
             return pag;
         }
         return pag;
     }
     
-    public String proyectos() {
+    public String ingresos()
+    {
         String pag = "/login/login.xhtml";
-        if (sesion.getUsuario().getRol() == ADMINISTRADOR || sesion.getUsuario().getRol() == COORDINADOR_HONDURAS || sesion.getUsuario().getRol() == COORDINADOR_ESPAÑA || sesion.getUsuario().getRol() == GESTOR_FINANCIERO_GLOBAL || sesion.getUsuario().getRol() == COORDINADOR_PROYECTO || sesion.getUsuario().getRol() == COORDINADOR_SEDE_LOCAL_ESPAÑA || sesion.getUsuario().getRol() == AGENTE || sesion.getUsuario().getRol() == COORDINADOR_LOCAL_HONDURAS || sesion.getUsuario().getRol() == GESTOR_FINANCIERO_LOCAL){
-            pag = "/tablas/proyectos.xhtml";
+        if (sesion.getUsuario().getRol() != NORMAL && sesion.getUsuario().getRol() != GESTOR_FINANCIERO_GLOBAL && sesion.getUsuario().getRol() != GESTOR_FINANCIERO_LOCAL){
+            pag = "/tablas/ingresos.xhtml";
             return pag;
         }
         return pag;
@@ -147,10 +148,11 @@ public class Login {
         return pag;
     }
     
-    public String ingresos() {
+    public String informes() {
         String pag = "/login/login.xhtml";
-        if (sesion.getUsuario().getRol() != NORMAL && sesion.getUsuario().getRol() != COORDINADOR_PROYECTO && sesion.getUsuario().getRol() != AGENTE){
-            pag = "/tablas/ingresos.xhtml";
+        if (sesion.getUsuario().getRol() == ADMINISTRADOR || sesion.getUsuario().getRol() == COORDINADOR_HONDURAS || sesion.getUsuario().getRol() == COORDINADOR_ESPAÑA || sesion.getUsuario().getRol() == GESTOR_FINANCIERO_GLOBAL || sesion.getUsuario().getRol() == COORDINADOR_SEDE_LOCAL_ESPAÑA || sesion.getUsuario().getRol() == COORDINADOR_LOCAL_HONDURAS)
+        {
+            pag = "/tablas/informes.xhtml";
             return pag;
         }
         return pag;

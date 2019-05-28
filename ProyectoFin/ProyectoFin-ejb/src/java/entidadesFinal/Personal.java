@@ -110,6 +110,6 @@ public class Personal implements Serializable
 
     @Override
     public String toString() {
-        return "Clases.Personal[ Dni del personal=" + dni + " ]";
+        return dni;
     }
 }

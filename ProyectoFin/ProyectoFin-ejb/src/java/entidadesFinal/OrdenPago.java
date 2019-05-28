@@ -97,7 +97,6 @@ public class OrdenPago implements Serializable
 
     @Override
     public String toString() {
-        return "Clases.OrdenPago[ Número de orden=" + num_orden + " ]";
+        return "Orden pago: "+num_ordenNuestro;
     }
 }
-
