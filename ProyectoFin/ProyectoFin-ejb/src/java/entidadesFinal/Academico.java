@@ -71,6 +71,9 @@ public class Academico implements Serializable {
     } 
     
     public NinosJovenes getNino() {
+        if(ninoN==null){
+            ninoN=new NinosJovenes();
+        }
 	return ninoN;
     }
     

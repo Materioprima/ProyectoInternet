@@ -105,7 +105,7 @@ public class vistaNinosJovenes {
             }
             sesion.refrescarUsuario();
             System.out.println("Se hizo la accion "+this.getModo());
-            return "/tablas/academico.xhtml";
+            return "/tablas/ninosJovenes.xhtml";
         } catch (FinalException e) {
             return "/index.xhtml";
         }

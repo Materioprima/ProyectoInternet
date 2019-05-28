@@ -28,7 +28,7 @@ public class Colonias implements Serializable {
     @Column(unique=true)
     private Long id_coloniaNuestro;
     private String nombre;
-    @OneToMany
+    @OneToMany (mappedBy="colonia")
     private List<NinosJovenes> pertenecen;
 
     public Long getId() {

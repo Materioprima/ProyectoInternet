@@ -198,8 +198,19 @@ public class NegocioImpl implements Negocio {
         acad.setIdNuestro(a.getIdNuestro());
         acad.setFechaPeriodo(a.getFechaPeriodo());
         acad.setNota(a.getNota());
-        System.out.println("La nota de lo que se inserta es "+a.getNota());
-        System.out.println("Objeto creado: "+acad+" objeto insertado: "+a);
+        String query="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGONUESTRO="+a.getNino().getCodigoNuestro();
+        List<String>Consulta=ConsultarID(query);
+        NinosJovenes ninos=new NinosJovenes();
+        if(Consulta.isEmpty()){
+            ninos=new NinosJovenes();
+        }else{
+            for(String b:Consulta)
+            {
+                NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                ninos=s;
+            }
+        }
+        acad.setNinosJovenes(ninos);
         em.persist(acad);
     }
     
@@ -232,12 +243,25 @@ public class NegocioImpl implements Negocio {
                 e.setIdNuestro(rs.getLong(3));
                 e.setFechaPeriodo(rs.getDate(2));
                 e.setNota(rs.getDouble(4));
-                resultado.add(e);
-            }
-            return resultado;
-        } catch (SQLException ex) {
-            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                String query="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGO="+rs.getLong(5);
+                List<String>Consulta=ConsultarID(query);
+                NinosJovenes ninos=new NinosJovenes();
+                if(Consulta.isEmpty()){
+                    ninos=new NinosJovenes();
+                }else{
+                    for(String b:Consulta)
+                    {
+                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                        ninos=s;
+                    }
+                }
+                e.setNinosJovenes(ninos);
+                        resultado.add(e);
+                    }
+                    return resultado;
+                } catch (SQLException ex) {
+                    Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
         
         /*
         Query q=em.createNamedQuery("academico.findAll");
@@ -1457,11 +1481,8 @@ public class NegocioImpl implements Negocio {
         // TODO
         //compruebaLogin(c.getUsuario());
         NinosJovenes ninosj = em.find(NinosJovenes.class, a.getCodigo());
-        ninosj.setAgente(a.getAgente());
         ninosj.setApellidos(a.getApellidos());
-        ninosj.setBecas(a.getBecas());
         ninosj.setCodigoNuestro(a.getCodigoNuestro());
-        ninosj.setColonia(a.getColonia());
         ninosj.setEstado(a.getEstado());
         ninosj.setFechaAlta(a.getFechaAlta());
         ninosj.setFechaAltaProyecto(a.getFechaAltaProyecto());
@@ -1470,12 +1491,56 @@ public class NegocioImpl implements Negocio {
         ninosj.setFechaSalidaAcoes(a.getFechaSalidaAcoes());
         ninosj.setFechaSalidaProyecto(a.getFechaSalidaProyecto());
         ninosj.setGrado(a.getGrado());
-        ninosj.setIdSocio(a.getIdSocio());
+        String query="SELECT NSOCIO FROM SOCIOS WHERE NSOCIONUESTRO="+a.getIdSocio().getNSocioNuestro();
+        List<String>Consulta=ConsultarID(query);
+        Socios socio=new Socios();
+        if(Consulta.isEmpty()){
+            socio=new Socios();
+        }else{
+            for(String b:Consulta){
+                Socios s=em.find(Socios.class, Long.parseLong(b));
+                socio=s;
+            }
+        }
+        String query2="SELECT CODIGO FROM PROYECTOS WHERE CODIGONUESTRO="+a.getProyecto().getCodigoNuestro();
+        List<String>Consulta2=ConsultarID(query2);
+        Proyectos pr=new Proyectos();
+        if(Consulta2.isEmpty()){
+            pr=new Proyectos();
+        }else{
+            for(String b:Consulta2){
+                Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        String query3="SELECT CODIGO FROM AGENTE WHERE CODIGONUESTRO="+a.getAgente().getIdNuestro();
+        List<String>Consulta3=ConsultarID(query3);
+        Agente ag=new Agente();
+        if(Consulta3.isEmpty()){
+            ag=new Agente();
+        }else{
+            for(String b:Consulta3){
+                Agente s=em.find(Agente.class, Long.parseLong(b));
+                ag=s;
+            }
+        }
+        String query4="SELECT ID_COLONIA FROM COLONIAS WHERE ID_COLONIANUESTRO="+a.getColonia().getIdNuestro();
+        List<String>Consulta4=ConsultarID(query4);
+        Colonias col=new Colonias();
+        if(Consulta4.isEmpty()){
+            col=new Colonias();
+        }else{
+            for(String b:Consulta4){
+                Colonias s=em.find(Colonias.class, Long.parseLong(b));
+                col=s;
+            }
+        }
+        ninosj.setIdSocio(socio);
         ninosj.setNombre(a.getNombre());
-        ninosj.setNotas(a.getNotas());
         ninosj.setObservaciones(a.getObservaciones());
-        ninosj.setPersonal(a.getPersonal());
-        ninosj.setProyecto(a.getProyecto());
+        ninosj.setProyecto(pr);
+        ninosj.setColonia(col);
+        ninosj.setAgente(ag);
         ninosj.setSexo(a.getSexo());
         em.merge(ninosj);  
     }
@@ -1487,10 +1552,8 @@ public class NegocioImpl implements Negocio {
         //compruebaLogin(c.getUsuario());
         NinosJovenes ninosj=new NinosJovenes();
         ninosj.setCodigo(a.getCodigo());
-        ninosj.setAgente(a.getAgente());
         ninosj.setApellidos(a.getApellidos());
         ninosj.setCodigoNuestro(a.getCodigoNuestro());
-        ninosj.setColonia(a.getColonia());
         ninosj.setEstado(a.getEstado());
         ninosj.setFechaAlta(a.getFechaAlta());
         ninosj.setFechaAltaProyecto(a.getFechaAltaProyecto());
@@ -1499,11 +1562,56 @@ public class NegocioImpl implements Negocio {
         ninosj.setFechaSalidaAcoes(a.getFechaSalidaAcoes());
         ninosj.setFechaSalidaProyecto(a.getFechaSalidaProyecto());
         ninosj.setGrado(a.getGrado());
-        System.out.println("Banderasas "+a.getIdSocio());
-        ninosj.setIdSocio(a.getIdSocio());
+        String query="SELECT NSOCIO FROM SOCIOS WHERE NSOCIONUESTRO="+a.getIdSocio().getNSocioNuestro();
+        List<String>Consulta=ConsultarID(query);
+        Socios socio=new Socios();
+        if(Consulta.isEmpty()){
+            socio=new Socios();
+        }else{
+            for(String b:Consulta){
+                Socios s=em.find(Socios.class, Long.parseLong(b));
+                socio=s;
+            }
+        }
+        String query2="SELECT CODIGO FROM PROYECTOS WHERE CODIGONUESTRO="+a.getProyecto().getCodigoNuestro();
+        List<String>Consulta2=ConsultarID(query2);
+        Proyectos pr=new Proyectos();
+        if(Consulta2.isEmpty()){
+            pr=new Proyectos();
+        }else{
+            for(String b:Consulta2){
+                Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        String query3="SELECT CODIGO FROM AGENTE WHERE CODIGONUESTRO="+a.getAgente().getIdNuestro();
+        List<String>Consulta3=ConsultarID(query3);
+        Agente ag=new Agente();
+        if(Consulta3.isEmpty()){
+            ag=new Agente();
+        }else{
+            for(String b:Consulta3){
+                Agente s=em.find(Agente.class, Long.parseLong(b));
+                ag=s;
+            }
+        }
+        String query4="SELECT ID_COLONIA FROM COLONIAS WHERE ID_COLONIANUESTRO="+a.getColonia().getIdNuestro();
+        List<String>Consulta4=ConsultarID(query4);
+        Colonias col=new Colonias();
+        if(Consulta4.isEmpty()){
+            col=new Colonias();
+        }else{
+            for(String b:Consulta4){
+                Colonias s=em.find(Colonias.class, Long.parseLong(b));
+                col=s;
+            }
+        }
+        ninosj.setIdSocio(socio);
         ninosj.setNombre(a.getNombre());
         ninosj.setObservaciones(a.getObservaciones());
-        ninosj.setProyecto(a.getProyecto());
+        ninosj.setProyecto(pr);
+        ninosj.setColonia(col);
+        ninosj.setAgente(ag);
         ninosj.setSexo(a.getSexo());
         System.out.println("Objeto creado: "+ninosj+" objeto insertado: "+a);
         em.persist(ninosj);
@@ -1534,6 +1642,68 @@ public class NegocioImpl implements Negocio {
             ResultSet rs=st.executeQuery(consulta);
             while(rs.next()){
                 NinosJovenes e=new NinosJovenes();
+                e.setCodigo(rs.getLong(1));
+                e.setApellidos(rs.getString(2));
+                e.setCodigoNuestro(rs.getLong(3));
+                e.setEstado(rs.getString(4));
+                e.setFechaAlta(rs.getDate(5));
+                e.setFechaAltaProyecto(rs.getDate(6));
+                e.setFechaEntrada(rs.getDate(7));
+                e.setFechaNacimiento(rs.getDate(8));
+                e.setFechaSalidaAcoes(rs.getDate(9));
+                e.setFechaSalidaProyecto(rs.getDate(10));
+                e.setGrado(rs.getString(11));
+                e.setNombre(rs.getString(12));
+                e.setObservaciones(rs.getString(13));
+                e.setSexo(rs.getString(14));
+                String query="SELECT CODIGO FROM PROYECTOS WHERE CODIGO="+rs.getLong(15);
+                List<String>Consulta=ConsultarID(query);
+                Agente ag=new Agente();
+                if(Consulta.isEmpty()){
+                    ag=new Agente();
+                }else{
+                    for(String b:Consulta){
+                        Agente s=em.find(Agente.class, Long.parseLong(b));
+                        ag=s;
+                    }
+                }
+                String query2="SELECT ID_COLONIA FROM COLONIAS WHERE ID_COLONIA="+rs.getLong(16);
+                List<String>Consulta2=ConsultarID(query2);
+                Colonias col=new Colonias();
+                if(Consulta2.isEmpty()){
+                    col=new Colonias();
+                }else{
+                    for(String b:Consulta2){
+                        Colonias s=em.find(Colonias.class, Long.parseLong(b));
+                        col=s;
+                    }
+                }
+                String query3="SELECT NSOCIO FROM SOCIOS WHERE NSOCIO="+rs.getLong(17);
+                List<String>Consulta3=ConsultarID(query3);
+                Socios soc=new Socios();
+                if(Consulta3.isEmpty()){
+                    soc=new Socios();
+                }else{
+                    for(String b:Consulta3){
+                        Socios s=em.find(Socios.class, Long.parseLong(b));
+                        soc=s;
+                    }
+                }
+                String query4="SELECT CODIGO FROM PROYECTOS WHERE CODIGO="+rs.getLong(8);
+                List<String>Consulta4=ConsultarID(query4);
+                Proyectos pr=new Proyectos();
+                if(Consulta4.isEmpty()){
+                    pr=new Proyectos();
+                }else{
+                    for(String b:Consulta4){
+                        Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                        pr=s;
+                    }
+                }
+                e.setAgente(ag);
+                e.setColonia(col);
+                e.setIdSocio(soc);
+                e.setProyecto(pr);
                 resultado.add(e);
             }
             return resultado;

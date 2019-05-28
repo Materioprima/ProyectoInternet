@@ -21,6 +21,10 @@
                         <h:outputText value="Nota"/>
                         <h:inputText id ="nota" value="#{academicos.academico.nota}"/>
                         <h:message for="nota"/>
+                        
+                        <h:outputText value="Niño"/>
+                        <h:inputText id ="Niño" value="#{academicos.academico.nino.codigoNuestro}"/>
+                        <h:message for="Niño"/>
 
                         <h:commandButton value="#{academicos.accion}" action="#{academicos.ejecutarAccion()}"/>
                         <h:commandButton value="Cancelar" action="/tablas/academico.xhtml"/>

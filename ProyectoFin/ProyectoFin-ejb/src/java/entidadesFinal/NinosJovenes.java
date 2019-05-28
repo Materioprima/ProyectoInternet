@@ -223,7 +223,7 @@ public class NinosJovenes implements Serializable
 
     @Override
     public String toString() {
-        return "Niño " + codigo+" ";
+        return "Niño: " + codigoNuestro+" ";
     }
     
 }

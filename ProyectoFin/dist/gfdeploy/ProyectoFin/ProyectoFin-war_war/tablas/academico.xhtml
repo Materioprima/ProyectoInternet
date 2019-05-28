@@ -22,6 +22,11 @@
             </h:column>
             
             <h:column>
+                <f:facet name="header">Niño</f:facet>
+                <h:outputText value="#{a.nino}"/>
+            </h:column>
+            
+            <h:column>
                 <f:facet name="header">Opciones</f:facet>
                 <h:form>
                     <h:commandButton value="Modificar" action="#{academicos.modificar(a)}"/>
