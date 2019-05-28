@@ -88,7 +88,7 @@ public class VistaBecas {
         return null;
     }
     
-    public void setAcademico(Becas Becas) {
+    public void setBecas(Becas Becas) {
         this.becas = Becas;
     }
     
@@ -98,7 +98,7 @@ public class VistaBecas {
         return null;
     }
 
-    public String insertarAcademico() {
+    public String insertarBecas() {
         setModo(Modo.INSERTAR);
         return "/edicion/edicionBecas.xhtml";
     }
@@ -118,7 +118,7 @@ public class VistaBecas {
             }
             sesion.refrescarUsuario();
             System.out.println("Se hizo la accion "+this.getModo());
-            return "/tablas/Becas.xhtml";
+            return "/tablas/becas.xhtml";
         } catch (FinalException e) {
             return "/index.xhtml";
         }

@@ -65,6 +65,9 @@ public class Becas implements Serializable {
 	this.concepto = concepto;
     }
     public NinosJovenes getNino() {
+        if(nino==null){
+            nino=new NinosJovenes();
+        }
 	return nino;
     }
     public void setNino(NinosJovenes nino) {

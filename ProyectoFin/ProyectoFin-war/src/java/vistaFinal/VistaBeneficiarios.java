@@ -10,8 +10,7 @@ package vistaFinal;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-import entidadesFinal.Academico;
-import entidadesFinal.Agente;
+
 import entidadesFinal.Beneficiarios;
 import negocioFinal.FinalException;
 import negocioFinal.Negocio;
@@ -19,7 +18,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-@Named(value = "vistabeneficiarios")
+@Named(value = "beneficiarios")
 @RequestScoped
 public class VistaBeneficiarios {
     

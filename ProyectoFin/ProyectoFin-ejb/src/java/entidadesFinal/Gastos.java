@@ -80,10 +80,13 @@ public class Gastos implements Serializable {
     public void setFecha(Date Fecha) {
     	fecha = Fecha;
     }
-    public Proyectos getGastos() {
+    public Proyectos getProyectos() {
+        if(gastos==null){
+            gastos=new Proyectos();
+        }
     	return gastos;
     }
-    public void setGastos(Proyectos gastos) {
+    public void setProyectos(Proyectos gastos) {
     	this.gastos = gastos;
     }
     
@@ -109,7 +112,7 @@ public class Gastos implements Serializable {
 
     @Override
     public String toString() {
-        return "Clases.Gastos[ id=" + id + " ]";
+        return "Gastos: "+idNuestro;
     }
     
 }

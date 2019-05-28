@@ -80,7 +80,7 @@ public class VistaGastos {
         return null;
     }
     
-    public void setSocios(Gastos g) {
+    public void setGastos(Gastos g) {
         this.gastos = g;
     }
     
@@ -90,7 +90,7 @@ public class VistaGastos {
         return null;
     }
 
-    public String insertarProyectos() {
+    public String insertarGastos() {
         setModo(Modo.INSERTAR);
         return "/edicion/edicionGastos.xhtml";
     }

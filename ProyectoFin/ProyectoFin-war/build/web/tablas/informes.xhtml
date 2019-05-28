@@ -6,10 +6,6 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:define name="tablasUsuarios">
         <h:dataTable id="customers" value="#{infoSesion.informes}" var="a">
-            <h:column>
-                <f:facet name="header">ID</f:facet>
-                <h:outputText value="#{a.id}"/>
-                </h:column>
             
             <h:column>
                 <f:facet name="header">Numero de informe</f:facet>

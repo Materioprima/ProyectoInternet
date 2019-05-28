@@ -185,7 +185,7 @@ public class Ingreso implements Serializable {
 
     @Override
     public String toString() {
-        return "Codigo: "+codigo_transaccionNuestro;
+        return "Ingreso: "+codigo_transaccionNuestro;
     }
     
 }

@@ -419,9 +419,20 @@ public class NegocioImpl implements Negocio {
         ordenp.setConcepto(a.getConcepto());
         ordenp.setFecha(a.getFecha());
         ordenp.setImporte(a.getImporte());
-        ordenp.setNino(a.getNino());
         ordenp.setNumero_ordenNuestro(a.getNumero_ordenNuestro());
         ordenp.setTr(a.isTr());
+        String query="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGONUESTRO="+a.getNino().getCodigoNuestro();
+        List<String>Consulta=ConsultarID(query);
+        NinosJovenes ninos=new NinosJovenes();
+        if(Consulta.isEmpty()){
+            ninos=new NinosJovenes();
+        }else{
+            for(String b:Consulta){
+                NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                ninos=s;
+            }
+        }
+        ordenp.setNino(ninos);
         em.merge(ordenp);
         
     }
@@ -431,13 +442,24 @@ public class NegocioImpl implements Negocio {
         // TODO
         //compruebaLogin(c.getUsuario());
         Becas orden=new Becas();
+        orden.setNumero_orden(a.getNumero_orden());
         orden.setConcepto(a.getConcepto());
         orden.setFecha(a.getFecha());
         orden.setImporte(a.getImporte());
-        orden.setNino(a.getNino());
-        orden.setNumero_orden(a.getNumero_orden());
         orden.setNumero_ordenNuestro(a.getNumero_ordenNuestro());
         orden.setTr(a.isTr());
+        String query="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGONUESTRO="+a.getNino().getCodigoNuestro();
+        List<String>Consulta=ConsultarID(query);
+        NinosJovenes ninos=new NinosJovenes();
+        if(Consulta.isEmpty()){
+            ninos=new NinosJovenes();
+        }else{
+            for(String b:Consulta){
+                NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                ninos=s;
+            }
+        }
+        orden.setNino(ninos);
         System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
         em.persist(orden);
     }
@@ -467,6 +489,24 @@ public class NegocioImpl implements Negocio {
             ResultSet rs=st.executeQuery(consulta);
             while(rs.next()){
                 Becas e=new Becas();
+                e.setNumero_orden(rs.getLong(1));
+                e.setConcepto(rs.getString(2));
+                e.setFecha(rs.getDate(3));
+                e.setImporte(rs.getDouble(4));
+                e.setNumero_ordenNuestro(rs.getLong(5));
+                e.setTr(rs.getBoolean(6));
+                String query="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGO="+rs.getLong(7);
+                List<String>Consulta=ConsultarID(query);
+                NinosJovenes ninos=new NinosJovenes();
+                if(Consulta.isEmpty()){
+                    ninos=new NinosJovenes();
+                }else{
+                    for(String b:Consulta){
+                    NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                    ninos=s;
+                    }
+                }
+                e.setNino(ninos);
                 resultado.add(e);
             }
             return resultado;
@@ -482,38 +522,72 @@ public class NegocioImpl implements Negocio {
   
 //FIN BECAS
     
-//INICIO BECAS
+//INICIO BENEFICIARIO
     
     
     @Override
     public void modificarBeneficiarios(Beneficiarios a)  throws FinalException{
-        // TODO
-        //compruebaLogin(c.getUsuario());
-        Beneficiarios ordenp = em.find(Beneficiarios.class, a.getCodigo());
-        ordenp.setCodigoNuestro(a.getCodigoNuestro());
-        ordenp.setHabilitado(a.getHabilitado());
-        ordenp.setIngresos(a.getIngresos());
-        ordenp.setNumeroCuenta(a.getNumeroCuenta());
-        ordenp.setObservaciones(a.getObservaciones());
-        ordenp.setTipoBeneficiario(a.getTipoBeneficiario());
-        em.merge(ordenp);
+        try {
+            // TODO
+            //compruebaLogin(c.getUsuario());
+            Beneficiarios ordenp = em.find(Beneficiarios.class, a.getCodigo());
+            ordenp.setCodigoNuestro(a.getCodigoNuestro());
+            ordenp.setHabilitado(a.getHabilitado());
+            //ordenp.setIngresos(a.getIngresos());
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT CODIGO_TRANSACCION FROM INGRESO WHERE beneficiario_codigo="+a.getCodigo();
+            ResultSet rs=st.executeQuery(consulta);
+            List<Ingreso>ingre=new ArrayList<>();
+            while(rs.next())
+            {
+                Ingreso e=new Ingreso();
+                e.setId(rs.getLong(1));
+                ingre.add(e);
+            }
+            ordenp.setIngresos(ingre);
+            ordenp.setNumeroCuenta(a.getNumeroCuenta());
+            ordenp.setObservaciones(a.getObservaciones());
+            ordenp.setTipoBeneficiario(a.getTipoBeneficiario());
+            em.merge(ordenp);
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }
     
     @Override
     public void insertarBeneficiarios(Beneficiarios a) throws FinalException{
-        // TODO
-        //compruebaLogin(c.getUsuario());
-        Beneficiarios orden=new Beneficiarios();
-        orden.setCodigo(a.getCodigo());
-        orden.setCodigoNuestro(a.getCodigoNuestro());
-        orden.setHabilitado(a.getHabilitado());
-        orden.setIngresos(a.getIngresos());
-        orden.setNumeroCuenta(a.getNumeroCuenta());
-        orden.setObservaciones(a.getObservaciones());
-        orden.setTipoBeneficiario(a.getTipoBeneficiario());
-        System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
-        em.persist(orden);
+        try {
+            // TODO
+            //compruebaLogin(c.getUsuario());
+            Beneficiarios orden=new Beneficiarios();
+            orden.setCodigo(a.getCodigo());
+            orden.setCodigoNuestro(a.getCodigoNuestro());
+            orden.setHabilitado(a.getHabilitado());
+            //orden.setIngresos(a.getIngresos());
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT CODIGO_TRANSACCION FROM INGRESO WHERE beneficiario_codigo="+a.getCodigoNuestro();
+            ResultSet rs=st.executeQuery(consulta);
+            List<Ingreso>ingre=new ArrayList<>();
+            while(rs.next())
+            {
+                Ingreso e=new Ingreso();
+                e.setId(rs.getLong(1));
+                ingre.add(e);
+            }
+            orden.setIngresos(ingre);
+            orden.setNumeroCuenta(a.getNumeroCuenta());
+            orden.setObservaciones(a.getObservaciones());
+            orden.setTipoBeneficiario(a.getTipoBeneficiario());
+            System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
+            em.persist(orden);
+        } 
+        catch (SQLException ex) 
+        {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     
@@ -541,6 +615,24 @@ public class NegocioImpl implements Negocio {
             ResultSet rs=st.executeQuery(consulta);
             while(rs.next()){
                 Beneficiarios e=new Beneficiarios();
+                e.setCodigo(rs.getLong(1));
+                e.setCodigoNuestro(rs.getLong(2));
+                e.setHabilitado(rs.getBoolean(3));
+                e.setNumeroCuenta(rs.getString(4));
+                e.setObservaciones(rs.getString(5));
+                e.setTipoBeneficiario(rs.getString(6));
+                Connection conn2 = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st2=conn2.createStatement();
+            String consulta2="SELECT CODIGO_TRANSACCIONNUESTRO FROM INGRESO WHERE beneficiario_codigo="+e.getCodigo();
+            ResultSet rs2=st2.executeQuery(consulta2);
+            List<Ingreso>ingre=new ArrayList<>();
+            while(rs2.next())
+            {
+                Ingreso e2=new Ingreso();
+                e2.setIdNuestro(rs2.getLong(1));
+                ingre.add(e2);
+            }
+                e.setIngresos(ingre);
                 resultado.add(e);
             }
             return resultado;
@@ -554,7 +646,7 @@ public class NegocioImpl implements Negocio {
         return null;
     }
   
-//FIN BECAS
+//FIN BENEFICIARIO
     
 //INICIO COLONIAS
     
@@ -654,9 +746,20 @@ public class NegocioImpl implements Negocio {
         ordenp.setCarburante(a.getCarburante());
         ordenp.setContenedor(a.getContenedor());
         ordenp.setFecha(a.getFecha());
-        ordenp.setGastos(a.getGastos());
         ordenp.setMantenimiento(a.getMantenimiento());
         ordenp.setVoluntarios(a.getVoluntarios());
+        String query="SELECT CODIGO FROM PROYECTOS WHERE CODIGONUESTRO="+a.getProyectos().getCodigoNuestro();
+        List<String>Consulta=ConsultarID(query);
+        Proyectos pr=new Proyectos();
+        if(Consulta.isEmpty()){
+            pr=new Proyectos();
+        }else{
+            for(String b:Consulta){
+                Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        ordenp.setProyectos(pr);
         em.merge(ordenp);
         
     }
@@ -671,9 +774,20 @@ public class NegocioImpl implements Negocio {
         orden.setCarburante(a.getCarburante());
         orden.setContenedor(a.getContenedor());
         orden.setFecha(a.getFecha());
-        orden.setGastos(a.getGastos());
         orden.setMantenimiento(a.getMantenimiento());
         orden.setVoluntarios(a.getVoluntarios());
+        String query="SELECT CODIGO FROM PROYECTOS WHERE CODIGONUESTRO="+a.getProyectos().getCodigoNuestro();
+        List<String>Consulta=ConsultarID(query);
+        Proyectos pr=new Proyectos();
+        if(Consulta.isEmpty()){
+            pr=new Proyectos();
+        }else{
+            for(String b:Consulta){
+                Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        orden.setProyectos(pr);
         System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
         em.persist(orden);
     }
@@ -703,6 +817,25 @@ public class NegocioImpl implements Negocio {
             ResultSet rs=st.executeQuery(consulta);
             while(rs.next()){
                 Gastos e=new Gastos();
+                e.setId(rs.getLong(1));
+                e.setCarburante(rs.getDouble(2));
+                e.setContenedor(rs.getDouble(3));
+                e.setMantenimiento(rs.getDouble(4));
+                e.setVoluntarios(rs.getDouble(5));
+                e.setFecha(rs.getDate(6));
+                e.setIdNuestro(rs.getLong(7));
+                String query="SELECT CODIGO FROM PROYECTOS WHERE CODIGO="+rs.getLong(8);
+                List<String>Consulta=ConsultarID(query);
+                Proyectos pr=new Proyectos();
+                if(Consulta.isEmpty()){
+                    pr=new Proyectos();
+                }else{
+                    for(String b:Consulta){
+                        Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                        pr=s;
+                    }
+                }
+                e.setProyectos(pr);
                 resultado.add(e);
             }
             return resultado;
@@ -729,7 +862,24 @@ public class NegocioImpl implements Negocio {
         ordenp.setFechaEscritura(a.getFechaEscritura());
         ordenp.setInforme(a.getInforme());
         ordenp.setNumeroInforme(a.getNumeroInforme());
-        ordenp.setPersonal(a.getPersonal());
+        Connection conn;
+        try {
+            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT ID FROM Personal where dni='"+a.getPersonal().getDni()+"'";
+            ResultSet rs=st.executeQuery(consulta);
+            Long prueba=0L;
+            while(rs.next())
+            {
+                prueba = rs.getLong(1);
+            }
+            Personal b= new Personal();
+            b.setId(prueba);
+            b.setDni(a.getPersonal().getDni());
+            ordenp.setPersonal(b);
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
         em.merge(ordenp);
         
     }

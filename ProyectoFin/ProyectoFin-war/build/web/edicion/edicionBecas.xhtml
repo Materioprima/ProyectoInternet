@@ -4,7 +4,7 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <ui:define name="tablasBecas">
+    <ui:define name="tablasUsuarios">
         <c:choose> 
             <c:when test="#{vistabecas.autorizadoParaEdicion}">
                 <h1 class="azul">#{vistabecas.accion} Becas</h1>
@@ -25,6 +25,14 @@
                         <h:outputText value="Importe"/>
                         <h:inputText id ="importe" value="#{vistabecas.becas.importe}"/>
                         <h:message for="importe"/>
+                        
+                        <h:outputText value="Tramitada"/>
+                        <h:inputText id ="tr" value="#{vistabecas.becas.tr}"/>
+                        <h:message for="tr"/>
+                        
+                        <h:outputText value="Niño"/>
+                        <h:inputText id ="nino" value="#{vistabecas.becas.nino.codigoNuestro}"/>
+                        <h:message for="nino"/>
 
                         <h:commandButton value="#{vistabecas.accion}" action="#{vistabecas.ejecutarAccion()}"/>
                         <h:commandButton value="Cancelar" action="/tablas/becas.xhtml"/>
