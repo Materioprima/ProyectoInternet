@@ -111,7 +111,7 @@ public class Academico implements Serializable {
 
     @Override
     public String toString() {
-        return "Clases.Academico[ id=" + id +" idNuestro="+idNuestro+ " periodo="+fechaPeriodo+" nota="+nota+" ]";
+        return "Inf.Academico: "+idNuestro;
     }
     
 }

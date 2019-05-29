@@ -73,6 +73,6 @@ public class Informes implements Serializable
     
     @Override
     public String toString() {
-        return "Informe "+numeroInforme;
+        return "Informe: "+numeroInforme;
     }
 }

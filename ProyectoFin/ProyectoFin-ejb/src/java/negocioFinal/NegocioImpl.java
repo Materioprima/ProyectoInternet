@@ -1657,7 +1657,7 @@ public class NegocioImpl implements Negocio {
                 e.setNombre(rs.getString(12));
                 e.setObservaciones(rs.getString(13));
                 e.setSexo(rs.getString(14));
-                String query="SELECT CODIGO FROM PROYECTOS WHERE CODIGO="+rs.getLong(15);
+                String query="SELECT CODIGO FROM AGENTE WHERE CODIGO="+rs.getLong(15);
                 List<String>Consulta=ConsultarID(query);
                 Agente ag=new Agente();
                 if(Consulta.isEmpty()){
@@ -1690,7 +1690,7 @@ public class NegocioImpl implements Negocio {
                         soc=s;
                     }
                 }
-                String query4="SELECT CODIGO FROM PROYECTOS WHERE CODIGO="+rs.getLong(8);
+                String query4="SELECT CODIGO FROM PROYECTOS WHERE CODIGO="+rs.getLong(18);
                 List<String>Consulta4=ConsultarID(query4);
                 Proyectos pr=new Proyectos();
                 if(Consulta4.isEmpty()){

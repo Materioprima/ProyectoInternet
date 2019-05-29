@@ -116,6 +116,6 @@ public class Becas implements Serializable {
 
     @Override
     public String toString() {
-        return "Clases.Becas[ numero de orden=" + numero_orden + " ]";
+        return "Num.Beca: "+num_ordenNuestro;
     }
 }
