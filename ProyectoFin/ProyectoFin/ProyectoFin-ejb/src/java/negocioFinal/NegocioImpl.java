@@ -1,0 +1,2125 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package negocioFinal;
+
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+/*import es.uma.informatica.sii.agendaee.entidades.Contacto;*/
+import entidadesFinal.Academico;
+import entidadesFinal.Agente;
+import entidadesFinal.Becas;
+import entidadesFinal.Beneficiarios;
+import entidadesFinal.Colonias;
+import entidadesFinal.Gastos;
+import entidadesFinal.Informes;
+import entidadesFinal.Ingreso;
+import entidadesFinal.OrdenPago;
+import entidadesFinal.Personal;
+import entidadesFinal.Proyectos;
+import entidadesFinal.Socios;
+import entidadesFinal.Usuario;
+import entidadesFinal.NinosJovenes;
+import entidadesFinal.Relacion;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.ejb.Stateless;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+/**
+ *
+ * @author Materio
+ */
+@Stateless
+public class NegocioImpl implements Negocio {
+
+    private static final int TAM_CADENA_VALIDACION = 20;
+
+    @PersistenceContext(unitName = "ProyectoFin-ejbPU")
+    private EntityManager em;
+
+    /**
+     *
+     * @param u
+     * @throws negocioFinal.CuentaRepetidaException
+     */
+    @Override
+    public void registrarUsuario(Usuario u) throws FinalException{
+        Usuario user = em.find(Usuario.class, u.getCuenta());
+        if (user != null) {
+            // El usuario ya existe
+            throw new CuentaRepetidaException();
+        }
+
+        u.setCadenaValidacion(generarCadenaAleatoria());
+        em.persist(u);
+
+        String url_validacion = "http://localhost:8080/ProyectoFin-war/faces/login/validarCuenta.xhtml?cuenta="
+                + u.getCuenta() + "&codigoValidacion=" + u.getCadenaValidacion();
+
+        System.out.println(url_validacion);
+    }
+
+    private String generarCadenaAleatoria() {
+        Random rnd = new Random(System.currentTimeMillis());
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < TAM_CADENA_VALIDACION; i++) {
+            int v = rnd.nextInt(62);
+            if (v < 26) {
+                sb.append((char) ('a' + v));
+            } else if (v < 52) {
+                sb.append((char) ('A' + v - 26));
+            } else {
+                sb.append((char) ('0' + v - 52));
+            }
+        }
+
+        return sb.toString();
+
+    }
+
+    @Override
+    public void validarCuenta(String cuenta, String validacion) throws FinalException{
+        Usuario u = em.find(Usuario.class, cuenta);
+        if (u == null) {
+            throw new CuentaInexistenteException();
+        }
+
+        if (u.getCadenaValidacion() == null) {
+            // la cuenta ya está activa
+            return;
+        }
+
+        if (!u.getCadenaValidacion().equals(validacion)) {
+            throw new ValidacionIncorrectaException();
+        }
+        // else
+        // Eliminamos la cadena de validación, indicando que ya está activa la cuenta
+        u.setCadenaValidacion(null);
+    }
+
+    /**
+     * Este método debe comprobar que el nombre de usuario y contraseña que
+     * recibe en el objeto u pertenecen a un usuario que existe en la BBDD y que
+     * está validado (un usuario está validado cuando su cadena de validación es
+     * nula).
+     * 
+     * Puede lanzar las excepciones CuentaInexistenteException, CuentaInactivaException
+     * y ContraseniaInvalidaException
+     *
+     * @param u
+     * @throws negocioFinal.FinalException
+     */
+    @Override
+    public void compruebaLogin(Usuario u)  throws FinalException {
+        // TODO
+        Usuario us = em.find(Usuario.class, u.getCuenta());
+        if(us==null){
+            throw new CuentaInexistenteException();
+        }
+        if (u.getCadenaValidacion() != null) {
+            throw new CuentaInactivaException();
+        }
+        if (!(us.getContrasenia().equals(u.getContrasenia()))) {
+            throw new ContraseniaInvalidaException();
+        }
+    }
+
+    /**
+     * Este método debe comprobar que el usuario que se le pasa como parámetro
+     * es un usuario existente y con contraseña correcta (ya que estamos en la capa
+     * de negocio con un Session Bean de tipo @Stateless, debemos comprobar
+     * todos los accesos a la capa de nogocio). En caso negativo debe devolver debe devolver 
+     * la excepción que corresponda,
+     * en caso afirmativo debe devolver una entidad usuario tal con la información
+     * existe ahora mismo en la BBDD.
+     * @param u
+     * @return 
+     * @throws negocioFinal.FinalException 
+     */
+    @Override
+    public Usuario refrescarUsuario(Usuario u) throws FinalException {
+        // TODO
+        compruebaLogin(u);
+        Usuario usu = em.find(Usuario.class, u.getCuenta());
+        em.refresh(usu);
+        return usu;
+    }
+    
+    /**
+     * Este método debe actualizar el contacto correspondiente en la BBDD con
+     * la información contenida en el objeto que se le pasa como argumento.
+     * Antes de eso, debe comprobar que el usuario a quien pertenece el contacto existe y 
+     * tiene una contraseña correcta (en caso contrario debe devolver la excepción que
+     * corresponda.
+     * @param a
+     * @param c
+     * @return 
+     * @throws negocioFinal.FinalException 
+     * 
+     */
+    
+    //INICIO ACADEMICO
+    
+    @Override
+    public void modificarAcademico(Academico a)  throws FinalException
+    {
+        Academico acade = em.find(Academico.class, a.getId());
+        acade.setIdNuestro(a.getIdNuestro());
+        acade.setFechaPeriodo(a.getFechaPeriodo());
+        acade.setNota(a.getNota());
+        em.merge(acade);
+    }
+    
+    @Override
+    public void insertarAcademico(Academico a) throws FinalException{
+        Academico acad=new Academico();
+        acad.setId(a.getId());
+        acad.setIdNuestro(a.getIdNuestro());
+        acad.setFechaPeriodo(a.getFechaPeriodo());
+        acad.setNota(a.getNota());
+        String query="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGONUESTRO="+a.getNino().getCodigoNuestro();
+        List<String>Consulta=ConsultarID(query);
+        NinosJovenes ninos=new NinosJovenes();
+        if(Consulta.isEmpty()){
+            ninos=new NinosJovenes();
+        }else{
+            for(String b:Consulta)
+            {
+                NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                ninos=s;
+            }
+        }
+        acad.setNinosJovenes(ninos);
+        em.persist(acad);
+    }
+    
+    
+    @Override
+    public void eliminarAcademico(Academico a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Academico academ = em.find(Academico.class, a.getId());
+        if(academ!=null){
+            em.remove(academ);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Academico> mostrarAcademico(){
+        
+        try {
+            // TODO
+            List<Academico> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM ACADEMICO";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Academico e=new Academico();
+                e.setId(rs.getLong(1));
+                e.setIdNuestro(rs.getLong(3));
+                e.setFechaPeriodo(rs.getDate(2));
+                e.setNota(rs.getDouble(4));
+                String query="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGO="+rs.getLong(5);
+                List<String>Consulta=ConsultarID(query);
+                NinosJovenes ninos=new NinosJovenes();
+                if(Consulta.isEmpty()){
+                    ninos=new NinosJovenes();
+                }else{
+                    for(String b:Consulta)
+                    {
+                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                        ninos=s;
+                    }
+                }
+                e.setNinosJovenes(ninos);
+                        resultado.add(e);
+                    }
+                    return resultado;
+                } catch (SQLException ex) {
+                    Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
+        return null;
+    }
+    
+    
+    //FIN ACADEMICO
+    
+    //INICIO ORDENPAGO
+    
+    
+    @Override
+    public void modificarOrdenPago(OrdenPago a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        OrdenPago ordenp = em.find(OrdenPago.class, a.getNum_Orden());
+        ordenp.setNum_OrdenNuestro(a.getNum_OrdenNuestro());
+        ordenp.setEmitida_por(a.getEmitida_por());
+        ordenp.setFecha_emi(a.getFecha_emi());
+        em.merge(ordenp);
+        
+    }
+    
+    @Override
+    public void insertarOrdenPago(OrdenPago a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        OrdenPago orden=new OrdenPago();
+        orden.setNum_Orden(a.getNum_Orden());
+        orden.setNum_OrdenNuestro(a.getNum_OrdenNuestro());
+        orden.setEmitida_por(a.getEmitida_por());
+        orden.setFecha_emi(a.getFecha_emi());
+        System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
+        em.persist(orden);
+    }
+    
+    
+    @Override
+    public void eliminarOrdenPago(OrdenPago a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        OrdenPago ord = em.find(OrdenPago.class, a.getNum_Orden());
+        if(ord!=null){
+            em.remove(ord);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<OrdenPago> mostrarOrdenPago(){
+        
+        try {
+            // TODO
+            List<OrdenPago> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM OrdenPago";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                OrdenPago e=new OrdenPago();
+                e.setNum_Orden(rs.getLong(1));
+                e.setNum_OrdenNuestro(rs.getLong(4));
+                e.setEmitida_por(rs.getString(2));
+                e.setFecha_emi(rs.getDate(3));
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+//FIN ORDENPAGO
+    
+//INICIO Agente
+    
+    
+    @Override
+    public void modificarAgente(Agente a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Agente ordenp = em.find(Agente.class, a.getId());
+        ordenp.setIdNuestro(a.getIdNuestro());
+        ordenp.setDescripcion(a.getDescripcion());
+        ordenp.setEncargado(a.getEncargado());
+        ordenp.setNombre(a.getNombre());
+        em.merge(ordenp);
+        
+    }
+    
+    @Override
+    public void insertarAgente(Agente a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Agente orden=new Agente();
+        orden.setId(a.getId());
+        orden.setIdNuestro(a.getIdNuestro());
+        orden.setDescripcion(a.getDescripcion());
+        orden.setEncargado(a.getEncargado());
+        orden.setNombre(a.getNombre());
+        System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
+        em.persist(orden);
+    }
+    
+    
+    @Override
+    public void eliminarAgente(Agente a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Agente ord = em.find(Agente.class, a.getId());
+        if(ord!=null){
+            em.remove(ord);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Agente> mostrarAgente(){
+        
+        try {
+            // TODO
+            List<Agente> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM Agente";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Agente e=new Agente();
+                e.setId(rs.getLong(1));
+                e.setIdNuestro(rs.getLong(2));
+                e.setDescripcion(rs.getString(3));
+                e.setNombre(rs.getString(4));
+                String query="SELECT CODIGO FROM NINOSJOVENES WHERE AGENTE_CODIGO="+e.getId();
+                List<String>Consulta=ConsultarID(query);
+                List<NinosJovenes> ninos=new ArrayList();
+                if(Consulta.isEmpty()){
+                    ninos.add(new NinosJovenes());
+                    e.setEncargado(e.getEncargado());
+                }else{
+                    for(String b:Consulta){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                        ninos.add(s);
+                    }
+                }
+                e.setEncargado(ninos);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+//FIN Agente
+    
+//INICIO BECAS
+    
+    
+    @Override
+    public void modificarBecas(Becas a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Becas ordenp = em.find(Becas.class, a.getNumero_orden());
+        ordenp.setConcepto(a.getConcepto());
+        ordenp.setFecha(a.getFecha());
+        ordenp.setImporte(a.getImporte());
+        ordenp.setNumero_ordenNuestro(a.getNumero_ordenNuestro());
+        ordenp.setTr(a.isTr());
+        String query="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGONUESTRO="+a.getNino().getCodigoNuestro();
+        List<String>Consulta=ConsultarID(query);
+        NinosJovenes ninos=new NinosJovenes();
+        if(Consulta.isEmpty()){
+            ninos=new NinosJovenes();
+        }else{
+            for(String b:Consulta){
+                NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                ninos=s;
+            }
+        }
+        ordenp.setNino(ninos);
+        em.merge(ordenp);
+        
+    }
+    
+    @Override
+    public void insertarBecas(Becas a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Becas orden=new Becas();
+        orden.setNumero_orden(a.getNumero_orden());
+        orden.setConcepto(a.getConcepto());
+        orden.setFecha(a.getFecha());
+        orden.setImporte(a.getImporte());
+        orden.setNumero_ordenNuestro(a.getNumero_ordenNuestro());
+        orden.setTr(a.isTr());
+        String query="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGONUESTRO="+a.getNino().getCodigoNuestro();
+        List<String>Consulta=ConsultarID(query);
+        NinosJovenes ninos=new NinosJovenes();
+        if(Consulta.isEmpty()){
+            ninos=new NinosJovenes();
+        }else{
+            for(String b:Consulta){
+                NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                ninos=s;
+            }
+        }
+        orden.setNino(ninos);
+        System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
+        em.persist(orden);
+    }
+    
+    
+    @Override
+    public void eliminarBecas(Becas a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Becas ord = em.find(Becas.class, a.getNumero_orden());
+        if(ord!=null){
+            em.remove(ord);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Becas> mostrarBecas(){
+        
+        try {
+            // TODO
+            List<Becas> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM Becas";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Becas e=new Becas();
+                e.setNumero_orden(rs.getLong(1));
+                e.setConcepto(rs.getString(2));
+                e.setFecha(rs.getDate(3));
+                e.setImporte(rs.getDouble(4));
+                e.setNumero_ordenNuestro(rs.getLong(5));
+                e.setTr(rs.getBoolean(6));
+                String query="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGO="+rs.getLong(7);
+                List<String>Consulta=ConsultarID(query);
+                NinosJovenes ninos=new NinosJovenes();
+                if(Consulta.isEmpty()){
+                    ninos=new NinosJovenes();
+                }else{
+                    for(String b:Consulta){
+                    NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                    ninos=s;
+                    }
+                }
+                e.setNino(ninos);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+//FIN BECAS
+    
+//INICIO BENEFICIARIO
+    
+    
+    @Override
+    public void modificarBeneficiarios(Beneficiarios a)  throws FinalException{
+        try {
+            // TODO
+            //compruebaLogin(c.getUsuario());
+            Beneficiarios ordenp = em.find(Beneficiarios.class, a.getCodigo());
+            ordenp.setCodigoNuestro(a.getCodigoNuestro());
+            ordenp.setHabilitado(a.getHabilitado());
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT CODIGO_TRANSACCION FROM INGRESO WHERE beneficiario_codigo="+a.getCodigo();
+            ResultSet rs=st.executeQuery(consulta);
+            List<Ingreso>ingre=new ArrayList<>();
+            while(rs.next())
+            {
+                Ingreso e=new Ingreso();
+                e.setId(rs.getLong(1));
+                ingre.add(e);
+            }
+            ordenp.setIngresos(ingre);
+            ordenp.setNumeroCuenta(a.getNumeroCuenta());
+            ordenp.setObservaciones(a.getObservaciones());
+            ordenp.setTipoBeneficiario(a.getTipoBeneficiario());
+            em.merge(ordenp);
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    @Override
+    public void insertarBeneficiarios(Beneficiarios a) throws FinalException{
+        try {
+            // TODO
+            //compruebaLogin(c.getUsuario());
+            Beneficiarios orden=new Beneficiarios();
+            orden.setCodigo(a.getCodigo());
+            orden.setCodigoNuestro(a.getCodigoNuestro());
+            orden.setHabilitado(a.getHabilitado());
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT CODIGO_TRANSACCION FROM INGRESO WHERE beneficiario_codigo="+a.getCodigoNuestro();
+            ResultSet rs=st.executeQuery(consulta);
+            List<Ingreso>ingre=new ArrayList<>();
+            while(rs.next())
+            {
+                Ingreso e=new Ingreso();
+                e.setId(rs.getLong(1));
+                ingre.add(e);
+            }
+            orden.setIngresos(ingre);
+            orden.setNumeroCuenta(a.getNumeroCuenta());
+            orden.setObservaciones(a.getObservaciones());
+            orden.setTipoBeneficiario(a.getTipoBeneficiario());
+            System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
+            em.persist(orden);
+        } 
+        catch (SQLException ex) 
+        {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    @Override
+    public void eliminarBeneficiarios(Beneficiarios a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Beneficiarios ord = em.find(Beneficiarios.class, a.getCodigo());
+        if(ord!=null){
+            em.remove(ord);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Beneficiarios> mostrarBeneficiarios(){
+        
+        try {
+            // TODO
+            List<Beneficiarios> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM Beneficiarios";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Beneficiarios e=new Beneficiarios();
+                e.setCodigo(rs.getLong(1));
+                e.setCodigoNuestro(rs.getLong(2));
+                e.setHabilitado(rs.getBoolean(3));
+                e.setNumeroCuenta(rs.getString(4));
+                e.setObservaciones(rs.getString(5));
+                e.setTipoBeneficiario(rs.getString(6));
+                Connection conn2 = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st2=conn2.createStatement();
+            String consulta2="SELECT CODIGO_TRANSACCIONNUESTRO FROM INGRESO WHERE beneficiario_codigo="+e.getCodigo();
+            ResultSet rs2=st2.executeQuery(consulta2);
+            List<Ingreso>ingre=new ArrayList<>();
+            while(rs2.next())
+            {
+                Ingreso e2=new Ingreso();
+                e2.setIdNuestro(rs2.getLong(1));
+                ingre.add(e2);
+            }
+                e.setIngresos(ingre);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+//FIN BENEFICIARIO
+    
+//INICIO COLONIAS
+    
+    
+    @Override
+    public void modificarColonias(Colonias a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        System.out.println("nombreBanderasaz "+a.getNombre()+" idn "+a.getId());
+        Colonias ordenp = em.find(Colonias.class, a.getId());
+        ordenp.setIdNuestro(a.getIdNuestro());
+        ordenp.setNombre(a.getNombre());
+        //ordenp.setPertenecen(a.getPertenecen());
+        em.merge(ordenp);
+        
+    }
+    
+    @Override
+    public void insertarColonias(Colonias a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Colonias orden=new Colonias();
+        orden.setId(a.getId());
+        orden.setIdNuestro(a.getIdNuestro());
+        orden.setNombre(a.getNombre());
+        System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
+        em.persist(orden);
+    }
+    
+    
+    @Override
+    public void eliminarColonias(Colonias a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        System.out.println(a);
+        Colonias ord = em.find(Colonias.class, a.getId());
+        if(ord!=null){
+            em.remove(ord);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Colonias> mostrarColonias(){
+        
+        try {
+            // TODO
+            List<Colonias> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM COLONIAS";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next())
+            {
+                Colonias e=new Colonias();
+                e.setId(rs.getLong(1));
+                e.setIdNuestro(rs.getLong(2));
+                e.setNombre(rs.getString(3));
+                String query="SELECT codigo FROM NINOSJOVENES where colonia_id_colonia="+e.getId();
+                List<String>Consultadi=ConsultarID(query);
+                List<NinosJovenes> ninos=new ArrayList();
+                if(Consultadi.isEmpty()){
+                    ninos.add(new NinosJovenes());
+                    e.setPertenecen(e.getPertenecen());
+                }else{
+                    for(String b:Consultadi){
+                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                        ninos.add(s);
+                    }
+                }
+                e.setPertenecen(ninos);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+    
+//FIN Colonias
+    
+//INICIO GASTOS
+    
+    
+    @Override
+    public void modificarGastos(Gastos a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Gastos ordenp = em.find(Gastos.class, a.getId());
+        ordenp.setIdNuestro(a.getIdNuestro());
+        ordenp.setCarburante(a.getCarburante());
+        ordenp.setContenedor(a.getContenedor());
+        ordenp.setFecha(a.getFecha());
+        ordenp.setMantenimiento(a.getMantenimiento());
+        ordenp.setVoluntarios(a.getVoluntarios());
+        String query="SELECT CODIGO FROM PROYECTOS WHERE CODIGONUESTRO="+a.getProyectos().getCodigoNuestro();
+        List<String>Consulta=ConsultarID(query);
+        Proyectos pr=new Proyectos();
+        if(Consulta.isEmpty()){
+            pr=new Proyectos();
+        }else{
+            for(String b:Consulta){
+                Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        ordenp.setProyectos(pr);
+        em.merge(ordenp);
+        
+    }
+    
+    @Override
+    public void insertarGastos(Gastos a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Gastos orden=new Gastos();
+        orden.setId(a.getId());
+        orden.setIdNuestro(a.getIdNuestro());
+        orden.setCarburante(a.getCarburante());
+        orden.setContenedor(a.getContenedor());
+        orden.setFecha(a.getFecha());
+        orden.setMantenimiento(a.getMantenimiento());
+        orden.setVoluntarios(a.getVoluntarios());
+        String query="SELECT CODIGO FROM PROYECTOS WHERE CODIGONUESTRO="+a.getProyectos().getCodigoNuestro();
+        List<String>Consulta=ConsultarID(query);
+        Proyectos pr=new Proyectos();
+        if(Consulta.isEmpty()){
+            pr=new Proyectos();
+        }else{
+            for(String b:Consulta){
+                Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        orden.setProyectos(pr);
+        System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
+        em.persist(orden);
+    }
+    
+    
+    @Override
+    public void eliminarGastos(Gastos a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Gastos ord = em.find(Gastos.class, a.getId());
+        if(ord!=null){
+            em.remove(ord);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Gastos> mostrarGastos(){
+        
+        try {
+            // TODO
+            List<Gastos> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM Gastos";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Gastos e=new Gastos();
+                e.setId(rs.getLong(1));
+                e.setCarburante(rs.getDouble(2));
+                e.setContenedor(rs.getDouble(3));
+                e.setMantenimiento(rs.getDouble(4));
+                e.setVoluntarios(rs.getDouble(5));
+                e.setFecha(rs.getDate(6));
+                e.setIdNuestro(rs.getLong(7));
+                String query="SELECT CODIGO FROM PROYECTOS WHERE CODIGO="+rs.getLong(8);
+                List<String>Consulta=ConsultarID(query);
+                Proyectos pr=new Proyectos();
+                if(Consulta.isEmpty()){
+                    pr=new Proyectos();
+                }else{
+                    for(String b:Consulta){
+                        Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                        pr=s;
+                    }
+                }
+                e.setProyectos(pr);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+//FIN gastos
+    
+//INICIO INFORMES
+    
+    
+    @Override
+    public void modificarInformes(Informes a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Informes ordenp = em.find(Informes.class, a.getId());
+        ordenp.setFechaEscritura(a.getFechaEscritura());
+        ordenp.setInforme(a.getInforme());
+        ordenp.setNumeroInforme(a.getNumeroInforme());
+        Connection conn;
+        try {
+            conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT ID FROM Personal where dni='"+a.getPersonal().getDni()+"'";
+            ResultSet rs=st.executeQuery(consulta);
+            Long prueba=0L;
+            while(rs.next())
+            {
+                prueba = rs.getLong(1);
+            }
+            Personal b= new Personal();
+            b.setId(prueba);
+            b.setDni(a.getPersonal().getDni());
+            ordenp.setPersonal(b);
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        em.merge(ordenp);
+        
+    }
+    
+    @Override
+    public void insertarInformes(Informes a) throws FinalException{
+        try {
+            // TODO
+            //compruebaLogin(c.getUsuario());
+            Informes orden=new Informes();
+            orden.setId(a.getId());
+            orden.setFechaEscritura(a.getFechaEscritura());
+            orden.setInforme(a.getInforme());
+            orden.setNumeroInforme(a.getNumeroInforme());
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT ID FROM Personal where dni='"+a.getPersonal().getDni()+"'";
+            ResultSet rs=st.executeQuery(consulta);
+            Long prueba=0L;
+            while(rs.next())
+            {
+                prueba = rs.getLong(1);
+            }
+            Personal b= new Personal();
+            b.setId(prueba);
+            b.setDni(a.getPersonal().getDni());
+            orden.setPersonal(b);
+            System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
+            em.persist(orden);
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    @Override
+    public void eliminarInformes(Informes a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Informes ord = em.find(Informes.class, a.getId());
+        if(ord!=null){
+            em.remove(ord);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Informes> mostrarInformes(){
+        
+        try {
+            // TODO
+            List<Informes> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM Informes";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Informes e=new Informes();
+                e.setId(rs.getLong(1));
+                e.setFechaEscritura(rs.getDate(2));
+                e.setInforme(rs.getString(3));
+                e.setNumeroInforme(rs.getLong(4));
+                System.out.println("ID PER"+rs.getLong(5));
+                Connection conn2 = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+                Statement st2=conn2.createStatement();
+                String query3="SELECT DNI FROM PERSONAL WHERE ID="+rs.getLong(5);
+                ResultSet rs2=st2.executeQuery(query3);
+                Personal per= new Personal();
+                while(rs2.next())
+                {
+                    per.setDni(rs2.getString(1));
+                }
+                e.setPersonal(per);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+//FIN informe
+    
+//INICIO INGRESO
+      @Override
+    public void modificarIngreso(Ingreso a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Ingreso ordenp = em.find(Ingreso.class, a.getId());
+        //ordenp.setBeneficiario(a.getBeneficiario());
+        ordenp.setDescripcion(a.getDescripcion());
+        ordenp.setEgreso_Dolares(a.getEgreso_Dolares());
+        ordenp.setEgreso_Euros(a.getEgreso_Euros());
+        ordenp.setEgreso_Lempiras(a.getEgreso_Lempiras());
+        ordenp.setFecha(a.getFecha());
+        ordenp.setIdNuestro(a.getIdNuestro());
+        ordenp.setIngreso_Dolares(a.getIngreso_Dolares());
+        ordenp.setIngreso_Euros(a.getIngreso_Euros());
+        ordenp.setIngreso_Lempiras(a.getIngreso_Lempiras());
+        ordenp.setValor_Divisas_Dolares(1.11441);
+        ordenp.setValor_Divisas_Euros(0.897182);
+        Double lemp = 24.4518;
+        Double lempeu = 27.2819;
+        if(ordenp.getEgreso_Dolares()!=0)
+        {
+            ordenp.setEgreso_Euros(ordenp.getEgreso_Dolares()*ordenp.getValor_Divisas_Euros());
+            ordenp.setEgreso_Lempiras(a.getEgreso_Dolares()*lemp);
+        }
+        else if(ordenp.getEgreso_Euros()!=0)
+        {
+            ordenp.setEgreso_Dolares(ordenp.getEgreso_Euros()*ordenp.getValor_Divisas_Dolares());
+            ordenp.setEgreso_Lempiras(ordenp.getEgreso_Euros()*lempeu);
+        }
+        else
+        {
+            ordenp.setEgreso_Dolares(ordenp.getEgreso_Lempiras()/lemp);
+            ordenp.setEgreso_Euros(ordenp.getEgreso_Lempiras()/lempeu);
+        }
+        if(ordenp.getIngreso_Dolares()!=0)
+        {
+            ordenp.setIngreso_Euros(ordenp.getIngreso_Dolares()*ordenp.getValor_Divisas_Euros());
+            ordenp.setIngreso_Lempiras(a.getIngreso_Dolares()*lemp);
+        }
+        else if(ordenp.getIngreso_Euros()!=0)
+        {
+            ordenp.setIngreso_Dolares(ordenp.getIngreso_Euros()*ordenp.getValor_Divisas_Dolares());
+            ordenp.setIngreso_Lempiras(ordenp.getIngreso_Euros()*lempeu);
+        }
+        else
+        {
+            ordenp.setIngreso_Dolares(ordenp.getIngreso_Lempiras()/lemp);
+            ordenp.setIngreso_Euros(ordenp.getIngreso_Lempiras()/lempeu);
+        }
+        //ordenp.setIngresos(a.getIngresos());
+        //ordenp.setOrdenpago(a.getOrdenpago());
+        ordenp.setProcedencia(a.getProcedencia());
+        //ordenp.setSocios(a.getSocio());
+        String query="SELECT NSOCIO FROM SOCIOS WHERE NSOCIONUESTRO="+a.getSocio().getNSocioNuestro();
+        List<String>Consulta=ConsultarID(query);
+        Socios socio=new Socios();
+        if(Consulta.isEmpty()){
+            socio=new Socios();
+        }else{
+            for(String b:Consulta){
+                Socios s=em.find(Socios.class, Long.parseLong(b));
+                socio=s;
+            }
+        }
+        String query2="SELECT CODIGO FROM BENEFICIARIOS WHERE CODIGONUESTRO="+a.getBeneficiario().getCodigoNuestro();
+        List<String>Consulta2=ConsultarID(query2);
+        Beneficiarios ben=new Beneficiarios();
+        if(Consulta2.isEmpty()){
+            ben=new Beneficiarios();
+        }else{
+            for(String b:Consulta2){
+                Beneficiarios s=em.find(Beneficiarios.class, Long.parseLong(b));
+                ben=s;
+            }
+        }
+        String query3="SELECT CODIGO FROM PROYECTOS WHERE CODIGONUESTRO="+a.getIngresos().getCodigoNuestro();
+        List<String>Consulta3=ConsultarID(query3);
+        Proyectos ingres= new Proyectos();
+        if(Consulta3.isEmpty()){
+            ingres= new Proyectos();
+        }else{
+            for(String b:Consulta3){
+                Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                ingres=s;
+            }
+        }
+        String query4="SELECT NUM_ORDEN FROM ORDENPAGO WHERE NUM_ORDENNUESTRO="+a.getOrdenpago().getNum_OrdenNuestro();
+        List<String>Consulta4=ConsultarID(query4);
+        OrdenPago ordenpago=new OrdenPago();
+        if(Consulta4.isEmpty()){
+            ordenpago=new OrdenPago();
+        }else{
+            for(String b:Consulta4){
+                OrdenPago s=em.find(OrdenPago.class, Long.parseLong(b));
+                ordenpago=s;
+            }
+        }
+        ordenp.setSocios(socio);
+        ordenp.setBeneficiario(ben);
+        ordenp.setIngresos(ingres);
+        ordenp.setOrdenpago(ordenpago);
+        ordenp.setValor_Divisas_Dolares(a.getValor_Divisas_Dolares());
+        ordenp.setValor_Divisas_Euros(a.getValor_Divisas_Euros());
+        em.merge(ordenp);
+        
+    }
+    
+    @Override
+    public void insertarIngreso(Ingreso a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Ingreso orden=new Ingreso();
+        orden.setId(a.getId());
+        orden.setBeneficiario(a.getBeneficiario());
+        orden.setDescripcion(a.getDescripcion());
+        orden.setFecha(a.getFecha());
+        orden.setIdNuestro(a.getIdNuestro());
+        
+        orden.setEgreso_Dolares(a.getEgreso_Dolares());
+        orden.setEgreso_Euros(a.getEgreso_Euros());
+        orden.setEgreso_Lempiras(a.getEgreso_Lempiras());
+        orden.setIngreso_Dolares(a.getIngreso_Dolares());
+        orden.setIngreso_Euros(a.getIngreso_Euros());
+        orden.setIngreso_Lempiras(a.getIngreso_Lempiras());
+        orden.setValor_Divisas_Dolares(1.11441);
+        orden.setValor_Divisas_Euros(0.897182);
+        Double lemp = 24.4518;
+        Double lempeu = 27.2819;
+        if(orden.getEgreso_Dolares()!=0)
+        {
+            orden.setEgreso_Euros(orden.getEgreso_Dolares()*orden.getValor_Divisas_Euros());
+            orden.setEgreso_Lempiras(a.getEgreso_Dolares()*lemp);
+        }
+        else if(orden.getEgreso_Euros()!=0)
+        {
+            orden.setEgreso_Dolares(orden.getEgreso_Euros()*orden.getValor_Divisas_Dolares());
+            orden.setEgreso_Lempiras(orden.getEgreso_Euros()*lempeu);
+        }
+        else
+        {
+            orden.setEgreso_Dolares(orden.getEgreso_Lempiras()/lemp);
+            orden.setEgreso_Euros(orden.getEgreso_Lempiras()/lempeu);
+        }
+        if(orden.getIngreso_Dolares()!=0)
+        {
+            orden.setIngreso_Euros(orden.getIngreso_Dolares()*orden.getValor_Divisas_Euros());
+            orden.setIngreso_Lempiras(a.getIngreso_Dolares()*lemp);
+        }
+        else if(orden.getIngreso_Euros()!=0)
+        {
+            orden.setIngreso_Dolares(orden.getIngreso_Euros()*orden.getValor_Divisas_Dolares());
+            orden.setIngreso_Lempiras(orden.getIngreso_Euros()*lempeu);
+        }
+        else
+        {
+            orden.setIngreso_Dolares(orden.getIngreso_Lempiras()/lemp);
+            orden.setIngreso_Euros(orden.getIngreso_Lempiras()/lempeu);
+        }
+        orden.setIngresos(a.getIngresos());
+        orden.setOrdenpago(a.getOrdenpago());
+        orden.setProcedencia(a.getProcedencia());
+        //1 dolar son 24.4518 lempiras
+        //1 euro son 27.2819 lempiras
+        //hacer tratamiento excepcion
+        String query="SELECT NSOCIO FROM SOCIOS WHERE NSOCIONUESTRO="+a.getSocio().getNSocioNuestro();
+        List<String>Consulta=ConsultarID(query);
+        Socios socio=new Socios();
+        if(Consulta.isEmpty()){
+            socio=new Socios();
+        }else{
+            for(String b:Consulta){
+                Socios s=em.find(Socios.class, Long.parseLong(b));
+                socio=s;
+            }
+        }
+        String query2="SELECT CODIGO FROM BENEFICIARIOS WHERE CODIGONUESTRO="+a.getBeneficiario().getCodigoNuestro();
+        List<String>Consulta2=ConsultarID(query2);
+        Beneficiarios ben=new Beneficiarios();
+        if(Consulta2.isEmpty()){
+            ben=new Beneficiarios();
+        }else{
+            for(String b:Consulta2){
+                Beneficiarios s=em.find(Beneficiarios.class, Long.parseLong(b));
+                ben=s;
+            }
+        }
+        String query3="SELECT CODIGO FROM PROYECTOS WHERE CODIGONUESTRO="+a.getIngresos().getCodigoNuestro();
+        List<String>Consulta3=ConsultarID(query3);
+        Proyectos ingres= new Proyectos();
+        if(Consulta3.isEmpty()){
+            ingres= new Proyectos();
+        }else{
+            for(String b:Consulta3){
+                Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                ingres=s;
+            }
+        }
+        String query4="SELECT NUM_ORDEN FROM ORDENPAGO WHERE NUM_ORDENNUESTRO="+a.getOrdenpago().getNum_OrdenNuestro();
+        List<String>Consulta4=ConsultarID(query4);
+        OrdenPago ordenpago=new OrdenPago();
+        if(Consulta4.isEmpty()){
+            ordenpago=new OrdenPago();
+        }else{
+            for(String b:Consulta4){
+                OrdenPago s=em.find(OrdenPago.class, Long.parseLong(b));
+                ordenpago=s;
+            }
+        }
+        orden.setSocios(socio);
+        orden.setBeneficiario(ben);
+        orden.setIngresos(ingres);
+        orden.setOrdenpago(ordenpago);
+        System.out.println("Objeto creado: "+orden+" objeto insertado: "+a);
+        em.persist(orden);
+    }
+    
+    
+    @Override
+    public void eliminarIngreso(Ingreso a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Ingreso ord = em.find(Ingreso.class, a.getId());
+        if(ord!=null){
+            em.remove(ord);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Ingreso> mostrarIngreso(){
+        
+        try {
+            // TODO
+            List<Ingreso> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM Ingreso";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Ingreso e=new Ingreso();
+                e.setId(rs.getLong(1));
+                e.setEgreso_Dolares(rs.getDouble(2));
+                e.setEgreso_Euros(rs.getDouble(3));
+                e.setEgreso_Lempiras(rs.getDouble(4));
+                e.setIngreso_Dolares(rs.getDouble(5));
+                e.setIngreso_Euros(rs.getDouble(6));
+                e.setIngreso_Lempiras(rs.getDouble(7));
+                e.setValor_Divisas_Dolares(rs.getDouble(8));
+                e.setValor_Divisas_Euros(rs.getDouble(9));
+                e.setIdNuestro(rs.getLong(10));
+                e.setDescripcion(rs.getString(11));
+                e.setFecha(rs.getDate(12));
+                e.setProcedencia(rs.getString(13));
+                String query="SELECT BENEFICIARIO_CODIGO,INGRESOS_CODIGO,SOCIO_NSOCIO,ORDENPAGO_NUM_ORDEN FROM INGRESO WHERE CODIGO_TRANSACCION="+e.getId();
+                List<String>Consulta=ConsultarMas(query,4);
+                OrdenPago ordenpago=new OrdenPago();
+                Proyectos ingres= new Proyectos();
+                Beneficiarios ben=new Beneficiarios();
+                Socios socio=new Socios();
+                System.out.print("Our consulto es"+Consulta.toString()+" CONSULTA EN 4 e "+Consulta.get(3));
+                if(Consulta.isEmpty()){
+                    /*ordenpago=new OrdenPago();
+                    socio=new Socios();
+                    ingres= new Proyectos();
+                    ben=new Beneficiarios(); elevar exception*/
+                }else{
+                    OrdenPago s=em.find(OrdenPago.class, Long.parseLong(Consulta.get(3)));
+                    ordenpago=s;
+                    Proyectos d=em.find(Proyectos.class, Long.parseLong(Consulta.get(1)));
+                    ingres=d;
+                    Beneficiarios f=em.find(Beneficiarios.class, Long.parseLong(Consulta.get(0)));
+                    ben=f;
+                    Socios y=em.find(Socios.class, Long.parseLong(Consulta.get(2)));
+                    socio=y;
+                }
+                e.setBeneficiario(ben);
+                e.setIngresos(ingres);
+                e.setSocios(socio);
+                e.setOrdenpago(ordenpago);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+//FIN ingreso
+    
+    //INICIO PROYECTOS
+    
+    
+    @Override
+    public void modificarProyectos(Proyectos a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Proyectos p = em.find(Proyectos.class, a.getCodigo());
+        p.setCodigoNuestro(a.getCodigoNuestro());
+        p.setNombre(a.getNombre());
+        p.setEnUso(a.getEnUso());
+        p.setCombustible(a.getCombustible());
+        p.setMantenimiento(a.getMantenimiento());
+        p.setContenedor(a.getContenedor());
+        p.setDescripcion(a.getDescripcion());
+        p.setParticipan(a.getParticipan());
+        p.setIngresos(a.getIngresos());
+        p.setGastos(a.getGastos());
+        em.merge(p);
+        
+    }
+    
+    @Override
+    public void insertarProyectos(Proyectos a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Proyectos p=new Proyectos();
+        p.setCodigo(a.getCodigo());
+        p.setCodigoNuestro(a.getCodigoNuestro());
+        p.setNombre(a.getNombre());
+        p.setEnUso(a.getEnUso());
+        p.setCombustible(a.getCombustible());
+        p.setMantenimiento(a.getMantenimiento());
+        p.setContenedor(a.getContenedor());
+        p.setDescripcion(a.getDescripcion());
+        System.out.println("Objeto creado: "+p+" objeto insertado: "+a);
+        em.persist(p);
+    }
+    
+    
+    @Override
+    public void eliminarProyectos(Proyectos a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Proyectos p = em.find(Proyectos.class, a.getCodigo());
+        if(p!=null){
+            em.remove(p);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Proyectos> mostrarProyectos(){
+        
+        try {
+            // TODO
+            List<Proyectos> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM PROYECTOS";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Proyectos e=new Proyectos();
+                e.setCodigo(rs.getLong(1));
+                e.setCodigoNuestro(rs.getLong(2));
+                e.setCombustible(rs.getInt(3));
+                e.setContenedor(rs.getInt(4));
+                e.setDescripcion(rs.getString(5));
+                e.setEnUso(rs.getBoolean(6));
+                e.setMantenimiento(rs.getInt(7));
+                e.setNombre(rs.getString(8));
+                String query="SELECT CODIGO FROM NINOSJOVENES WHERE PROYECTO_CODIGO="+e.getCodigo();
+                List<String>Consulta=ConsultarID(query);
+                List<NinosJovenes> ninos=new ArrayList();
+                if(Consulta.isEmpty()){
+                    ninos.add(new NinosJovenes());
+                }else{
+                    for(String b:Consulta){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                        ninos.add(s);
+                    }
+                }
+                String query2="SELECT CODIGO_TRANSACCION FROM INGRESO WHERE INGRESOS_CODIGO="+e.getCodigo();
+                List<String>Consulta2=ConsultarID(query2);
+                List<Ingreso> ingresos=new ArrayList();
+                if(Consulta2.isEmpty()){
+                    ingresos.add(new Ingreso());
+                }else{
+                    for(String b:Consulta2){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        Ingreso s=em.find(Ingreso.class, Long.parseLong(b));
+                        ingresos.add(s);
+                    }
+                }
+                String query3="SELECT ID FROM GASTOS WHERE GASTOS_CODIGO="+e.getCodigo();
+                List<String>Consulta3=ConsultarID(query3);
+                List<Gastos> gastos=new ArrayList();
+                if(Consulta3.isEmpty()){
+                    gastos.add(new Gastos());
+                }else{
+                    for(String b:Consulta3){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        Gastos s=em.find(Gastos.class, Long.parseLong(b));
+                        gastos.add(s);
+                    }
+                }
+                e.setGastos(gastos);
+                e.setIngresos(ingresos);
+                e.setParticipan(ninos);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+    //FIN PROYECTOS
+    
+    //INICIO SOCIOS
+    
+    @Override
+    public void modificarSocios(Socios a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Socios s = em.find(Socios.class, a.getNSocio());
+        s.setNSocioNuestro(a.getNSocioNuestro());
+        s.setNombre(a.getNombre());
+        s.setApellidos(a.getApellidos());
+        s.setDni(a.getDni());
+        s.setEstado(a.getEstado());
+        s.setSexo(a.getSexo());
+        s.setGrado(a.getGrado());
+        s.setDireccion(a.getDireccion());
+        s.setPoblacion(a.getPoblacion());
+        s.setCodigoPostal(a.getCodigoPostal());
+        s.setProvincia(a.getProvincia());
+        s.setTelefonoMovil(a.getTelefonoMovil());
+        s.setProvincia(a.getProvincia());
+        s.setTelefonoFijo(a.getTelefonoFijo());
+        s.setEmail(a.getEmail());
+        s.setRelacion(a.getRelacion());
+        s.setCertificado(a.getCertificado());
+        s.setSector(a.getSector());
+        s.setFechaAlta(a.getFechaAlta());
+        s.setFechaBaja(a.getFechaBaja());
+        s.setObservaciones(a.getObservaciones());
+        s.setApadrinados(a.getApadrinados());
+        s.setIngreso(a.getIngreso());
+        em.merge(s);
+        
+    }
+    
+    @Override
+    public void insertarSocios(Socios a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Socios s=new Socios();
+        s.setNSocio(a.getNSocio());
+        s.setNSocioNuestro(a.getNSocioNuestro());
+        s.setNombre(a.getNombre());
+        s.setApellidos(a.getApellidos());
+        s.setDni(a.getDni());
+        s.setEstado(a.getEstado());
+        s.setSexo(a.getSexo());
+        s.setGrado(a.getGrado());
+        s.setDireccion(a.getDireccion());
+        s.setPoblacion(a.getPoblacion());
+        s.setCodigoPostal(a.getCodigoPostal());
+        s.setProvincia(a.getProvincia());
+        s.setTelefonoMovil(a.getTelefonoMovil());
+        s.setTelefonoFijo(a.getTelefonoFijo());
+        s.setEmail(a.getEmail());
+        s.setRelacion(a.getRelacion());
+        s.setCertificado(a.getCertificado());
+        s.setSector(a.getSector());
+        s.setFechaAlta(a.getFechaAlta());
+        s.setFechaBaja(a.getFechaBaja());
+        s.setObservaciones(a.getObservaciones());
+        s.setApadrinados(a.getApadrinados());
+        s.setIngreso(a.getIngreso());
+        System.out.println("Objeto creado: "+s+" objeto insertado: "+a);
+        em.persist(s);
+    }
+    
+    
+    @Override
+    public void eliminarSocios(Socios a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Socios s = em.find(Socios.class, a.getNSocio());
+        if(s!=null){
+            em.remove(s);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Socios> mostrarSocios(){
+        
+        try {
+            // TODO
+            List<Socios> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM SOCIOS";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Socios e=new Socios();
+                e.setNSocio(rs.getLong(1));
+                e.setNSocioNuestro(rs.getLong(2));
+                e.setApellidos(rs.getString(3));
+                e.setCertificado(rs.getString(4));
+                e.setCodigoPostal(rs.getString(5));
+                e.setDireccion(rs.getString(6));
+                e.setDni(rs.getString(7));
+                e.setEmail(rs.getString(8));
+                e.setEstado(rs.getString(9));
+                e.setFechaAlta(rs.getDate(10));
+                e.setFechaBaja(rs.getDate(11));
+                e.setGrado(rs.getString(12));
+                e.setNombre(rs.getString(13));
+                e.setObservaciones(rs.getString(14));
+                e.setPoblacion(rs.getString(15));
+                e.setProvincia(rs.getString(16));
+                e.setRelacion(rs.getString(17));
+                e.setSector(rs.getString(18));
+                e.setSexo(rs.getString(19));
+                e.setTelefonoFijo(rs.getString(20));
+                e.setTelefonoMovil(rs.getString(21));
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+    
+    
+    //FIN SOCIOS
+    
+    //INICIO NINOSJOVENES
+    
+    
+    @Override
+    public void modificarNinosJovenes(NinosJovenes a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        NinosJovenes ninosj = em.find(NinosJovenes.class, a.getCodigo());
+        ninosj.setApellidos(a.getApellidos());
+        ninosj.setCodigoNuestro(a.getCodigoNuestro());
+        ninosj.setEstado(a.getEstado());
+        ninosj.setFechaAlta(a.getFechaAlta());
+        ninosj.setFechaAltaProyecto(a.getFechaAltaProyecto());
+        ninosj.setFechaEntrada(a.getFechaEntrada());
+        ninosj.setFechaNacimiento(a.getFechaNacimiento());
+        ninosj.setFechaSalidaAcoes(a.getFechaSalidaAcoes());
+        ninosj.setFechaSalidaProyecto(a.getFechaSalidaProyecto());
+        ninosj.setGrado(a.getGrado());
+        String query="SELECT NSOCIO FROM SOCIOS WHERE NSOCIONUESTRO="+a.getIdSocio().getNSocioNuestro();
+        List<String>Consulta=ConsultarID(query);
+        Socios socio=new Socios();
+        if(Consulta.isEmpty()){
+            socio=new Socios();
+        }else{
+            for(String b:Consulta){
+                Socios s=em.find(Socios.class, Long.parseLong(b));
+                socio=s;
+            }
+        }
+        String query2="SELECT CODIGO FROM PROYECTOS WHERE CODIGONUESTRO="+a.getProyecto().getCodigoNuestro();
+        List<String>Consulta2=ConsultarID(query2);
+        Proyectos pr=new Proyectos();
+        if(Consulta2.isEmpty()){
+            pr=new Proyectos();
+        }else{
+            for(String b:Consulta2){
+                Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        String query3="SELECT CODIGO FROM AGENTE WHERE CODIGONUESTRO="+a.getAgente().getIdNuestro();
+        List<String>Consulta3=ConsultarID(query3);
+        Agente ag=new Agente();
+        if(Consulta3.isEmpty()){
+            ag=new Agente();
+        }else{
+            for(String b:Consulta3){
+                Agente s=em.find(Agente.class, Long.parseLong(b));
+                ag=s;
+            }
+        }
+        String query4="SELECT ID_COLONIA FROM COLONIAS WHERE ID_COLONIANUESTRO="+a.getColonia().getIdNuestro();
+        List<String>Consulta4=ConsultarID(query4);
+        Colonias col=new Colonias();
+        if(Consulta4.isEmpty()){
+            col=new Colonias();
+        }else{
+            for(String b:Consulta4){
+                Colonias s=em.find(Colonias.class, Long.parseLong(b));
+                col=s;
+            }
+        }
+        ninosj.setIdSocio(socio);
+        ninosj.setNombre(a.getNombre());
+        ninosj.setObservaciones(a.getObservaciones());
+        ninosj.setProyecto(pr);
+        ninosj.setColonia(col);
+        ninosj.setAgente(ag);
+        ninosj.setSexo(a.getSexo());
+        em.merge(ninosj);  
+    }
+    
+    
+    @Override
+    public void insertarNinosJovenes(NinosJovenes a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        NinosJovenes ninosj=new NinosJovenes();
+        ninosj.setCodigo(a.getCodigo());
+        ninosj.setApellidos(a.getApellidos());
+        ninosj.setCodigoNuestro(a.getCodigoNuestro());
+        ninosj.setEstado(a.getEstado());
+        ninosj.setFechaAlta(a.getFechaAlta());
+        ninosj.setFechaAltaProyecto(a.getFechaAltaProyecto());
+        ninosj.setFechaEntrada(a.getFechaEntrada());
+        ninosj.setFechaNacimiento(a.getFechaNacimiento());
+        ninosj.setFechaSalidaAcoes(a.getFechaSalidaAcoes());
+        ninosj.setFechaSalidaProyecto(a.getFechaSalidaProyecto());
+        ninosj.setGrado(a.getGrado());
+        String query="SELECT NSOCIO FROM SOCIOS WHERE NSOCIONUESTRO="+a.getIdSocio().getNSocioNuestro();
+        List<String>Consulta=ConsultarID(query);
+        Socios socio=new Socios();
+        if(Consulta.isEmpty()){
+            socio=new Socios();
+        }else{
+            for(String b:Consulta){
+                Socios s=em.find(Socios.class, Long.parseLong(b));
+                socio=s;
+            }
+        }
+        String query2="SELECT CODIGO FROM PROYECTOS WHERE CODIGONUESTRO="+a.getProyecto().getCodigoNuestro();
+        List<String>Consulta2=ConsultarID(query2);
+        Proyectos pr=new Proyectos();
+        if(Consulta2.isEmpty()){
+            pr=new Proyectos();
+        }else{
+            for(String b:Consulta2){
+                Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        String query3="SELECT CODIGO FROM AGENTE WHERE CODIGONUESTRO="+a.getAgente().getIdNuestro();
+        List<String>Consulta3=ConsultarID(query3);
+        Agente ag=new Agente();
+        if(Consulta3.isEmpty()){
+            ag=new Agente();
+        }else{
+            for(String b:Consulta3){
+                Agente s=em.find(Agente.class, Long.parseLong(b));
+                ag=s;
+            }
+        }
+        String query4="SELECT ID_COLONIA FROM COLONIAS WHERE ID_COLONIANUESTRO="+a.getColonia().getIdNuestro();
+        List<String>Consulta4=ConsultarID(query4);
+        Colonias col=new Colonias();
+        if(Consulta4.isEmpty()){
+            col=new Colonias();
+        }else{
+            for(String b:Consulta4){
+                Colonias s=em.find(Colonias.class, Long.parseLong(b));
+                col=s;
+            }
+        }
+        ninosj.setIdSocio(socio);
+        ninosj.setNombre(a.getNombre());
+        ninosj.setObservaciones(a.getObservaciones());
+        ninosj.setProyecto(pr);
+        ninosj.setColonia(col);
+        ninosj.setAgente(ag);
+        ninosj.setSexo(a.getSexo());
+        System.out.println("Objeto creado: "+ninosj+" objeto insertado: "+a);
+        em.persist(ninosj);
+    }
+    
+    
+    @Override
+    public void eliminarNinosJovenes(NinosJovenes a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        NinosJovenes nino = em.find(NinosJovenes.class, a.getCodigo());
+        if(nino!=null){
+            em.remove(nino);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<NinosJovenes> mostrarNinosJovenes(){
+        
+        try {
+            // TODO
+            List<NinosJovenes> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM NinosJovenes";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                NinosJovenes e=new NinosJovenes();
+                e.setCodigo(rs.getLong(1));
+                e.setApellidos(rs.getString(2));
+                e.setCodigoNuestro(rs.getLong(3));
+                e.setEstado(rs.getString(4));
+                e.setFechaAlta(rs.getDate(5));
+                e.setFechaAltaProyecto(rs.getDate(6));
+                e.setFechaEntrada(rs.getDate(7));
+                e.setFechaNacimiento(rs.getDate(8));
+                e.setFechaSalidaAcoes(rs.getDate(9));
+                e.setFechaSalidaProyecto(rs.getDate(10));
+                e.setGrado(rs.getString(11));
+                e.setNombre(rs.getString(12));
+                e.setObservaciones(rs.getString(13));
+                e.setSexo(rs.getString(14));
+                String query="SELECT CODIGO FROM AGENTE WHERE CODIGO="+rs.getLong(15);
+                List<String>Consulta=ConsultarID(query);
+                Agente ag=new Agente();
+                if(Consulta.isEmpty()){
+                    ag=new Agente();
+                }else{
+                    for(String b:Consulta){
+                        Agente s=em.find(Agente.class, Long.parseLong(b));
+                        ag=s;
+                    }
+                }
+                String query2="SELECT ID_COLONIA FROM COLONIAS WHERE ID_COLONIA="+rs.getLong(16);
+                List<String>Consulta2=ConsultarID(query2);
+                Colonias col=new Colonias();
+                if(Consulta2.isEmpty()){
+                    col=new Colonias();
+                }else{
+                    for(String b:Consulta2){
+                        Colonias s=em.find(Colonias.class, Long.parseLong(b));
+                        col=s;
+                    }
+                }
+                String query3="SELECT NSOCIO FROM SOCIOS WHERE NSOCIO="+rs.getLong(17);
+                List<String>Consulta3=ConsultarID(query3);
+                Socios soc=new Socios();
+                if(Consulta3.isEmpty()){
+                    soc=new Socios();
+                }else{
+                    for(String b:Consulta3){
+                        Socios s=em.find(Socios.class, Long.parseLong(b));
+                        soc=s;
+                    }
+                }
+                String query4="SELECT CODIGO FROM PROYECTOS WHERE CODIGO="+rs.getLong(18);
+                List<String>Consulta4=ConsultarID(query4);
+                Proyectos pr=new Proyectos();
+                if(Consulta4.isEmpty()){
+                    pr=new Proyectos();
+                }else{
+                    for(String b:Consulta4){
+                        Proyectos s=em.find(Proyectos.class, Long.parseLong(b));
+                        pr=s;
+                    }
+                }
+                String query5="SELECT ID FROM RELACION WHERE NINO_CODIGO="+e.getCodigo();
+                List<String>Consulta5=ConsultarID(query5);
+                List<Relacion>rela=new ArrayList();
+                if(Consulta5.isEmpty()){
+                    rela.add(new Relacion());
+                }else{
+                    for(String b:Consulta5){
+                        Relacion s=em.find(Relacion.class, Long.parseLong(b));
+                        rela.add(s);
+                    }
+                }
+                String query6="SELECT NUMERO_ORDEN FROM BECAS WHERE NINO_CODIGO="+e.getCodigo();
+                List<String>Consulta6=ConsultarID(query6);
+                List<Becas>bec=new ArrayList();
+                if(Consulta6.isEmpty()){
+                    bec.add(new Becas());
+                }else{
+                    for(String b:Consulta6){
+                        Becas s=em.find(Becas.class, Long.parseLong(b));
+                        bec.add(s);
+                    }
+                }
+                String query7="SELECT ID FROM ACADEMICO WHERE NINON_CODIGO="+e.getCodigo();
+                List<String>Consulta7=ConsultarID(query7);
+                List<Academico>acad=new ArrayList();
+                if(Consulta7.isEmpty()){
+                    acad.add(new Academico());
+                }else{
+                    for(String b:Consulta7){
+                        Academico s=em.find(Academico.class, Long.parseLong(b));
+                        acad.add(s);
+                    }
+                }
+                e.setNotas(acad);
+                e.setBecas(bec);
+                e.setPersonal(rela);
+                e.setAgente(ag);
+                e.setColonia(col);
+                e.setIdSocio(soc);
+                e.setProyecto(pr);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+//FIN NINOSJOVENES
+    
+//INICIO PERSONAL
+    
+    
+    @Override
+    public void modificarPersonal(Personal a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Personal person = em.find(Personal.class, a.getId());
+        person.setDni(a.getDni());
+        person.setApellido(a.getApellido());
+        person.setCargo(a.getCargo());
+        person.setEncargados(a.getEncargados());
+        person.setNombre(a.getNombre());
+        person.setSalario(a.getSalario());
+        em.merge(person);
+        
+    }
+    
+    @Override
+    public void insertarPersonal(Personal a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Personal person=new Personal();
+        person.setId(a.getId());
+        person.setDni(a.getDni());
+        person.setApellido(a.getApellido());
+        person.setCargo(a.getCargo());
+        //person.setEncargados(a.getEncargados());
+        person.setNombre(a.getNombre());
+        person.setSalario(a.getSalario());
+        System.out.println("Objeto creado: "+person+" objeto insertado: "+a);
+        em.persist(person);
+    }
+    
+    
+    @Override
+    public void eliminarPersonal(Personal a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Personal person = em.find(Personal.class, a.getId());
+        if(person!=null){
+            em.remove(person);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Personal> mostrarPersonal(){
+        
+        try {
+            // TODO
+            List<Personal> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM PERSONAL";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Personal e = new Personal();
+                e.setId(rs.getLong(1));
+                e.setApellido(rs.getString(2));
+                e.setCargo(rs.getString(3));
+                e.setDni(rs.getString(4));
+                e.setNombre(rs.getString(5));
+                e.setSalario(rs.getLong(6));
+                String query="SELECT ID FROM RELACION WHERE PERSONAL_ID="+e.getId();
+                List<String>Consulta=ConsultarID(query);
+                List<Relacion> rel=new ArrayList();
+                if(Consulta.isEmpty()){
+                    rel.add(new Relacion());
+                }else{
+                    for(String b:Consulta){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        Relacion s=em.find(Relacion.class, Long.parseLong(b));
+                        rel.add(s);
+                    }
+                }
+                String query2="SELECT ID FROM INFORMES WHERE PERSONAL_ID="+e.getId();
+                List<String>Consulta2=ConsultarID(query2);
+                List<Informes> informes=new ArrayList();
+                if(Consulta2.isEmpty()){
+                    informes.add(new Informes());
+                }else{
+                    for(String b:Consulta2){
+                        System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
+                        Informes s=em.find(Informes.class, Long.parseLong(b));
+                        informes.add(s);
+                    }
+                }
+                
+                e.setEncargados(rel);
+                e.setInformes(informes);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+//FIN PERSONAL
+    
+//INICIO RELACION
+    
+    
+    @Override
+    public void modificarRelacion(Relacion a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Relacion person = em.find(Relacion.class, a.getCodigo());
+        String query4="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGONUESTRO="+a.getNino().getCodigoNuestro();
+        List<String>Consulta4=ConsultarID(query4);
+        NinosJovenes pr=new NinosJovenes();
+        if(Consulta4.isEmpty()){
+            pr=new NinosJovenes();
+        }else{
+            for(String b:Consulta4){
+                NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        String query="SELECT ID FROM PERSONAL WHERE DNI='"+a.getPersonal().getDni()+"'";
+        List<String>Consulta=ConsultarID(query);
+        Personal pers=new Personal();
+        if(Consulta.isEmpty()){
+            pers=new Personal();
+        }else{
+            for(String b:Consulta){
+                Personal s=em.find(Personal.class, Long.parseLong(b));
+                pers=s;
+            }
+        }
+        person.setNino(pr);
+        person.setPersonal(pers);
+        em.merge(person);
+        
+    }
+    
+    @Override
+    public void insertarRelacion(Relacion a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Relacion person=new Relacion();
+        person.setCodigo(a.getCodigo());
+        String query4="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGONUESTRO="+a.getNino().getCodigoNuestro();
+        List<String>Consulta4=ConsultarID(query4);
+        NinosJovenes pr=new NinosJovenes();
+        if(Consulta4.isEmpty()){
+            pr=new NinosJovenes();
+        }else{
+            for(String b:Consulta4){
+                NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        String query="SELECT ID FROM PERSONAL WHERE DNI='"+a.getPersonal().getDni()+"'";
+        List<String>Consulta=ConsultarID(query);
+        System.out.println(query+"    LA CONSULTA DA "+Consulta);
+        Personal pers=new Personal();
+        if(Consulta.isEmpty()){
+            pers=new Personal();
+        }else{
+            for(String b:Consulta){
+                Personal s=em.find(Personal.class, Long.parseLong(b));
+                pers=s;
+            }
+        }
+        person.setNino(pr);
+        person.setPersonal(pers);
+        System.out.println("Objeto creado: "+person+" objeto insertado: "+a);
+        em.persist(person);
+    }
+    
+    
+    @Override
+    public void eliminarRelacion(Relacion a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Relacion person = em.find(Relacion.class, a.getCodigo());
+        if(person!=null){
+            em.remove(person);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Relacion> mostrarRelacion(){
+        
+        try {
+            // TODO
+            List<Relacion> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM RELACION";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Relacion e = new Relacion();
+                e.setCodigo(rs.getLong(1));
+                String query4="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGO="+rs.getLong(2);
+                List<String>Consulta4=ConsultarID(query4);
+                NinosJovenes pr=new NinosJovenes();
+                if(Consulta4.isEmpty()){
+                    pr=new NinosJovenes();
+                }else{
+                    for(String b:Consulta4){
+                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                        pr=s;
+                    }
+                }
+                String query="SELECT ID FROM PERSONAL WHERE ID="+rs.getLong(3);
+                List<String>Consulta=ConsultarID(query);
+                Personal perss=new Personal();
+                if(Consulta.isEmpty()){
+                    perss=new Personal();
+                }else{
+                    for(String b:Consulta){
+                        Personal s=em.find(Personal.class, Long.parseLong(b));
+                        perss=s;
+                    }
+                }
+                e.setNino(pr);
+                e.setPersonal(perss);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+//FIN RELACION
+    
+    
+    
+        @Override
+        public List<String> ConsultarID(String consulta){
+        
+        try {
+            // TODO
+            List<String> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                String e=rs.getString(1);
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+        
+    @Override
+        public List<String> ConsultarMas(String consulta,int nValores){
+        
+        try {
+            // TODO
+            List<String> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                for(int i=1;i<nValores+1;i++){
+                    String e=rs.getString(i);
+                    resultado.add(e);
+                }
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    } 
+        
+    @Override    
+    public void inserto(Long idNino, Long idP){
+        Connection conn;
+        try {
+                String consulta="INSERT INTO NINOSJOVENES_PERSONAL VALUES ("+idNino+","+idP+")";
+                conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+                Statement st=conn.createStatement();
+                ResultSet rs=st.executeQuery(consulta);  
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
+    }
+}

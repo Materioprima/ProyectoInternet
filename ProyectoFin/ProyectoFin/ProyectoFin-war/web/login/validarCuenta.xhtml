@@ -1,0 +1,25 @@
+<ui:composition template="/WEB-INF/templates/plantilla.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="title">
+        Validando cuenta
+    </ui:define>
+    <ui:define name="content">
+        <div id="top" class="top">
+            <h2>VALIDAR CUENTA</h2>
+        </div>
+        <f:view>
+            <f:metadata>
+                <f:viewParam name="cuenta" value="#{registro.cuenta}"/>
+                <f:viewParam name="codigoValidacion" value="#{registro.codigoValidacion}"/>
+                <f:viewAction action="#{registro.validarCuenta()}"/>
+            </f:metadata>
+        </f:view>
+        <h:outputText value="#{registro.mensajeValidacion}"/>
+        <p><h:link outcome="/login/login.xhtml" rendered="#{registro.validacionOK}">Página de login</h:link></p>
+    </ui:define>
+</ui:composition>
+

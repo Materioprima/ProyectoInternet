@@ -1,0 +1,45 @@
+<ui:composition template="/index.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="tablasUsuarios">
+        <h:dataTable id="customers" value="#{infoSesion.becas}" var="a">
+            <h:column>
+                <f:facet name="header">Orden</f:facet>
+                <h:outputText value="#{a.numero_ordenNuestro}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Importe</f:facet>
+                <h:outputText value="#{a.importe}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Concepto</f:facet>
+                <h:outputText value="#{a.concepto}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Niño</f:facet>
+                <h:outputText value="#{a.nino}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">TR</f:facet>
+                <h:outputText value="#{a.tr}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Fecha</f:facet>
+                <h:outputText value="#{a.fecha}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Opciones</f:facet>
+                <h:form>
+                    <h:commandButton value="Modificar" action="#{vistabecas.modificar(a)}"/>
+                    <h:commandButton value="Eliminar" action="#{vistabecas.eliminar(a)}"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:form>
+            <h:commandButton value="Insertar" action="#{vistabecas.insertarBecas()}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

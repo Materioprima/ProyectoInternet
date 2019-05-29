@@ -1,0 +1,45 @@
+<ui:composition template="/index.xhtml"
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="tablasUsuarios">
+        <h:dataTable id="customers" value="#{infoSesion.beneficiarios}" var="a">
+            <h:column>
+                <f:facet name="header">Codigo</f:facet>
+                <h:outputText value="#{a.codigoNuestro}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Tipo de beneficiario</f:facet>
+                <h:outputText value="#{a.tipoBeneficiario}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Numero de cuenta</f:facet>
+                <h:outputText value="#{a.numeroCuenta}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Habilitado</f:facet>
+                <h:outputText value="#{a.habilitado}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Observaciones</f:facet>
+                <h:outputText value="#{a.observaciones}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Ingresos</f:facet>
+                <h:outputText value="#{a.ingresos}"/>
+                </h:column>
+            <h:column>
+                <f:facet name="header">Opciones</f:facet>
+                <h:form>
+                    <h:commandButton value="Modificar" action="#{beneficiarios.modificar(a)}"/>
+                    <h:commandButton value="Eliminar" action="#{beneficiarios.eliminar(a)}"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:form>
+            <h:commandButton value="Insertar" action="#{beneficiarios.insertarBeneficiarios()}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

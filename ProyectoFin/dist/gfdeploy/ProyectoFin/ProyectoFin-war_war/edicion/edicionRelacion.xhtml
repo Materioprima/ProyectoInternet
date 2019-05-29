@@ -7,15 +7,20 @@
     <ui:define name="tablasUsuarios">
         <c:choose> 
             <c:when test="#{relaciones.autorizadoParaEdicion}">
-                <h1 class="azul">#{relaciones.accion} Relación</h1>
-                <h:form id="customers">
+                <h1 class="titulo">#{relaciones.accion} relación</h1>
+                <h:form id="insertar">
                     <h:panelGrid columns="3">
+                        
                         <h:outputText value="Codigo del niño"/>
-                        <h:inputText id ="idNuestro" value="#{relaciones.relacion.nino.codigoNuestro}"/>
+                            <h:selectOneMenu id="idNuestro" value = "#{relaciones.relacion.nino.codigoNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT CODIGONUESTRO FROM NINOSJOVENES')}"/>
+                            </h:selectOneMenu>
                         <h:message for="idNuestro"/>
 
                         <h:outputText value="DNI del encargado"/>
-                        <h:inputText id ="dni" value="#{relaciones.relacion.personal.dni}"/>
+                            <h:selectOneMenu id="dni" value = "#{relaciones.relacion.personal.dni}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT DNI FROM PERSONAL')}"/>
+                            </h:selectOneMenu>
                         <h:message for="dni"/>
 
                         <h:commandButton value="#{relaciones.accion}" action="#{relaciones.ejecutarAccion()}"/>

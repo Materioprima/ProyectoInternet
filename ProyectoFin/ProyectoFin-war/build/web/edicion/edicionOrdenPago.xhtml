@@ -7,8 +7,8 @@
     <ui:define name="tablasUsuarios">
         <c:choose> 
             <c:when test="#{ordenpagos.autorizadoParaEdicion}">
-                <h1 class="azul">#{ordenpagos.accion} OrdenPago</h1>
-                <h:form id="customers">
+                <h1 class="titulo">#{ordenpagos.accion} orden de pago</h1>
+                <h:form id="insertar">
                     <h:panelGrid columns="3">
                         <h:outputText value="Número de Orden"/>
                         <h:inputText id ="numOrden" value="#{ordenpagos.ordenPago.num_OrdenNuestro}"/>

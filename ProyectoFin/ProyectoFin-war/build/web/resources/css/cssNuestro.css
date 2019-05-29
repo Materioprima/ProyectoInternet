@@ -69,8 +69,8 @@ li a:hover:not(.active) {
     color:white;
 }
 
-#customers tr:nth-child(even){background-color: #d3d1d1;}
-#customers tr:nth-child(odd){background-color: #b0b0b0;}
+#customers tr:nth-child(even){background-color: #b0b0b0;}
+#customers tr:nth-child(odd){background-color: #929292;}
 
 #customers tr:hover {background-color: #767676;}
 
@@ -142,11 +142,11 @@ h1{
 }
 
 #insertar{
-    display:flex;
-    justify-content:center;
+    display: flex;
+    justify-content: center;
     font-size: large;
-    font-weight: bold;
-    background-color: #3E71B2;
+    color: white;
+    background-color: #929292;
     opacity: 0.93;
 }
 

@@ -48,7 +48,6 @@ public class InfoSesion implements Serializable {
     @Inject
     private Negocio negocio;
     private Usuario usuario;
-
     public enum Pagina 
     {
       HOME,
@@ -242,4 +241,9 @@ public class InfoSesion implements Serializable {
         }
     }
     
+    public synchronized List<String> RealizarConsulta(String consulta) throws FinalException{
+        List<String> resultadoConsul=null;
+        resultadoConsul=negocio.ConsultarID(consulta);
+        return resultadoConsul;
+    }
 }

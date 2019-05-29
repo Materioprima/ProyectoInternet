@@ -7,8 +7,8 @@
     <ui:define name="tablasUsuarios">
         <c:choose> 
             <c:when test="#{vistabecas.autorizadoParaEdicion}">
-                <h1 class="azul">#{vistabecas.accion} Becas</h1>
-                <h:form id="customers">
+                <h1 class="titulo">#{vistabecas.accion} beca</h1>
+                <h:form id="insertar">
                     <h:panelGrid columns="3">
                         <h:outputText value="Numero_orden"/>
                         <h:inputText id ="numero_orden" value="#{vistabecas.becas.numero_ordenNuestro}"/>
@@ -31,8 +31,10 @@
                         <h:message for="tr"/>
                         
                         <h:outputText value="Niño"/>
-                        <h:inputText id ="nino" value="#{vistabecas.becas.nino.codigoNuestro}"/>
-                        <h:message for="nino"/>
+                        <h:selectOneMenu id="nino" value = "#{vistabecas.becas.nino.codigoNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT CODIGONUESTRO FROM NINOSJOVENES')}"/>
+                            </h:selectOneMenu>
+                        <h:message for="Niño"/>
 
                         <h:commandButton value="#{vistabecas.accion}" action="#{vistabecas.ejecutarAccion()}"/>
                         <h:commandButton value="Cancelar" action="/tablas/becas.xhtml"/>

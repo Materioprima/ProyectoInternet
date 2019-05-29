@@ -7,8 +7,8 @@
     <ui:define name="tablasUsuarios">
         <c:choose> 
             <c:when test="#{ninosjovenes.autorizadoParaEdicion}">
-                <h1 class="azul">#{ninosjovenes.accion} ninosJovenes</h1>
-                <h:form id="customers">
+                <h1 class="titulo">#{ninosjovenes.accion} niños o jovenes</h1>
+                <h:form id="insertar">
                     <h:panelGrid columns="3">
                         <h:outputText value="ID"/>
                         <h:inputText id ="idNuestro" value="#{ninosjovenes.ninosJovenes.codigoNuestro}"/>
@@ -62,20 +62,28 @@
                         <h:inputText id ="observaciones" value="#{ninosjovenes.ninosJovenes.observaciones}"/>
                         <h:message for="observaciones"/>
 
-                        <h:outputText value="idSocio"/>
-                        <h:inputText id ="idSocio" value="#{ninosjovenes.ninosJovenes.idSocio.NSocioNuestro}"/>
-                        <h:message for="idSocio"/>
+                        <h:outputText value="socio"/>
+                            <h:selectOneMenu id="socio" value = "#{ninosjovenes.ninosJovenes.idSocio.NSocioNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT NSOCIONUESTRO FROM SOCIOS')}"/>
+                            </h:selectOneMenu>
+                        <h:message for="socio"/>
                         
-                        <h:outputText value="proyecto"/>
-                        <h:inputText id ="proyecto" value="#{ninosjovenes.ninosJovenes.proyecto.codigoNuestro}"/>
+                        <h:outputText value="Proyecto"/>
+                            <h:selectOneMenu id="proyecto" value = "#{ninosjovenes.ninosJovenes.proyecto.codigoNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT CODIGONUESTRO FROM PROYECTOS')}"/>
+                            </h:selectOneMenu>
                         <h:message for="proyecto"/>
 
-                        <h:outputText value="agente"/>
-                        <h:inputText id ="agente" value="#{ninosjovenes.ninosJovenes.agente.idNuestro}"/>
+                        <h:outputText value="Agente"/>
+                            <h:selectOneMenu id="agente" value = "#{ninosjovenes.ninosJovenes.agente.idNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT CODIGONUESTRO FROM AGENTE')}"/>
+                            </h:selectOneMenu>
                         <h:message for="agente"/>
                         
-                        <h:outputText value="colonia"/>
-                        <h:inputText id ="colonia" value="#{ninosjovenes.ninosJovenes.colonia.idNuestro}"/>
+                        <h:outputText value="Colonia"/>
+                            <h:selectOneMenu id="colonia" value = "#{ninosjovenes.ninosJovenes.colonia.idNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT ID_COLONIANUESTRO FROM COLONIAS')}"/>
+                            </h:selectOneMenu>
                         <h:message for="colonia"/>                  
                         
                         

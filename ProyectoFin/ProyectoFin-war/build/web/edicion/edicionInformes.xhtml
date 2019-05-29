@@ -7,15 +7,17 @@
     <ui:define name="tablasUsuarios">
         <c:choose> 
             <c:when test="#{informes.autorizadoParaEdicion}">
-                <h1 class="azul">#{informes.accion} Informes</h1>
-                <h:form id="customers">
+                <h1 class="titulo">#{informes.accion} informes</h1>
+                <h:form id="insertar">
                     <h:panelGrid columns="3">
                         <h:outputText value="Número de Orden"/>
                         <h:inputText id ="numOrden" value="#{informes.informes.numeroInforme}"/>
                         <h:message for="numOrden"/>
                         
-                        <h:outputText value="Emitida Por"/>
-                        <h:inputText id ="emision" value="#{informes.informes.personal.dni}"/>
+                        <h:outputText value="Emitido Por"/>
+                            <h:selectOneMenu id="dni" value = "#{informes.informes.personal.dni}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT DNI FROM PERSONAL')}"/>
+                            </h:selectOneMenu>
                         <h:message for="emision"/>
                         
                         <h:outputText value="Informe"/>

@@ -1,0 +1,95 @@
+<ui:composition template="/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="tablasUsuarios">
+        <c:choose> 
+            <c:when test="#{ninosjovenes.autorizadoParaEdicion}">
+                <h1 class="titulo">#{ninosjovenes.accion} niños o jovenes</h1>
+                <h:form id="insertar">
+                    <h:panelGrid columns="3">
+                        <h:outputText value="ID"/>
+                        <h:inputText id ="idNuestro" value="#{ninosjovenes.ninosJovenes.codigoNuestro}"/>
+                        <h:message for="idNuestro"/>
+                        
+                        <h:outputText value="Nombre"/>
+                        <h:inputText id ="Nombre" value="#{ninosjovenes.ninosJovenes.nombre}"/>
+                        <h:message for="Nombre"/>
+
+                        <h:outputText value="Apellidos"/>
+                        <h:inputText id ="Apellidos" value="#{ninosjovenes.ninosJovenes.apellidos}"/>
+                        <h:message for="Apellidos"/>
+
+                        <h:outputText value="Estado"/>
+                        <h:inputText id ="Estado" value="#{ninosjovenes.ninosJovenes.estado}"/>
+                        <h:message for="Estado"/>
+                        
+                        <h:outputText value="Sexo"/>
+                        <h:inputText id ="Sexo" value="#{ninosjovenes.ninosJovenes.sexo}"/>
+                        <h:message for="Sexo"/>
+
+                        <h:outputText value="Grado"/>
+                        <h:inputText id ="Grado" value="#{ninosjovenes.ninosJovenes.grado}"/>
+                        <h:message for="Grado"/>
+                        
+                        <h:outputText value="Fecha_de_nacimiento"/>
+                        <h:inputText id ="Fecha_de_nacimiento" value="#{ninosjovenes.ninosJovenes.fechaNacimiento}"><f:convertDateTime/></h:inputText>
+                        <h:message for="Fecha_de_nacimiento"/>
+                        
+                        <h:outputText value="fechaEntrada"/>
+                        <h:inputText id ="fechaEntrada" value="#{ninosjovenes.ninosJovenes.fechaEntrada}"><f:convertDateTime/></h:inputText>
+                        <h:message for="fechaEntrada"/>
+
+                        <h:outputText value="fechaAltaProyecto"/>
+                        <h:inputText id ="fechaAltaProyecto" value="#{ninosjovenes.ninosJovenes.fechaAltaProyecto}"><f:convertDateTime/></h:inputText>
+                        <h:message for="fechaAltaProyecto"/>
+                        
+                        <h:outputText value="fechaSalidaProyecto"/>
+                        <h:inputText id ="fechaSalidaProyecto" value="#{ninosjovenes.ninosJovenes.fechaSalidaProyecto}"><f:convertDateTime/></h:inputText>
+                        <h:message for="fechaSalidaProyecto"/>
+                        
+                        <h:outputText value="fechaAltaAcoes"/>
+                        <h:inputText id ="fechaAltaAcoes" value="#{ninosjovenes.ninosJovenes.fechaAlta}"><f:convertDateTime/></h:inputText>
+                        <h:message for="fechaAltaAcoes"/>
+
+                        <h:outputText value="fechaSalidaAcoes"/>
+                        <h:inputText id ="fechaSalidaAcoes" value="#{ninosjovenes.ninosJovenes.fechaSalidaAcoes}"><f:convertDateTime/></h:inputText>
+                        <h:message for="fechaSalidaAcoes"/>
+                        
+                        <h:outputText value="observaciones"/>
+                        <h:inputText id ="observaciones" value="#{ninosjovenes.ninosJovenes.observaciones}"/>
+                        <h:message for="observaciones"/>
+
+                        <h:outputText value="idSocio"/>
+                        <h:inputText id ="idSocio" value="#{ninosjovenes.ninosJovenes.idSocio.NSocioNuestro}"/>
+                        <h:message for="idSocio"/>
+                        
+                        <h:outputText value="proyecto"/>
+                        <h:inputText id ="proyecto" value="#{ninosjovenes.ninosJovenes.proyecto.codigoNuestro}"/>
+                        <h:message for="proyecto"/>
+
+                        <h:outputText value="agente"/>
+                        <h:inputText id ="agente" value="#{ninosjovenes.ninosJovenes.agente.idNuestro}"/>
+                        <h:message for="agente"/>
+                        
+                        <h:outputText value="colonia"/>
+                        <h:inputText id ="colonia" value="#{ninosjovenes.ninosJovenes.colonia.idNuestro}"/>
+                        <h:message for="colonia"/>                  
+                        
+                        
+                        <h:commandButton value="#{ninosjovenes.accion}" action="#{ninosjovenes.ejecutarAccion()}"/>
+                        <h:commandButton value="Cancelar" action="/tablas/ninosJovenes.xhtml"/>
+
+                        <h:inputHidden value="#{ninosjovenes.modo}"/>
+                        <h:inputHidden value="#{ninosjovenes.ninosJovenes.codigo}"/>
+                    </h:panelGrid>
+                </h:form>
+            </c:when>
+            <c:otherwise>
+                <p>No está autorizado para ver esta página.</p>
+            </c:otherwise>
+        </c:choose>
+    </ui:define>
+</ui:composition>

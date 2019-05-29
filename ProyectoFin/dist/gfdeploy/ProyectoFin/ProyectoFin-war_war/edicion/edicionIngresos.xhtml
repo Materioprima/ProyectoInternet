@@ -7,8 +7,8 @@
     <ui:define name="tablasUsuarios">
         <c:choose> 
             <c:when test="#{ingreso.autorizadoParaEdicion}">
-                <h1 class="azul">#{ingreso.accion} Ingresos</h1>
-                <h:form id="customers">
+                <h1 class="titulo">#{ingreso.accion} ingresos</h1>
+                <h:form id="insertar">
                     <h:panelGrid columns="3">
                         
                         <h:outputText value="idNuestro"/>
@@ -51,20 +51,28 @@
                         <h:inputText id ="descripcion" value="#{ingreso.ingreso.descripcion}"/>
                         <h:message for="descripcion"/>
                         
-                        <h:outputText value="Proyectos"/>
-                        <h:inputText id ="ingresos" value="#{ingreso.ingreso.ingresos.codigoNuestro}"/>
-                        <h:message for="ingresos"/>
+                        <h:outputText value="Proyecto"/>
+                            <h:selectOneMenu id="proyecto" value = "#{ingreso.ingreso.ingresos.codigoNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT CODIGONUESTRO FROM PROYECTOS')}"/>
+                            </h:selectOneMenu>
+                        <h:message for="proyecto"/>
                         
                         <h:outputText value="beneficiario"/>
-                        <h:inputText id ="beneficiario" value="#{ingreso.ingreso.beneficiario.codigoNuestro}"/>
+                            <h:selectOneMenu id="beneficiario" value = "#{ingreso.ingreso.beneficiario.codigoNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT CODIGONUESTRO FROM BENEFICIARIOS')}"/>
+                            </h:selectOneMenu>
                         <h:message for="beneficiario"/>
                         
                         <h:outputText value="socio"/>
-                        <h:inputText id ="socio" value="#{ingreso.ingreso.socio.NSocioNuestro}"/>
+                            <h:selectOneMenu id="socio" value = "#{ingreso.ingreso.socio.NSocioNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT NSOCIONUESTRO FROM SOCIOS')}"/>
+                            </h:selectOneMenu>
                         <h:message for="socio"/>
                         
                         <h:outputText value="ordenpago"/>
-                        <h:inputText id ="ordenpago" value="#{ingreso.ingreso.ordenpago.num_OrdenNuestro}"/>
+                            <h:selectOneMenu id="ordenpago" value = "#{ingreso.ingreso.ordenpago.num_OrdenNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT NUM_ORDENNUESTRO FROM ORDENPAGO')}"/>
+                            </h:selectOneMenu>
                         <h:message for="ordenpago"/>
                         
                         <h:commandButton value="#{ingreso.accion}" action="#{ingreso.ejecutarAccion()}"/>

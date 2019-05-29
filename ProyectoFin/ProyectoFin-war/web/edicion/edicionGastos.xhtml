@@ -7,8 +7,8 @@
     <ui:define name="tablasUsuarios">
         <c:choose> 
             <c:when test="#{gastos.autorizadoParaEdicion}">
-                <h1 class="azul">#{gastos.accion} Gastos</h1>
-                <h:form id="customers">
+                <h1 class="titulo">#{gastos.accion} gastos</h1>
+                <h:form id="insertar">
                     <h:panelGrid columns="3">
                         <h:outputText value="Id"/>
                         <h:inputText id ="idNuestro" value="#{gastos.gastos.idNuestro}"/>
@@ -35,7 +35,9 @@
                         <h:message for="voluntarios"/>
                         
                         <h:outputText value="Proyecto"/>
-                        <h:inputText id ="proyecto" value="#{gastos.gastos.proyectos.codigoNuestro}"/>
+                            <h:selectOneMenu id="proyecto" value = "#{gastos.gastos.proyectos.codigoNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT CODIGONUESTRO FROM PROYECTOS')}"/>
+                            </h:selectOneMenu>
                         <h:message for="proyecto"/>
 
                         <h:commandButton value="#{gastos.accion}" action="#{gastos.ejecutarAccion()}"/>

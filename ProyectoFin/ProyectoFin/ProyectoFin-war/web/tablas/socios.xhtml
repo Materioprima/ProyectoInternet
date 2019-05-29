@@ -1,0 +1,121 @@
+<ui:composition template="/index.xhtml" 
+                xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:define name="tablasUsuarios">
+        <h:dataTable id="customers" value="#{infoSesion.socios}" var="a">
+            <h:column>
+                <f:facet name="header">Num.Socio</f:facet>
+                <h:outputText value="#{a.NSocioNuestro}"/>
+                </h:column>
+            
+            <h:column>
+                <f:facet name="header">Nombre</f:facet>
+                    <h:outputText value="#{a.nombre}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Apellidos</f:facet>
+                    <h:outputText value="#{a.apellidos}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">DNI</f:facet>
+                    <h:outputText value="#{a.dni}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Estado</f:facet>
+                    <h:outputText value="#{a.estado}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Sexo</f:facet>
+                    <h:outputText value="#{a.sexo}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Grado</f:facet>
+                    <h:outputText value="#{a.grado}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Direccion</f:facet>
+                    <h:outputText value="#{a.direccion}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Poblacion</f:facet>
+                    <h:outputText value="#{a.poblacion}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Cod.Postal</f:facet>
+                    <h:outputText value="#{a.codigoPostal}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Provincia</f:facet>
+                    <h:outputText value="#{a.provincia}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Tel.Movil</f:facet>
+                    <h:outputText value="#{a.telefonoMovil}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Tel.Fijo</f:facet>
+                    <h:outputText value="#{a.telefonoFijo}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Email</f:facet>
+                    <h:outputText value="#{a.email}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Relacion</f:facet>
+                    <h:outputText value="#{a.relacion}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Certificado</f:facet>
+                    <h:outputText value="#{a.certificado}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Sector</f:facet>
+                    <h:outputText value="#{a.sector}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Fecha de alta</f:facet>
+                    <h:outputText value="#{a.fechaAlta}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Fecha de baja</f:facet>
+                    <h:outputText value="#{a.fechaBaja}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Observaciones</f:facet>
+                    <h:outputText value="#{a.observaciones}"/>
+            </h:column>
+            
+            <h:column>
+                <f:facet name="header">Opciones</f:facet>
+                <h:form>
+                    <h:commandButton value="Modificar" action="#{socios.modificar(a)}"/>
+                    <h:commandButton value="Eliminar" action="#{socios.eliminar(a)}"/>
+                </h:form>
+            </h:column>
+        </h:dataTable>
+        <h:form>
+            <h:commandButton value="Insertar" action="#{socios.insertarSocios()}"/>
+        </h:form>
+    </ui:define>
+</ui:composition>

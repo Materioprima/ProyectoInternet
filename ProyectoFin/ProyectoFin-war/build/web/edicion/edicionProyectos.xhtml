@@ -7,8 +7,8 @@
     <ui:define name="tablasUsuarios">
         <c:choose> 
             <c:when test="#{proyectos.autorizadoParaEdicion}">
-                <h1 class="azul">#{proyectos.accion} personal</h1>
-                <h:form id="customers">
+                <h1 class="titulo">#{proyectos.accion} proyectos</h1>
+                <h:form id="insertar">
                     <h:panelGrid columns="3">
                         <h:outputText value="Codigo Nuestro"/>
                         <h:inputText id ="codigoNuestro" value="#{proyectos.proyectos.codigoNuestro}"/>

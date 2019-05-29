@@ -7,8 +7,8 @@
     <ui:define name="tablasUsuarios">
         <c:choose> 
             <c:when test="#{agente.autorizadoParaEdicion}">
-                <h1 class="azul">#{agente.accion} agente</h1>
-                <h:form id="customers">
+                <h1 class="titulo">#{agente.accion} agente</h1>
+                <h:form id="insertar">
                     <h:panelGrid columns="3">
                         <h:outputText value="Número de Agente"/>
                         <h:inputText id ="numOrden" value="#{agente.agentes.idNuestro}"/>

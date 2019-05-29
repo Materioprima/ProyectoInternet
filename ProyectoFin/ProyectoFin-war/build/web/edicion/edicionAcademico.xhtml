@@ -7,8 +7,8 @@
     <ui:define name="tablasUsuarios">
         <c:choose> 
             <c:when test="#{academicos.autorizadoParaEdicion}">
-                <h1 class="azul">#{academicos.accion} academico</h1>
-                <h:form id="customers">
+                <h1 class="titulo">#{academicos.accion} academico</h1>
+                <h:form id="insertar">
                     <h:panelGrid columns="3">
                         <h:outputText value="ID"/>
                         <h:inputText id ="idNuestro" value="#{academicos.academico.idNuestro}"/>
@@ -23,7 +23,9 @@
                         <h:message for="nota"/>
                         
                         <h:outputText value="Niño"/>
-                        <h:inputText id ="Niño" value="#{academicos.academico.nino.codigoNuestro}"/>
+                            <h:selectOneMenu id="nino" value = "#{academicos.academico.nino.codigoNuestro}">
+                                    <f:selectItems value="#{infoSesion.RealizarConsulta('SELECT CODIGONUESTRO FROM NINOSJOVENES')}"/>
+                            </h:selectOneMenu>
                         <h:message for="Niño"/>
 
                         <h:commandButton value="#{academicos.accion}" action="#{academicos.ejecutarAccion()}"/>
