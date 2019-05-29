@@ -1712,6 +1712,30 @@ public class NegocioImpl implements Negocio {
                         rela.add(s);
                     }
                 }
+                String query6="SELECT NUMERO_ORDEN FROM BECAS WHERE NINO_CODIGO="+e.getCodigo();
+                List<String>Consulta6=ConsultarID(query6);
+                List<Becas>bec=new ArrayList();
+                if(Consulta6.isEmpty()){
+                    bec.add(new Becas());
+                }else{
+                    for(String b:Consulta6){
+                        Becas s=em.find(Becas.class, Long.parseLong(b));
+                        bec.add(s);
+                    }
+                }
+                String query7="SELECT ID FROM ACADEMICO WHERE NINON_CODIGO="+e.getCodigo();
+                List<String>Consulta7=ConsultarID(query7);
+                List<Academico>acad=new ArrayList();
+                if(Consulta7.isEmpty()){
+                    acad.add(new Academico());
+                }else{
+                    for(String b:Consulta7){
+                        Academico s=em.find(Academico.class, Long.parseLong(b));
+                        acad.add(s);
+                    }
+                }
+                e.setNotas(acad);
+                e.setBecas(bec);
                 e.setPersonal(rela);
                 e.setAgente(ag);
                 e.setColonia(col);
@@ -1858,7 +1882,7 @@ public class NegocioImpl implements Negocio {
                 pr=s;
             }
         }
-        String query="SELECT ID FROM PERSONAL WHERE DNI="+a.getPersonal().getDni();
+        String query="SELECT ID FROM PERSONAL WHERE DNI='"+a.getPersonal().getDni()+"'";
         List<String>Consulta=ConsultarID(query);
         Personal pers=new Personal();
         if(Consulta.isEmpty()){
@@ -1892,8 +1916,9 @@ public class NegocioImpl implements Negocio {
                 pr=s;
             }
         }
-        String query="SELECT ID FROM NINOSJOVENES WHERE DNI="+a.getPersonal().getDni();
+        String query="SELECT ID FROM PERSONAL WHERE DNI='"+a.getPersonal().getDni()+"'";
         List<String>Consulta=ConsultarID(query);
+        System.out.println(query+"    LA CONSULTA DA "+Consulta);
         Personal pers=new Personal();
         if(Consulta.isEmpty()){
             pers=new Personal();
@@ -1935,8 +1960,30 @@ public class NegocioImpl implements Negocio {
             while(rs.next()){
                 Relacion e = new Relacion();
                 e.setCodigo(rs.getLong(1));
-                e.setNino(rs.getObject(2, NinosJovenes.class));
-                e.setPersonal(rs.getObject(3, Personal.class));
+                String query4="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGO="+rs.getLong(2);
+                List<String>Consulta4=ConsultarID(query4);
+                NinosJovenes pr=new NinosJovenes();
+                if(Consulta4.isEmpty()){
+                    pr=new NinosJovenes();
+                }else{
+                    for(String b:Consulta4){
+                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                        pr=s;
+                    }
+                }
+                String query="SELECT ID FROM PERSONAL WHERE ID="+rs.getLong(3);
+                List<String>Consulta=ConsultarID(query);
+                Personal perss=new Personal();
+                if(Consulta.isEmpty()){
+                    perss=new Personal();
+                }else{
+                    for(String b:Consulta){
+                        Personal s=em.find(Personal.class, Long.parseLong(b));
+                        perss=s;
+                    }
+                }
+                e.setNino(pr);
+                e.setPersonal(perss);
                 resultado.add(e);
             }
             return resultado;
