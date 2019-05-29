@@ -94,7 +94,7 @@ public class Agente implements Serializable{
 
     @Override
     public String toString() {
-        return "Clases.Agente[ id=" + codigo + " ]";
+        return "Agente: "+codigoNuestro;
     }
     
 }

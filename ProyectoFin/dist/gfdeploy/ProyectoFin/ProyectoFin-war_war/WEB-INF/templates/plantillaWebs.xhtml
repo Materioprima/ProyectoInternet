@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <link href="/ProyectoFin-war/resources/css/cssNuestro.css" rel="stylesheet" type="text/css" />
+        <title>
+            <ui:insert name="title">Facelets Template</ui:insert>
+        </title>
+    </h:head>
+    <h:body>
+        <c:choose>
+            <c:when test="#{empty infoSesion.usuario}">
+                <p>No tiene autorización para ver esta página, debe autenticarse antes.</p>
+                <p><h:link outcome="/login/login.xhtml">Ir a la página de login</h:link></p>
+            </c:when>
+            <c:otherwise>
+                <div id="ContainPagina">
+                    <img src="https://acoes.org/wp-content/uploads/2017/06/LOGom.png" alt="Smiley face" height="117" width="180"></img>
+                    <h:form id="menu">
+                        <ul>
+                            <li><h:commandLink action="#{login.home()}" value="Inicio"/></li>
+                            <li><h:commandLink action="#{login.relacion()}" value="Niños y encargados"/></li>
+                            <c:if test="#{infoSesion.usuario.rol == 'ADMINISTRADOR'}">
+                                    <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
+                                    <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
+                                    <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
+                                    <li><h:commandLink action="#{login.ordenPago()}" value="Orden de pago"/></li>
+                                    <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                    <li><h:commandLink action="#{login.ingresos()}" value="Ingresos"/></li>
+                                    <li><h:commandLink action="#{login.informes()}" value="Informes"/></li>
+                                    <li><h:commandLink action="#{login.gastos()}" value="Gastos"/></li>
+                                    <li><h:commandLink action="#{login.colonias()}" value="Colonias"/></li>
+                                    <li><h:commandLink action="#{login.beneficiarios()}" value="Beneficiarios"/></li>
+                                    <li><h:commandLink action="#{login.becas()}" value="Becas"/></li>
+                                    <li><h:commandLink action="#{login.agente()}" value="Agente"/></li>
+                                    <li><h:commandLink action="#{login.academico()}" value="Académico"/></li>
+                                </c:if>
+
+                                <c:if test="#{infoSesion.usuario.rol == 'COORDINADOR_HONDURAS'}">
+                                    <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
+                                    <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
+                                    <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
+                                    <li><h:commandLink action="#{login.ordenPago()}" value="Orden de pago"/></li>
+                                    <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                    <li><h:commandLink action="#{login.ingresos()}" value="Ingresos"/></li>
+                                    <li><h:commandLink action="#{login.gastos()}" value="Gastos"/></li>
+                                    <li><h:commandLink action="#{login.colonias()}" value="Colonias"/></li>
+                                    <li><h:commandLink action="#{login.beneficiarios()}" value="Beneficiarios"/></li>
+                                    <li><h:commandLink action="#{login.becas()}" value="Becas"/></li>
+                                    <li><h:commandLink action="#{login.agente()}" value="Agente"/></li>
+                                    <li><h:commandLink action="#{login.academico()}" value="Académico"/></li>
+                                </c:if>
+
+                                <c:if test="#{infoSesion.usuario.rol == 'COORDINADOR_ESPAÑA'}">
+                                    <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
+                                    <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
+                                    <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
+                                    <li><h:commandLink action="#{login.ordenPago()}" value="Orden de pago"/></li>
+                                    <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                    <li><h:commandLink action="#{login.ingresos()}" value="Ingresos"/></li>
+                                    <li><h:commandLink action="#{login.gastos()}" value="Gastos"/></li>
+                                    <li><h:commandLink action="#{login.colonias()}" value="Colonias"/></li>
+                                    <li><h:commandLink action="#{login.beneficiarios()}" value="Beneficiarios"/></li>
+                                    <li><h:commandLink action="#{login.becas()}" value="Becas"/></li>
+                                    <li><h:commandLink action="#{login.agente()}" value="Agente"/></li>
+                                    <li><h:commandLink action="#{login.academico()}" value="Académico"/></li>
+                                </c:if>
+
+                                <c:if test="#{infoSesion.usuario.rol == 'NORMAL'}">
+                                    <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                    <li><h:commandLink action="#{login.informes()}" value="Informes"/></li>
+                                </c:if>
+
+                                <c:if test="#{infoSesion.usuario.rol == 'GESTOR_FINANCIERO_GLOBAL'}">
+                                    <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
+                                    <li><h:commandLink action="#{login.ordenPago()}" value="Orden de pago"/></li>
+                                    <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                    <li><h:commandLink action="#{login.ingresos()}" value="Ingresos"/></li>
+                                    <li><h:commandLink action="#{login.gastos()}" value="Gastos"/></li>
+                                    <li><h:commandLink action="#{login.beneficiarios()}" value="Beneficiarios"/></li>
+                                    <li><h:commandLink action="#{login.becas()}" value="Becas"/></li>
+                                </c:if>
+
+                                <c:if test="#{infoSesion.usuario.rol == 'COORDINADOR_PROYECTO'}">
+                                    <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
+                                    <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
+                                    <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
+                                    <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                    <li><h:commandLink action="#{login.colonias()}" value="Colonias"/></li>
+                                </c:if>
+
+                                <c:if test="#{infoSesion.usuario.rol == 'COORDINADOR_SEDE_LOCAL_ESPAÑA'}">
+                                    <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
+                                    <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
+                                    <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
+                                    <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                    <li><h:commandLink action="#{login.ingresos()}" value="Ingresos"/></li>
+                                    <li><h:commandLink action="#{login.gastos()}" value="Gastos"/></li>
+                                    <li><h:commandLink action="#{login.beneficiarios()}" value="Beneficiarios"/></li>
+                                    <li><h:commandLink action="#{login.becas()}" value="Becas"/></li>
+                                    <li><h:commandLink action="#{login.agente()}" value="Agente"/></li>
+                                </c:if>
+
+                                <c:if test="#{infoSesion.usuario.rol == 'AGENTE'}">
+                                    <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
+                                    <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
+                                    <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                    <li><h:commandLink action="#{login.colonias()}" value="Colonias"/></li>
+                                    <li><h:commandLink action="#{login.informes()}" value="Informes"/></li>
+                                    <li><h:commandLink action="#{login.becas()}" value="Becas"/></li>
+                                    <li><h:commandLink action="#{login.agente()}" value="Agente"/></li>
+                                    <li><h:commandLink action="#{login.academico()}" value="Académico"/></li>
+                                </c:if>
+
+                                <c:if test="#{infoSesion.usuario.rol == 'COORDINADOR_LOCAL_HONDURAS'}">
+                                    <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
+                                    <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
+                                    <li><h:commandLink action="#{login.personal()}" value="Personal"/></li>
+                                    <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                    <li><h:commandLink action="#{login.ingresos()}" value="Ingresos"/></li>
+                                    <li><h:commandLink action="#{login.gastos()}" value="Gastos"/></li>
+                                    <li><h:commandLink action="#{login.beneficiarios()}" value="Beneficiarios"/></li>
+                                    <li><h:commandLink action="#{login.becas()}" value="Becas"/></li>
+                                    <li><h:commandLink action="#{login.agente()}" value="Agente"/></li>
+                                </c:if>
+
+                                <c:if test="#{infoSesion.usuario.rol == 'GESTOR_FINANCIERO_LOCAL'}">
+                                    <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>
+                                    <li><h:commandLink action="#{login.ordenPago()}" value="Orden de pago"/></li>
+                                    <li><h:commandLink action="#{login.ninosjovenes()}" value="Niños y jóvenes"/></li>
+                                    <li><h:commandLink action="#{login.ingresos()}" value="Ingresos"/></li>
+                                    <li><h:commandLink action="#{login.gastos()}" value="Gastos"/></li>
+                                    <li><h:commandLink action="#{login.beneficiarios()}" value="Beneficiarios"/></li>
+                                    <li><h:commandLink action="#{login.becas()}" value="Becas"/></li>
+                                </c:if>
+
+                                <li><h:commandLink action="#{infoSesion.invalidarSesion()}" value="Salir"/></li>
+                        </ul>
+                    </h:form>
+
+                    <div id="content" class="center_content">
+                        <ui:insert name="content">Content</ui:insert>
+                    </div>
+
+                </div>
+            </c:otherwise>
+        </c:choose>
+    </h:body>
+</html>
