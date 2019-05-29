@@ -15,7 +15,7 @@ package vistaFinal;
  * and open the template in the editor.
  */
 
-/*import es.uma.informatica.sii.agendaee.entidades.Contacto;*/
+
 import entidadesFinal.Academico;
 import entidadesFinal.Agente;
 import entidadesFinal.Becas;
@@ -40,10 +40,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-/**
- *
- * @author francis
- */
+
 @Named(value = "infoSesion")
 @SessionScoped
 public class InfoSesion implements Serializable {
@@ -51,6 +48,27 @@ public class InfoSesion implements Serializable {
     @Inject
     private Negocio negocio;
     private Usuario usuario;
+
+    public enum Pagina 
+    {
+      HOME,
+      RELACIONES,            
+      SOCIOS,                               
+      PROYECTOS,     
+      PERSONAL,       
+      ORDENPAGO, 
+      NIÑOSJOVENES,     
+      INGRESOS, 
+      GASTOS,
+      COLONIAS,          
+      BENEFICIARIOS,
+      BECAS,                            
+      AGENTE,
+      ACADEMICO,
+      INFORMES
+    };
+    
+    private Pagina pag;
     
     /**
      * Creates a new instance of InfoSesion
@@ -64,6 +82,14 @@ public class InfoSesion implements Serializable {
 
     public synchronized Usuario getUsuario() {
         return usuario;
+    }
+    
+    public synchronized void setPagina(Pagina pag) {
+        this.pag = pag;
+    }
+
+    public synchronized Pagina getPagina() {
+        return pag;
     }
     
     public synchronized List<Academico> getAcademicos()

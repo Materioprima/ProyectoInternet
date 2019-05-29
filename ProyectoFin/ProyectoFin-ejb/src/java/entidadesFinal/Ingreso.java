@@ -34,7 +34,7 @@ public class Ingreso implements Serializable {
     private Date fecha;
     @Column(length=30,nullable = false)
     private String procedencia;
-    private Integer Ingreso_Euros,Ingreso_Lempiras,Ingreso_Dolares,Egreso_Euros,Egreso_Lempiras,Egreso_Dolares,Valor_Divisas_Euros,Valor_Divisas_Dolares;
+    private double Ingreso_Euros,Ingreso_Lempiras,Ingreso_Dolares,Egreso_Euros,Egreso_Lempiras,Egreso_Dolares,Valor_Divisas_Euros,Valor_Divisas_Dolares;
     @Column(length = 500)
     private String descripcion;
     @ManyToOne
@@ -81,52 +81,52 @@ public class Ingreso implements Serializable {
     public void setProcedencia(String procedencia) {
        	this.procedencia = procedencia;
     }
-    public Integer getIngreso_Euros() {
+    public double getIngreso_Euros() {
 	return Ingreso_Euros;
     }
-    public void setIngreso_Euros(Integer ingreso_Euros) {
+    public void setIngreso_Euros(double ingreso_Euros) {
 	Ingreso_Euros = ingreso_Euros;
     }
-    public Integer getIngreso_Lempiras() {
+    public double getIngreso_Lempiras() {
 	return Ingreso_Lempiras;
     }
-    public void setIngreso_Lempiras(Integer ingreso_Lempiras) {
+    public void setIngreso_Lempiras(double ingreso_Lempiras) {
 	Ingreso_Lempiras = ingreso_Lempiras;
     }
-    public Integer getIngreso_Dolares() {
+    public double getIngreso_Dolares() {
     	return Ingreso_Dolares;
     }
-    public void setIngreso_Dolares(Integer ingreso_Dolares) {
+    public void setIngreso_Dolares(double ingreso_Dolares) {
 	Ingreso_Dolares = ingreso_Dolares;
     }
-    public Integer getEgreso_Euros() {
+    public double getEgreso_Euros() {
 	return Egreso_Euros;
     }
-    public void setEgreso_Euros(Integer egreso_Euros) {
+    public void setEgreso_Euros(double egreso_Euros) {
 	Egreso_Euros = egreso_Euros;
     }
-    public Integer getEgreso_Lempiras() {
+    public double getEgreso_Lempiras() {
 	return Egreso_Lempiras;
     }
-    public void setEgreso_Lempiras(Integer egreso_Lempiras) {
+    public void setEgreso_Lempiras(double egreso_Lempiras) {
 	Egreso_Lempiras = egreso_Lempiras;
     }
-    public Integer getEgreso_Dolares() {
+    public double getEgreso_Dolares() {
 	return Egreso_Dolares;
     }
-    public void setEgreso_Dolares(Integer egreso_Dolares) {
+    public void setEgreso_Dolares(double egreso_Dolares) {
         Egreso_Dolares = egreso_Dolares;
     }
-    public Integer getValor_Divisas_Euros() {
+    public double getValor_Divisas_Euros() {
 	return Valor_Divisas_Euros;
     }
-    public void setValor_Divisas_Euros(Integer valor_Divisas_Euros) {
+    public void setValor_Divisas_Euros(double valor_Divisas_Euros) {
 	Valor_Divisas_Euros = valor_Divisas_Euros;
     }
-    public Integer getValor_Divisas_Dolares() {
+    public double getValor_Divisas_Dolares() {
 	return Valor_Divisas_Dolares;
     }
-    public void setValor_Divisas_Dolares(Integer valor_Divisas_Dolares) {
+    public void setValor_Divisas_Dolares(double valor_Divisas_Dolares) {
 	Valor_Divisas_Dolares = valor_Divisas_Dolares;
     }
     public String getDescripcion() {

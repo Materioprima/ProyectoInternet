@@ -8,7 +8,7 @@
         <c:choose>
             <c:when test="#{!empty infoSesion.usuario}">
                 <div class="presentacion">
-                    <h1>Usuario <h:outputText value="#{infoSesion.usuario.rol}"/></h1>
+                    <h1>Usuario <h:outputText value="#{infoSesion.usuario.rol}"/> Página <h:outputText value="#{infoSesion.pagina}"/></h1>
                 </div>
                 <div id="tablas">
                     <ui:insert name="tablasUsuarios"></ui:insert>
@@ -20,5 +20,3 @@
         </c:choose>
     </ui:define>
 </ui:composition>
-
-

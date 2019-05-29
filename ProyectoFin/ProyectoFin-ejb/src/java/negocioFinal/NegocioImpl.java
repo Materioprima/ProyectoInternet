@@ -40,7 +40,6 @@ import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
@@ -179,21 +178,17 @@ public class NegocioImpl implements Negocio {
     //INICIO ACADEMICO
     
     @Override
-    public void modificarAcademico(Academico a)  throws FinalException{
-        // TODO
-        //compruebaLogin(c.getUsuario());
+    public void modificarAcademico(Academico a)  throws FinalException
+    {
         Academico acade = em.find(Academico.class, a.getId());
         acade.setIdNuestro(a.getIdNuestro());
         acade.setFechaPeriodo(a.getFechaPeriodo());
         acade.setNota(a.getNota());
         em.merge(acade);
-        
     }
     
     @Override
     public void insertarAcademico(Academico a) throws FinalException{
-        // TODO
-        //compruebaLogin(c.getUsuario());
         Academico acad=new Academico();
         acad.setId(a.getId());
         acad.setIdNuestro(a.getIdNuestro());
@@ -263,10 +258,6 @@ public class NegocioImpl implements Negocio {
                 } catch (SQLException ex) {
                     Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
                 }
-        
-        /*
-        Query q=em.createNamedQuery("academico.findAll");
-        return q.getResultList();*/ 
         return null;
     }
     
@@ -558,7 +549,6 @@ public class NegocioImpl implements Negocio {
             Beneficiarios ordenp = em.find(Beneficiarios.class, a.getCodigo());
             ordenp.setCodigoNuestro(a.getCodigoNuestro());
             ordenp.setHabilitado(a.getHabilitado());
-            //ordenp.setIngresos(a.getIngresos());
             Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
             Statement st=conn.createStatement();
             String consulta="SELECT CODIGO_TRANSACCION FROM INGRESO WHERE beneficiario_codigo="+a.getCodigo();
@@ -590,7 +580,6 @@ public class NegocioImpl implements Negocio {
             orden.setCodigo(a.getCodigo());
             orden.setCodigoNuestro(a.getCodigoNuestro());
             orden.setHabilitado(a.getHabilitado());
-            //orden.setIngresos(a.getIngresos());
             Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
             Statement st=conn.createStatement();
             String consulta="SELECT CODIGO_TRANSACCION FROM INGRESO WHERE beneficiario_codigo="+a.getCodigoNuestro();
@@ -1010,6 +999,40 @@ public class NegocioImpl implements Negocio {
         ordenp.setIngreso_Dolares(a.getIngreso_Dolares());
         ordenp.setIngreso_Euros(a.getIngreso_Euros());
         ordenp.setIngreso_Lempiras(a.getIngreso_Lempiras());
+        ordenp.setValor_Divisas_Dolares(1.11441);
+        ordenp.setValor_Divisas_Euros(0.897182);
+        Double lemp = 24.4518;
+        Double lempeu = 27.2819;
+        if(ordenp.getEgreso_Dolares()!=0)
+        {
+            ordenp.setEgreso_Euros(ordenp.getEgreso_Dolares()*ordenp.getValor_Divisas_Euros());
+            ordenp.setEgreso_Lempiras(a.getEgreso_Dolares()*lemp);
+        }
+        else if(ordenp.getEgreso_Euros()!=0)
+        {
+            ordenp.setEgreso_Dolares(ordenp.getEgreso_Euros()*ordenp.getValor_Divisas_Dolares());
+            ordenp.setEgreso_Lempiras(ordenp.getEgreso_Euros()*lempeu);
+        }
+        else
+        {
+            ordenp.setEgreso_Dolares(ordenp.getEgreso_Lempiras()/lemp);
+            ordenp.setEgreso_Euros(ordenp.getEgreso_Lempiras()/lempeu);
+        }
+        if(ordenp.getIngreso_Dolares()!=0)
+        {
+            ordenp.setIngreso_Euros(ordenp.getIngreso_Dolares()*ordenp.getValor_Divisas_Euros());
+            ordenp.setIngreso_Lempiras(a.getIngreso_Dolares()*lemp);
+        }
+        else if(ordenp.getIngreso_Euros()!=0)
+        {
+            ordenp.setIngreso_Dolares(ordenp.getIngreso_Euros()*ordenp.getValor_Divisas_Dolares());
+            ordenp.setIngreso_Lempiras(ordenp.getIngreso_Euros()*lempeu);
+        }
+        else
+        {
+            ordenp.setIngreso_Dolares(ordenp.getIngreso_Lempiras()/lemp);
+            ordenp.setIngreso_Euros(ordenp.getIngreso_Lempiras()/lempeu);
+        }
         //ordenp.setIngresos(a.getIngresos());
         //ordenp.setOrdenpago(a.getOrdenpago());
         ordenp.setProcedencia(a.getProcedencia());
@@ -1076,19 +1099,54 @@ public class NegocioImpl implements Negocio {
         orden.setId(a.getId());
         orden.setBeneficiario(a.getBeneficiario());
         orden.setDescripcion(a.getDescripcion());
+        orden.setFecha(a.getFecha());
+        orden.setIdNuestro(a.getIdNuestro());
+        
         orden.setEgreso_Dolares(a.getEgreso_Dolares());
         orden.setEgreso_Euros(a.getEgreso_Euros());
         orden.setEgreso_Lempiras(a.getEgreso_Lempiras());
-        orden.setFecha(a.getFecha());
-        orden.setIdNuestro(a.getIdNuestro());
         orden.setIngreso_Dolares(a.getIngreso_Dolares());
         orden.setIngreso_Euros(a.getIngreso_Euros());
         orden.setIngreso_Lempiras(a.getIngreso_Lempiras());
+        orden.setValor_Divisas_Dolares(1.11441);
+        orden.setValor_Divisas_Euros(0.897182);
+        Double lemp = 24.4518;
+        Double lempeu = 27.2819;
+        if(orden.getEgreso_Dolares()!=0)
+        {
+            orden.setEgreso_Euros(orden.getEgreso_Dolares()*orden.getValor_Divisas_Euros());
+            orden.setEgreso_Lempiras(a.getEgreso_Dolares()*lemp);
+        }
+        else if(orden.getEgreso_Euros()!=0)
+        {
+            orden.setEgreso_Dolares(orden.getEgreso_Euros()*orden.getValor_Divisas_Dolares());
+            orden.setEgreso_Lempiras(orden.getEgreso_Euros()*lempeu);
+        }
+        else
+        {
+            orden.setEgreso_Dolares(orden.getEgreso_Lempiras()/lemp);
+            orden.setEgreso_Euros(orden.getEgreso_Lempiras()/lempeu);
+        }
+        if(orden.getIngreso_Dolares()!=0)
+        {
+            orden.setIngreso_Euros(orden.getIngreso_Dolares()*orden.getValor_Divisas_Euros());
+            orden.setIngreso_Lempiras(a.getIngreso_Dolares()*lemp);
+        }
+        else if(orden.getIngreso_Euros()!=0)
+        {
+            orden.setIngreso_Dolares(orden.getIngreso_Euros()*orden.getValor_Divisas_Dolares());
+            orden.setIngreso_Lempiras(orden.getIngreso_Euros()*lempeu);
+        }
+        else
+        {
+            orden.setIngreso_Dolares(orden.getIngreso_Lempiras()/lemp);
+            orden.setIngreso_Euros(orden.getIngreso_Lempiras()/lempeu);
+        }
         orden.setIngresos(a.getIngresos());
         orden.setOrdenpago(a.getOrdenpago());
         orden.setProcedencia(a.getProcedencia());
-        orden.setValor_Divisas_Dolares(a.getValor_Divisas_Dolares());
-        orden.setValor_Divisas_Euros(a.getValor_Divisas_Euros());
+        //1 dolar son 24.4518 lempiras
+        //1 euro son 27.2819 lempiras
         //hacer tratamiento excepcion
         String query="SELECT NSOCIO FROM SOCIOS WHERE NSOCIONUESTRO="+a.getSocio().getNSocioNuestro();
         List<String>Consulta=ConsultarID(query);
@@ -1168,14 +1226,14 @@ public class NegocioImpl implements Negocio {
             while(rs.next()){
                 Ingreso e=new Ingreso();
                 e.setId(rs.getLong(1));
-                e.setEgreso_Dolares(rs.getInt(2));
-                e.setEgreso_Euros(rs.getInt(3));
-                e.setEgreso_Lempiras(rs.getInt(4));
-                e.setIngreso_Dolares(rs.getInt(5));
-                e.setIngreso_Euros(rs.getInt(6));
-                e.setIngreso_Lempiras(rs.getInt(7));
-                e.setValor_Divisas_Dolares(rs.getInt(8));
-                e.setValor_Divisas_Euros(rs.getInt(9));
+                e.setEgreso_Dolares(rs.getDouble(2));
+                e.setEgreso_Euros(rs.getDouble(3));
+                e.setEgreso_Lempiras(rs.getDouble(4));
+                e.setIngreso_Dolares(rs.getDouble(5));
+                e.setIngreso_Euros(rs.getDouble(6));
+                e.setIngreso_Lempiras(rs.getDouble(7));
+                e.setValor_Divisas_Dolares(rs.getDouble(8));
+                e.setValor_Divisas_Euros(rs.getDouble(9));
                 e.setIdNuestro(rs.getLong(10));
                 e.setDescripcion(rs.getString(11));
                 e.setFecha(rs.getDate(12));

@@ -8,6 +8,11 @@ and open the template in the editor.
     Author     : Materio
 */
 
+.activo{
+    background-color: white;
+    color: black;
+}
+
 ul {
     list-style-type: none;
     margin-bottom:0;
