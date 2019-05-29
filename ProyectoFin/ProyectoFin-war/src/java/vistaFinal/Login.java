@@ -148,6 +148,15 @@ public class Login {
         return pag;
     }
     
+    public String relacion() {
+        String pag = "/login/login.xhtml";
+        if (sesion.getUsuario().getRol() != null){
+            pag = "/tablas/relacion.xhtml";
+            return pag;
+        }
+        return pag;
+    }
+    
     public String informes() {
         String pag = "/login/login.xhtml";
         if (sesion.getUsuario().getRol() == ADMINISTRADOR || sesion.getUsuario().getRol() == COORDINADOR_HONDURAS || sesion.getUsuario().getRol() == COORDINADOR_ESPAÑA || sesion.getUsuario().getRol() == GESTOR_FINANCIERO_GLOBAL || sesion.getUsuario().getRol() == COORDINADOR_SEDE_LOCAL_ESPAÑA || sesion.getUsuario().getRol() == COORDINADOR_LOCAL_HONDURAS)

@@ -29,6 +29,7 @@ import entidadesFinal.Usuario;
 import entidadesFinal.OrdenPago;
 import entidadesFinal.Personal;
 import entidadesFinal.Proyectos;
+import entidadesFinal.Relacion;
 import entidadesFinal.Socios;
 import negocioFinal.FinalException;
 import negocioFinal.Negocio;
@@ -70,6 +71,15 @@ public class InfoSesion implements Serializable {
         if (usuario != null)
         {
             return negocio.mostrarAcademico();
+        }
+        return null;
+    }
+    
+    public synchronized List<Relacion> getRelacion()
+    {
+        if (usuario != null)
+        {
+            return negocio.mostrarRelacion();
         }
         return null;
     }

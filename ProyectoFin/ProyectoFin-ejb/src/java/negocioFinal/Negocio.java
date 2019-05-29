@@ -20,6 +20,7 @@ import entidadesFinal.Socios;
 import entidadesFinal.Usuario;
 import entidadesFinal.NinosJovenes;
 import entidadesFinal.Personal;
+import entidadesFinal.Relacion;
 import java.util.List;
 import javax.ejb.Local;
 
@@ -99,8 +100,14 @@ public interface Negocio {
     public void insertarPersonal(Personal a)throws FinalException;
     public void modificarPersonal(Personal a)throws FinalException;
     
+    public List<Relacion> mostrarRelacion();
+    public void eliminarRelacion(Relacion a)throws FinalException;
+    public void insertarRelacion(Relacion a)throws FinalException;
+    public void modificarRelacion(Relacion a)throws FinalException;
+    
     public List<String> ConsultarID(String consulta)throws FinalException;
     public List<String> ConsultarMas(String consulta,int nValores)throws FinalException;
+    public void inserto(Long idNino, Long idP);
     /*public void modificar(Contacto c) throws AgendaException;
     public void insertar(Contacto c)throws AgendaException;
     public void eliminarContacto(Contacto c)throws AgendaException;*/

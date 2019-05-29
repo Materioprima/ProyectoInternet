@@ -29,6 +29,7 @@ and open the template in the editor.
                     <h:form id="menu">
                         <ul>
                             <li><h:commandLink action="#{login.home()}" value="Inicio"/></li>
+                            <li><h:commandLink action="#{login.relacion()}" value="Niños y encargados"/></li>
                             <c:if test="#{infoSesion.usuario.rol == 'ADMINISTRADOR'}">
                                     <li><h:commandLink action="#{login.socios()}" value="Socios"/></li>
                                     <li><h:commandLink action="#{login.proyectos()}" value="Proyectos"/></li>

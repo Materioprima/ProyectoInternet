@@ -43,8 +43,8 @@ public class NinosJovenes implements Serializable
     private List<Academico> notas;
     @ManyToOne
     private Agente agente;
-    @ManyToMany
-    private List<Personal> personal;
+    @OneToMany (mappedBy = "nino")
+    private List<Relacion> personal;
     @ManyToOne
     private Colonias colonia;
     @OneToMany (mappedBy = "nino")
@@ -174,10 +174,10 @@ public class NinosJovenes implements Serializable
     public void setAgente(Agente agente) {
     	this.agente = agente;
     }
-    public List<Personal> getPersonal() {
+    public List<Relacion> getPersonal() {
     	return personal;
     }
-    public void setPersonal(List<Personal> personal) {
+    public void setPersonal(List<Relacion> personal) {
 	this.personal = personal;
     }
     public Colonias getColonia() {

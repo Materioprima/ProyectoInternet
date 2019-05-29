@@ -30,8 +30,8 @@ public class Personal implements Serializable
     private String dni;
     private String nombre,apellido,cargo;
     private Long salario;
-    @ManyToMany (mappedBy = "personal")
-    private List<NinosJovenes> encargados;
+    @OneToMany (mappedBy = "personal")
+    private List<Relacion> encargados;
     @OneToMany(mappedBy ="personal")
     private List<Informes>informes;
     public String getDni() {
@@ -78,10 +78,10 @@ public class Personal implements Serializable
     public void setInformes(List<Informes> Informes) {
 	this.informes = Informes;
     }
-    public List<NinosJovenes> getEncargados() {
+    public List<Relacion> getEncargados() {
 	return encargados;
     }
-    public void setEncargados(List<NinosJovenes> encargados) {
+    public void setEncargados(List<Relacion> encargados) {
 	this.encargados = encargados;
     }
     @Override

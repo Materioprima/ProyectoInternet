@@ -26,6 +26,7 @@ import entidadesFinal.Proyectos;
 import entidadesFinal.Socios;
 import entidadesFinal.Usuario;
 import entidadesFinal.NinosJovenes;
+import entidadesFinal.Relacion;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -1700,6 +1701,18 @@ public class NegocioImpl implements Negocio {
                         pr=s;
                     }
                 }
+                String query5="SELECT ID FROM RELACION WHERE NINO_CODIGO="+e.getCodigo();
+                List<String>Consulta5=ConsultarID(query5);
+                List<Relacion>rela=new ArrayList();
+                if(Consulta5.isEmpty()){
+                    rela.add(new Relacion());
+                }else{
+                    for(String b:Consulta5){
+                        Relacion s=em.find(Relacion.class, Long.parseLong(b));
+                        rela.add(s);
+                    }
+                }
+                e.setPersonal(rela);
                 e.setAgente(ag);
                 e.setColonia(col);
                 e.setIdSocio(soc);
@@ -1784,16 +1797,16 @@ public class NegocioImpl implements Negocio {
                 e.setDni(rs.getString(4));
                 e.setNombre(rs.getString(5));
                 e.setSalario(rs.getLong(6));
-                String query="SELECT ENCARGADOS_CODIGO FROM NINOSJOVENES_PERSONAL WHERE PERSONAL_ID="+e.getId();
+                String query="SELECT ID FROM RELACION WHERE PERSONAL_ID="+e.getId();
                 List<String>Consulta=ConsultarID(query);
-                List<NinosJovenes> ninos=new ArrayList();
+                List<Relacion> rel=new ArrayList();
                 if(Consulta.isEmpty()){
-                    ninos.add(new NinosJovenes());
+                    rel.add(new Relacion());
                 }else{
                     for(String b:Consulta){
                         System.out.println("SOY UNA BANDERA "+b+" el LONG DA "+Long.parseLong(b));
-                        NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
-                        ninos.add(s);
+                        Relacion s=em.find(Relacion.class, Long.parseLong(b));
+                        rel.add(s);
                     }
                 }
                 String query2="SELECT ID FROM INFORMES WHERE PERSONAL_ID="+e.getId();
@@ -1808,7 +1821,8 @@ public class NegocioImpl implements Negocio {
                         informes.add(s);
                     }
                 }
-                e.setEncargados(ninos);
+                
+                e.setEncargados(rel);
                 e.setInformes(informes);
                 resultado.add(e);
             }
@@ -1824,6 +1838,119 @@ public class NegocioImpl implements Negocio {
     }
   
 //FIN PERSONAL
+    
+//INICIO RELACION
+    
+    
+    @Override
+    public void modificarRelacion(Relacion a)  throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Relacion person = em.find(Relacion.class, a.getCodigo());
+        String query4="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGONUESTRO="+a.getNino().getCodigoNuestro();
+        List<String>Consulta4=ConsultarID(query4);
+        NinosJovenes pr=new NinosJovenes();
+        if(Consulta4.isEmpty()){
+            pr=new NinosJovenes();
+        }else{
+            for(String b:Consulta4){
+                NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        String query="SELECT ID FROM PERSONAL WHERE DNI="+a.getPersonal().getDni();
+        List<String>Consulta=ConsultarID(query);
+        Personal pers=new Personal();
+        if(Consulta.isEmpty()){
+            pers=new Personal();
+        }else{
+            for(String b:Consulta){
+                Personal s=em.find(Personal.class, Long.parseLong(b));
+                pers=s;
+            }
+        }
+        person.setNino(pr);
+        person.setPersonal(pers);
+        em.merge(person);
+        
+    }
+    
+    @Override
+    public void insertarRelacion(Relacion a) throws FinalException{
+        // TODO
+        //compruebaLogin(c.getUsuario());
+        Relacion person=new Relacion();
+        person.setCodigo(a.getCodigo());
+        String query4="SELECT CODIGO FROM NINOSJOVENES WHERE CODIGONUESTRO="+a.getNino().getCodigoNuestro();
+        List<String>Consulta4=ConsultarID(query4);
+        NinosJovenes pr=new NinosJovenes();
+        if(Consulta4.isEmpty()){
+            pr=new NinosJovenes();
+        }else{
+            for(String b:Consulta4){
+                NinosJovenes s=em.find(NinosJovenes.class, Long.parseLong(b));
+                pr=s;
+            }
+        }
+        String query="SELECT ID FROM NINOSJOVENES WHERE DNI="+a.getPersonal().getDni();
+        List<String>Consulta=ConsultarID(query);
+        Personal pers=new Personal();
+        if(Consulta.isEmpty()){
+            pers=new Personal();
+        }else{
+            for(String b:Consulta){
+                Personal s=em.find(Personal.class, Long.parseLong(b));
+                pers=s;
+            }
+        }
+        person.setNino(pr);
+        person.setPersonal(pers);
+        System.out.println("Objeto creado: "+person+" objeto insertado: "+a);
+        em.persist(person);
+    }
+    
+    
+    @Override
+    public void eliminarRelacion(Relacion a) throws FinalException{
+        // TODO
+        //compruebaLogin(a.getUsuario());
+        Relacion person = em.find(Relacion.class, a.getCodigo());
+        if(person!=null){
+            em.remove(person);
+        }
+    
+    }
+    
+    
+    @Override
+    public List<Relacion> mostrarRelacion(){
+        
+        try {
+            // TODO
+            List<Relacion> resultado=new ArrayList<>();
+            Connection conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+            Statement st=conn.createStatement();
+            String consulta="SELECT * FROM RELACION";
+            ResultSet rs=st.executeQuery(consulta);
+            while(rs.next()){
+                Relacion e = new Relacion();
+                e.setCodigo(rs.getLong(1));
+                e.setNino(rs.getObject(2, NinosJovenes.class));
+                e.setPersonal(rs.getObject(3, Personal.class));
+                resultado.add(e);
+            }
+            return resultado;
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        /*
+        Query q=em.createNamedQuery("academico.findAll");
+        return q.getResultList();*/ 
+        return null;
+    }
+  
+//FIN RELACION
     
     
     
@@ -1875,5 +2002,19 @@ public class NegocioImpl implements Negocio {
         Query q=em.createNamedQuery("academico.findAll");
         return q.getResultList();*/ 
         return null;
-    }    
+    } 
+        
+    @Override    
+    public void inserto(Long idNino, Long idP){
+        Connection conn;
+        try {
+                String consulta="INSERT INTO NINOSJOVENES_PERSONAL VALUES ("+idNino+","+idP+")";
+                conn = DriverManager.getConnection("jdbc:derby://localhost:1527/sun-appserv-samples", "app", "app");
+                Statement st=conn.createStatement();
+                ResultSet rs=st.executeQuery(consulta);  
+        } catch (SQLException ex) {
+            Logger.getLogger(NegocioImpl.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           
+    }
 }
