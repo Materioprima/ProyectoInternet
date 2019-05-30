@@ -8,9 +8,38 @@
         Validando cuenta
     </ui:define>
     <ui:define name="content">
+        <div class="context">
+
+			<div class="area">
+    
+				<ul class="circles">
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+			</ul>
+		</div>
+        </div>
         <div id="top" class="top">
             <h2>VALIDAR CUENTA</h2>
         </div>
+        <div id="login">
         <f:view>
             <f:metadata>
                 <f:viewParam name="cuenta" value="#{registro.cuenta}"/>
@@ -20,6 +49,7 @@
         </f:view>
         <h:outputText value="#{registro.mensajeValidacion}"/>
         <p><h:link outcome="/login/login.xhtml" rendered="#{registro.validacionOK}">Página de login</h:link></p>
+        </div>
     </ui:define>
 </ui:composition>
 

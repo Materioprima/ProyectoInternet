@@ -15,12 +15,40 @@
         </c:choose>
     </ui:define>
     <ui:define name="content">
+        <div class="context">
+
+			<div class="area">
+    
+				<ul class="circles">
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+			</ul>
+		</div>
+        </div>
         <div id="top" class="top">
             <h2>EXITO REGISTRO USUARIO</h2>
         </div>
         <c:choose>
             <c:when test="#{registro.registroOK}">
-                <div>
+                <div id="login">
                     <p>El registro se ha realizado con éxito. Hemos enviado un mensaje de validación a su correo
                         electrónico. Compruébelo y pulse el enlace para validar la cuenta de usuario.</p>
                     <p><h:link outcome="/login/login.xhtml">Ir a la página de login</h:link></p>

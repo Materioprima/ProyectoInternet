@@ -8,19 +8,47 @@
         Registro de usuario
     </ui:define>
     <ui:define name="content">
+        <div class="context">
+
+			<div class="area">
+    
+				<ul class="circles">
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+        
+				<li />
+			</ul>
+		</div>
+        </div>
         <div id="top" class="top">
             <h2>REGISTRAR USUARIO</h2>
         </div>
         <c:choose>
             <c:when test="#{empty infoSesion.usuario}">
-                <h:form id="registro">
+                <h:form id="login">
                     <h:panelGrid columns="3">
                         <h:outputText value="Nombre:"/>
                         <h:inputText id="nombre" value="#{registro.usuario.nombre}"/>
-                        <h:message for="nombre"/>
+                        <h:message class="minimensaje" for="nombre"/>
                         <h:outputText value="Apellidos:"/>
                         <h:inputText id="apellidos" value="#{registro.usuario.apellidos}"/>
-                        <h:message for="apellidos"/>
+                        <h:message class="minimensaje" for="apellidos"/>
                         <h:outputText value="Rol:"/>
                         <h:selectOneMenu id="rol" value = "#{registro.usuario.rol}">
                             <f:selectItem itemValue = "ADMINISTRADOR" itemLabel = "ADMINISTRADOR" />
@@ -35,36 +63,36 @@
                             <f:selectItem itemValue = "COORDINADOR_LOCAL_HONDURAS" itemLabel = "COORDINADOR_LOCAL_HONDURAS" />
                             <f:selectItem itemValue = "GESTOR_FINANCIERO_LOCAL" itemLabel = "GESTOR_FINANCIERO_LOCAL" />
                         </h:selectOneMenu>
-                        <h:message for="rol"/>
+                        <h:message class="minimensaje" for="rol"/>
                         <h:outputText value="E-mail:"/>
                         <h:inputText id="email" value="#{registro.usuario.email}" required="true"
                                      validatorMessage="Compruebe que ha introducido un e-mail correcto">
                             <f:validateRegex pattern=".+@.+"/>
                         </h:inputText>
-                        <h:message for="email"/>
+                        <h:message class="minimensaje" for="email"/>
                         <h:outputText value="Nombre de usuario:"/>
                         <h:inputText id="user" value="#{registro.usuario.cuenta}" required="true"/>
-                        <h:message for="user"/>
+                        <h:message class="minimensaje" for="user"/>
                         <h:outputText value="Contraseña:"/>
                         <h:inputSecret id="pass" value="#{registro.usuario.contrasenia}" required="true"/>
-                        <h:message for="pass"/>
+                        <h:message class="minimensaje" for="pass"/>
                         <h:outputText value="Repita contraseña:"/>
                         <h:inputSecret id="repass" value="#{registro.repass}" required="true"/>
-                        <h:message for="repass"/>
+                        <h:message class="minimensaje" for="repass"/>
                         <h:commandButton value="Crear usuario" action="#{registro.registrarUsuario()}"/>
                         <h:link outcome="/login/login.xhtml">Volver a la página de login</h:link>
                     </h:panelGrid>
-                    <h:messages/>
                     
                 </h:form>
                 
             </c:when>
             <c:otherwise>
-                <h:form>
+                <h:form id="login">
                     <p>Para crear un nuevo registro debe 
                         <h:commandLink action="#{infoSesion.invalidarSesion()}">salir</h:commandLink> antes de la aplicación.</p>
                 </h:form>
             </c:otherwise>
         </c:choose>
+        <h:messages class="mensajito"/>
     </ui:define>
 </ui:composition>

@@ -51,7 +51,7 @@ public class InfoSesion implements Serializable {
     public enum Pagina 
     {
       HOME,
-      RELACIONES,            
+      ASIGNACIÓN,            
       SOCIOS,                               
       PROYECTOS,     
       PERSONAL,       

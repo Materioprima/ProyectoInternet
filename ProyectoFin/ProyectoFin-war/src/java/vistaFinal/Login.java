@@ -159,7 +159,7 @@ public class Login {
     public String relacion() {
         String pag = "/login/login.xhtml";
         if (sesion.getUsuario().getRol() != null){
-            sesion.setPagina(InfoSesion.Pagina.RELACIONES);
+            sesion.setPagina(InfoSesion.Pagina.ASIGNACIÓN);
             pag = "/tablas/relacion.xhtml";
             return pag;
         }
